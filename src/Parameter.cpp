@@ -15,6 +15,7 @@
 #include "Parameter.h"
 
 bool Parameter::readParam(const char *addr) {
+
     std::ifstream fs;
 
     std::string name = "";
