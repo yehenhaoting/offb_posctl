@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 import rospy
-from std_msgs.msg import String, Float32, Float64, Float64MultiArray
+from std_msgs.msg import String, Float32, Float64
 from mavros_msgs.msg import State, AttitudeTarget
-from mavros_msgs.srv import CommandBool, CommandBoolRequest, CommandBoolResponse
-from mavros_msgs.srv import SetMode, SetModeRequest, SetModeResponse
-from sensor_msgs.msg import Imu
-from geometry_msgs.msg import PoseWithCovarianceStamped, Quaternion
-from geometry_msgs.msg import Pose
+from mavros_msgs.srv import CommandBool, CommandBoolRequest
+from mavros_msgs.srv import SetMode, SetModeRequest
 from geometry_msgs.msg import PoseStamped, TwistStamped, Quaternion
 from tf.transformations import quaternion_from_euler
 import threading

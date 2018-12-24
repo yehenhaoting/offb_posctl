@@ -47,33 +47,29 @@ using namespace Eigen;
 
 // //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>全 局 变 量<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-mavros_msgs::State current_state;           //无人机当前状态
+//mavros_msgs::State current_state;           //无人机当前状态
+
 geometry_msgs::PoseStamped pos_drone;       //读入的无人机当前位置
 geometry_msgs::TwistStamped vel_drone;      //读入的无人机当前速度
-geometry_msgs::PoseStamped att_drone;       //读入的无人机姿态
-
-geometry_msgs::Quaternion orientation_target;   //发给无人机的姿态指令
 
 float thrust_target;        //期望推力
+geometry_msgs::Vector3 euler_target;   //发给无人机的姿态指令
+mavros_msgs::AttitudeTarget att_target;
 
-float Euler[3];
 float Yaw_Locked;           //锁定的偏航角(一般锁定为0)
 PID PIDVX, PIDVY, PIDVZ;    //声明PID类
 Parameter param;
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>声 明 函 数<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-//欧拉角转四元数
-geometry_msgs::Quaternion euler2quaternion(float roll, float pitch, float yaw);
-void quaternion2euler(float x, float y, float z, float w);
 float get_ros_time(ros::Time time_begin);                                            //获取ros当前时间
 int pix_controller(float cur_time);                                                  //控制程序
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>回 调 函 数<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-void state_cb(const mavros_msgs::State::ConstPtr &msg){
-    current_state = *msg;
-
-}
+//void state_cb(const mavros_msgs::State::ConstPtr &msg){
+//    current_state = *msg;
+//
+//}
 
 void pos_cb(const geometry_msgs::PoseStamped::ConstPtr &msg){
     pos_drone = *msg;
@@ -83,12 +79,6 @@ void vel_cb(const geometry_msgs::TwistStamped::ConstPtr &msg){
     vel_drone = *msg;
 }
 
-bool hasGotAtt = false;
-void att_cb(const geometry_msgs::PoseStamped::ConstPtr &msg){
-    att_drone = *msg;
-    hasGotAtt = true;
-}
-
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>主 函 数<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 int main(int argc, char **argv)
 {
@@ -96,13 +86,12 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
 
     // 【订阅】无人机当前状态/位置/速度信息
-    ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>("mavros/state", 20, state_cb);
-    ros::Subscriber position_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 20, pos_cb);
-    ros::Subscriber velocity_sub = nh.subscribe<geometry_msgs::TwistStamped>("/mavros/local_position/velocity", 20, vel_cb);
-    ros::Subscriber attitude_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 20, att_cb);
+//    ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>("mavros/state", 20, state_cb);
+    ros::Subscriber position_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mocap/pose", 20, pos_cb);
+    ros::Subscriber velocity_sub = nh.subscribe<geometry_msgs::TwistStamped>("/mocap/velocity", 20, vel_cb);
+
     // 【发布】飞机姿态/拉力信息 坐标系:NED系
-    ros::Publisher thrust_pub = nh.advertise<std_msgs::Float32>("/cmd/thrust", 20);
-    ros::Publisher orientataion_pub = nh.advertise<geometry_msgs::Quaternion>("/cmd/orientation", 20);
+    ros::Publisher att_pub = nh.advertise<mavros_msgs::AttitudeTarget>("/cmd/attitudeTarget", 20);
     // 频率 [20Hz]
     ros::Rate rate(20.0);
 
@@ -125,30 +114,16 @@ int main(int argc, char **argv)
 
     
 
-    // 等待和飞控的连接
-    while(ros::ok() && current_state.connected == 0)
-    {
-        ros::spinOnce();
-        ros::Duration(1).sleep();
-        ROS_INFO("Not Connected");
-    }
-    ROS_INFO("Connected!!");
+//    // 等待和飞控的连接
+//    while(ros::ok() && current_state.connected == 0)
+//    {
+//        ros::spinOnce();
+//        ros::Duration(1).sleep();
+//        ROS_INFO("Not Connected");
+//    }
+//    ROS_INFO("Connected!!");
 
-    while(ros::ok() && !hasGotAtt)
-    {
-        ros::Duration(1).sleep();
-        ros::spinOnce();
-        ROS_INFO_STREAM("waitting for att...");
-    }
 
-    ROS_INFO("Got Yaw_locked");
-
-    float x = att_drone.pose.orientation.x;
-    float y = att_drone.pose.orientation.y;
-    float z = att_drone.pose.orientation.z;
-    float w = att_drone.pose.orientation.w;
-    quaternion2euler(x, y, z, w);
-    ROS_INFO_STREAM("Got Yaw_locked: " << Yaw_Locked);
 
     // 记录启控时间
     ros::Time begin_time = ros::Time::now();
@@ -161,10 +136,10 @@ int main(int argc, char **argv)
         float cur_time = get_ros_time(begin_time);  // 当前时间
         pix_controller(cur_time);                   //控制程序
 
-        std_msgs::Float32 data2pub;
-        data2pub.data = thrust_target;
-        thrust_pub.publish(data2pub);
-        orientataion_pub.publish(orientation_target);
+        att_target.body_rate = euler_target;
+        att_target.thrust = thrust_target;
+
+        att_pub.publish(att_target);
 
         rate.sleep();
     }
@@ -199,14 +174,19 @@ int pix_controller(float cur_time)
 
 //速 度 环
     //积分标志位.未进入OFFBOARD时,不累积积分项;进入OFFBOARD时,开始积分.
-    PIDVX.start_intergrate_flag = true;
-    PIDVY.start_intergrate_flag = true;
-    PIDVZ.start_intergrate_flag = true;
-    if(current_state.mode != "OFFBOARD"){
-        PIDVX.start_intergrate_flag = false;
-        PIDVY.start_intergrate_flag = false;
-        PIDVZ.start_intergrate_flag = false;
-    }
+//    PIDVX.start_intergrate_flag = true;
+//    PIDVY.start_intergrate_flag = true;
+//    PIDVZ.start_intergrate_flag = true;
+//    if(current_state.mode != "OFFBOARD"){
+//        PIDVX.start_intergrate_flag = false;
+//        PIDVY.start_intergrate_flag = false;
+//        PIDVZ.start_intergrate_flag = false;
+//    }
+
+    PIDVX.start_intergrate_flag = false;
+    PIDVY.start_intergrate_flag = false;
+    PIDVZ.start_intergrate_flag = false;
+
     //计算误差
     float error_vx = vel_xd - vel_drone.twist.linear.x;
     float error_vy = vel_yd - vel_drone.twist.linear.y;
@@ -220,36 +200,17 @@ int pix_controller(float cur_time)
     PIDVY.pid_output();
     PIDVZ.pid_output();
 
+    Yaw_Locked = 0;
     Matrix2f A_yaw;
     A_yaw << sin(Yaw_Locked), cos(Yaw_Locked),
             -cos(Yaw_Locked), sin(Yaw_Locked);
     Vector2f mat_temp(PIDVX.Output,PIDVY.Output);       //赋值到期望推力和姿态
     Vector2f euler_temp= 1/9.8 * A_yaw.inverse() * mat_temp;
-    Euler[0] = euler_temp[0];
-    Euler[1] = euler_temp[1];
-    Euler[2] = Yaw_Locked;
+    euler_target.x = euler_temp[0];
+    euler_target.y = euler_temp[1];
+    euler_target.z = Yaw_Locked;
 
-    orientation_target = euler2quaternion(Euler[0],Euler[1],Euler[2]);
     thrust_target = (float)(0.05 * (9.8 + PIDVZ.Output));   //目标推力值
 
     return 0;
-}
-
-geometry_msgs::Quaternion euler2quaternion(float roll, float pitch, float yaw)
-{
-    geometry_msgs::Quaternion temp;
-    temp.w = cos(roll/2)*cos(pitch/2)*cos(yaw/2) + sin(roll/2)*sin(pitch/2)*sin(yaw/2);
-    temp.x = sin(roll/2)*cos(pitch/2)*cos(yaw/2) - cos(roll/2)*sin(pitch/2)*sin(yaw/2);
-    temp.y = cos(roll/2)*sin(pitch/2)*cos(yaw/2) + sin(roll/2)*cos(pitch/2)*sin(yaw/2);
-    temp.z = cos(roll/2)*cos(pitch/2)*sin(yaw/2) - sin(roll/2)*sin(pitch/2)*cos(yaw/2);
-    return temp;
-}
-
-void quaternion2euler(float x, float y, float z, float w)
-{
-//    angle[0] = atan2(2.0 * (quat[3] * quat[2] + quat[0] * quat[1]), 1.0 - 2.0 * (quat[1] * quat[1] + quat[2] * quat[2]));
-//    angle[1] = asin(2.0 * (quat[2] * quat[0] - quat[3] * quat[1]));
-//    angle[2] = atan2(2.0 * (quat[3] * quat[0] + quat[1] * quat[2]), -1.0 + 2.0 * (quat[0] * quat[0] + quat[1] * quat[1]));
-//    Yaw_Locked = atan2(2.0 * (w * x + y * z), -1.0 + 2.0 * (x * x + y * y));
-    Yaw_Locked = (float)(atan2(2.0 * (w * z + x * y), +1.0 - 2.0 * (z * z + y * y)));
 }
