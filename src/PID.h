@@ -17,9 +17,11 @@ public:
     float Kd;                          //参数D
 
     float error;                       //误差量 = 实际值 - 期望值
+    float filter_data;                 //待滤波的数据
     float delta_time;                  //时间间隔dt
 
     std::vector <std::pair<float, float> > error_list; //误差表,用作计算微分项 平滑窗口 [2nd data, 1st time]
+    std::vector <std::pair<float, float> > filter_list; //积分平均表
 
     float P_Out;                       //P环节输出
     float I_Out;                       //I环节输出

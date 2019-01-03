@@ -20,6 +20,8 @@ using namespace std;
 
 PID::PID() {
     error_list.push_back(make_pair(0.0f, 0.0f));
+    filter_list.push_back(make_pair(0.0f, 0.0f));
+    filter_data = 0;
     error = 0;
     P_Out = 0;
     I_Out = 0;
@@ -110,12 +112,37 @@ void PID::pid_output(void)
 
 bool PID::filter_input(float data2fliter, float curtime)
 {
+    filter_data = data2fliter;
+    if(filter_list.size() == 1){
 
+    }
+    else{
 
+    }
+
+    if(filter_list.size() < 10){
+        error_list.push_back(make_pair(curtime, filter_data));
+    }
+    else{
+        vector<pair<float, float > > ::iterator fil_iter = filter_list.begin();
+        filter_list.erase(fil_iter);
+        std::pair<float, float > temp_iter(curtime, filter_data);
+        filter_list.push_back(temp_iter);
+    }
     return true;
 }
 
 void PID::filter_output(void)
 {
-    Output_filter = 0;
+    if(filter_list.size() < 10 || start_intergrate_flag == 0){
+        Output_filter = 0;
+    }
+    else{
+        vector<pair<float, float> >::iterator filter_k;
+        float filter_sum = 0;
+        for(filter_k = filter_list.begin(); filter_k != filter_list.end(); ++ filter_k){
+            filter_sum = filter_sum + filter_k->second;
+        }
+        Output_filter = filter_sum/(filter_list.end()->first - filter_list.begin()->first);
+    }
 }
