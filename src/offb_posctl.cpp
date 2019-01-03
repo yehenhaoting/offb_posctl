@@ -40,7 +40,7 @@
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <mavros_msgs/State.h>
 #include <mavros_msgs/AttitudeTarget.h>
-
+#include <sensor_msgs/Imu.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/Float32.h>
 
@@ -52,11 +52,13 @@ mavros_msgs::State current_state;           //无人机当前状态
 geometry_msgs::PoseStamped pos_drone;       //读入的无人机当前位置
 geometry_msgs::TwistStamped vel_drone;      //读入的无人机当前速度
 geometry_msgs::PoseStamped att_drone;       //读入的无人机姿态
-geometry_msgs::Vector3 angle_receive;       //读入的无人机姿态（欧拉角）
+sensor_msgs::Imu acc_drone;         //读入的无人机加速度
 
 geometry_msgs::Quaternion orientation_target;   //发给无人机的姿态指令
 geometry_msgs::Vector3 angle_target;
 geometry_msgs::Vector3 vel_target;
+geometry_msgs::Vector3 angle_receive;       //读入的无人机姿态（欧拉角）
+geometry_msgs::Vector3 acc_receive;         //读入的无人机线加速度
 
 float thrust_target;        //期望推力
 float Yaw_Init;
@@ -79,7 +81,11 @@ void data_log(float cur_time);
 
 void state_cb(const mavros_msgs::State::ConstPtr &msg){
     current_state = *msg;
+}
 
+void acc_cb(const sensor_msgs::Imu::ConstPtr &msg){
+    acc_drone = *msg;
+    acc_receive = acc_drone.linear_acceleration;
 }
 
 void pos_cb(const geometry_msgs::PoseStamped::ConstPtr &msg){
@@ -106,6 +112,7 @@ int main(int argc, char **argv)
 
     // 【订阅】无人机当前状态/位置/速度信息
     ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>("mavros/state", 20, state_cb);
+    ros::Subscriber acceleration_sub = nh.subscribe<sensor_msgs::Imu>("/mavros/imu/data", 20, acc_cb);
     ros::Subscriber position_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 20, pos_cb);
     ros::Subscriber velocity_sub = nh.subscribe<geometry_msgs::TwistStamped>("/mavros/local_position/velocity", 20, vel_cb);
     ros::Subscriber attitude_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 20, att_cb);
@@ -251,12 +258,39 @@ int pix_controller(float cur_time)
     Matrix2f A_yaw;
     A_yaw << sin(Yaw_Locked), cos(Yaw_Locked),
             -cos(Yaw_Locked), sin(Yaw_Locked);
-    Vector2f mat_temp(PIDVX.Output,PIDVY.Output);       //赋值到期望推力和姿态
-    Vector2f euler_temp= 1/9.8 * A_yaw.inverse() * mat_temp;
-    angle_target.x = euler_temp[0];
-    angle_target.y = euler_temp[1];
+    Vector2f acc_d(PIDVX.Output, PIDVY.Output);       //赋值到期望推力和姿态
+    Vector2f euler_temp= 1/9.8 * A_yaw.inverse() * acc_d;
+//    angle_target.x = euler_temp[0];
+//    angle_target.y = euler_temp[1];
 //    angle_target.z = Yaw_Locked + Yaw_Init;
+
+
+    static float xVec[10];
+    static float yVec[10];
+    static float zVec[10];
+    static int indexX, indexY, indexZ;
+    static int count = 0;
+
+
+    //滤波器输入
+    PIDVX.filter_input(PIDVX.Output - acc_receive.x, cur_time);
+    PIDVY.filter_input(PIDVY.Output - acc_receive.y, cur_time);
+    PIDVZ.filter_input(PIDVZ.Output - acc_receive.z, cur_time);
+    //计算滤波器输出
+    PIDVX.filter_output();
+    PIDVX.filter_output();
+    PIDVX.filter_output();
+
+    Vector2f acc_error(PIDVX.Output_filter, PIDVY.Output_filter);
+
+    Vector2f euler_DOB = 1/9.8 * A_yaw.inverse() * acc_error;
+    angle_target.x = euler_temp[0] + euler_DOB[1];
+    angle_target.y = euler_temp[1] + euler_DOB[1];
     angle_target.z = Yaw_Locked;
+
+
+
+
 
     orientation_target = euler2quaternion(angle_target.x, angle_target.y, angle_target.z);
     thrust_target = (float)(0.05 * (9.8 + PIDVZ.Output));   //目标推力值

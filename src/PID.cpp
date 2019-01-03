@@ -25,6 +25,7 @@ PID::PID() {
     I_Out = 0;
     D_Out = 0;
     Output = 0;
+    Output_filter = 0;
     start_intergrate_flag = false;
 }
 
@@ -105,4 +106,16 @@ void PID::pid_output(void)
 
     Output = P_Out + I_Out + D_Out;
     Output = satfunc(Output, Output_max, errThres);
+}
+
+bool PID::filter_input(float data2fliter, float curtime)
+{
+
+
+    return true;
+}
+
+void PID::filter_output(void)
+{
+    Output_filter = 0;
 }

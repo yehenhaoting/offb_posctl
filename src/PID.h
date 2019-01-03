@@ -25,6 +25,7 @@ public:
     float I_Out;                       //I环节输出
     float D_Out;                       //D环节输出
     float Output;                      //输出
+    float Output_filter;               //积分滤波的输出
 
     bool start_intergrate_flag;        //是否积分标志[进入offboard(启控)后,才开始积分]
     float Imax;                        //积分上限
@@ -38,6 +39,10 @@ public:
     //输入 误差 和 当前时间
     bool add_error(float input_error, float curtime);
     void pid_output(void);
+
+    //积分平均滤波器
+    bool filter_input(float data2fliter, float curtime);
+    void filter_output(void);
 
     //饱和函数
     float satfunc(float data, float Max, float Thres);
