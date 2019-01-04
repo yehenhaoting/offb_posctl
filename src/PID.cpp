@@ -125,9 +125,9 @@ bool PID::filter_input(float data2fliter, float curtime)
     return true;
 }
 
-void PID::filter_output(void)
+void PID::filter_output()
 {
-    if(filter_list.size() < 10 || start_intergrate_flag == 0){
+    if(filter_list.size() < 10 || ! start_intergrate_flag){
         Output_filter = 0;
     }
     else{
@@ -136,6 +136,6 @@ void PID::filter_output(void)
         for(filter_k = filter_list.begin(); filter_k != filter_list.end(); ++ filter_k){
             filter_sum = filter_sum + filter_k->second;
         }
-        Output_filter = filter_sum * delta_time/(filter_list.end()->first - filter_list.begin()->first);
+        Output_filter = filter_sum * delta_time/(filter_list.back().first - filter_list.front().first);
     }
 }

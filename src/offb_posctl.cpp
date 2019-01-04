@@ -75,7 +75,7 @@ geometry_msgs::Vector3 quaternion2euler(float x, float y, float z, float w);
 
 float get_ros_time(ros::Time time_begin);                                            //获取ros当前时间
 int pix_controller(float cur_time);                                                  //控制程序
-void data_log(float cur_time);
+void data_log(std::ofstream &logfile, float cur_time);
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>回 调 函 数<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -108,7 +108,7 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "position_control");
     ros::NodeHandle nh;
-    std::ofstream logfile;
+//    std::ofstream logfile;
 
     // 【订阅】无人机当前状态/位置/速度信息
     ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>("mavros/state", 20, state_cb);
@@ -180,16 +180,9 @@ int main(int argc, char **argv)
         float cur_time = get_ros_time(begin_time);  // 当前时间
         pix_controller(cur_time);                   //控制程序
 
-//        if(current_state.mode == "OFFBOARD"){
-//            data_log(cur_time);                     //log输出
-//        }
-        logfile <<cur_time<<","<<param.pos_x <<","<<param.pos_y <<","<<param.pos_z <<","                           //set_pos
-                <<pos_drone.pose.position.x <<","<<pos_drone.pose.position.y <<","<<pos_drone.pose.position.z <<","    //uav_pos
-                <<vel_target.x <<","<<vel_target.y <<","<<vel_target.z <<","                                           //set_vel
-                <<vel_drone.twist.linear.x <<","<<vel_drone.twist.linear.y <<","<<vel_drone.twist.linear.z <<","       //uav_vel
-                <<angle_target.x  <<","<<angle_target.y  <<","<<angle_target.z  <<","                                  //set_att
-                <<angle_receive.x <<","<<angle_receive.y <<","<<angle_receive.z <<","                                  //uav_att
-                <<thrust_target<<std::endl;
+        if(current_state.mode == "OFFBOARD"){
+            data_log(logfile, cur_time);                     //log输出
+        }
 
         std_msgs::Float32 data2pub;
         data2pub.data = thrust_target;
@@ -268,8 +261,8 @@ int pix_controller(float cur_time)
     PIDVZ.filter_input(PIDVZ.Output - acc_receive.z, cur_time);
     //计算滤波器输出
     PIDVX.filter_output();
-    PIDVX.filter_output();
-    PIDVX.filter_output();
+    PIDVY.filter_output();
+    PIDVZ.filter_output();
 
     Vector2f acc_error(PIDVX.Output_filter, PIDVY.Output_filter);
     Vector2f euler_DOB = 1/9.8 * A_yaw.inverse() * acc_error;
@@ -278,7 +271,8 @@ int pix_controller(float cur_time)
     angle_target.z = Yaw_Locked;
 
     orientation_target = euler2quaternion(angle_target.x, angle_target.y, angle_target.z);
-    thrust_target = (float)(0.05 * (9.8 + PIDVZ.Output + PIDVZ.Output_filter));   //目标推力值
+    thrust_target = (float)(0.05 * (9.8 + PIDVZ.Output + 0.1*PIDVZ.Output_filter));   //目标推力值
+
 
     return 0;
 }
@@ -321,7 +315,7 @@ geometry_msgs::Vector3 quaternion2euler(float x, float y, float z, float w)
  * 将进入offboard后的位置&速度&姿态信息记录进文件
  * @param cur_time
  */
-void data_log(float cur_time)
+void data_log(std::ofstream &logfile, float cur_time)
 {
     logfile <<cur_time<<","<<param.pos_x <<","<<param.pos_y <<","<<param.pos_z <<","                           //set_pos
         <<pos_drone.pose.position.x <<","<<pos_drone.pose.position.y <<","<<pos_drone.pose.position.z <<","    //uav_pos
