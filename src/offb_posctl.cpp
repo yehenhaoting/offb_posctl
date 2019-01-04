@@ -180,9 +180,16 @@ int main(int argc, char **argv)
         float cur_time = get_ros_time(begin_time);  // 当前时间
         pix_controller(cur_time);                   //控制程序
 
-        if(current_state.mode == "OFFBOARD"){
-            data_log(cur_time);                     //log输出
-        }
+//        if(current_state.mode == "OFFBOARD"){
+//            data_log(cur_time);                     //log输出
+//        }
+        logfile <<cur_time<<","<<param.pos_x <<","<<param.pos_y <<","<<param.pos_z <<","                           //set_pos
+                <<pos_drone.pose.position.x <<","<<pos_drone.pose.position.y <<","<<pos_drone.pose.position.z <<","    //uav_pos
+                <<vel_target.x <<","<<vel_target.y <<","<<vel_target.z <<","                                           //set_vel
+                <<vel_drone.twist.linear.x <<","<<vel_drone.twist.linear.y <<","<<vel_drone.twist.linear.z <<","       //uav_vel
+                <<angle_target.x  <<","<<angle_target.y  <<","<<angle_target.z  <<","                                  //set_att
+                <<angle_receive.x <<","<<angle_receive.y <<","<<angle_receive.z <<","                                  //uav_att
+                <<thrust_target<<std::endl;
 
         std_msgs::Float32 data2pub;
         data2pub.data = thrust_target;
@@ -253,7 +260,7 @@ int pix_controller(float cur_time)
     Vector2f euler_temp= 1/9.8 * A_yaw.inverse() * acc_d;
 //    angle_target.x = euler_temp[0];
 //    angle_target.y = euler_temp[1];
-//    angle_target.z = Yaw_Locked + Yaw_Init;
+//    angle_target.z = Yaw_Locked;
 
     //滤波器输入
     PIDVX.filter_input(PIDVX.Output - acc_receive.x, cur_time);
@@ -271,7 +278,7 @@ int pix_controller(float cur_time)
     angle_target.z = Yaw_Locked;
 
     orientation_target = euler2quaternion(angle_target.x, angle_target.y, angle_target.z);
-    thrust_target = (float)(0.05 * (9.8 + PIDVZ.Output));   //目标推力值
+    thrust_target = (float)(0.05 * (9.8 + PIDVZ.Output + PIDVZ.Output_filter));   //目标推力值
 
     return 0;
 }

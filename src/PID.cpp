@@ -113,15 +113,8 @@ void PID::pid_output(void)
 bool PID::filter_input(float data2fliter, float curtime)
 {
     filter_data = data2fliter;
-    if(filter_list.size() == 1){
-
-    }
-    else{
-
-    }
-
     if(filter_list.size() < 10){
-        error_list.push_back(make_pair(curtime, filter_data));
+        filter_list.push_back(make_pair(curtime, filter_data));
     }
     else{
         vector<pair<float, float > > ::iterator fil_iter = filter_list.begin();
@@ -143,6 +136,6 @@ void PID::filter_output(void)
         for(filter_k = filter_list.begin(); filter_k != filter_list.end(); ++ filter_k){
             filter_sum = filter_sum + filter_k->second;
         }
-        Output_filter = filter_sum/(filter_list.end()->first - filter_list.begin()->first);
+        Output_filter = filter_sum * delta_time/(filter_list.end()->first - filter_list.begin()->first);
     }
 }
