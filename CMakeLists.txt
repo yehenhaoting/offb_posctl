@@ -206,7 +206,7 @@ add_library(thelib
         src/Parameter.h
         src/Parameter.cpp
         src/PID.h
-        src/PID.cpp)
+        src/PID.cpp src/FILTER.h src/FILTER.cpp)
 
 add_executable(offb_posctl
         src/offb_posctl.cpp)

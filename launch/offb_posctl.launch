@@ -4,6 +4,7 @@
         <arg name="fcu_url" value="udp://:14540@127.0.0.1:14557"/> </include>
 
     <node pkg="offb_posctl" type="uavinstance.py" name="uavinstance" > </node>
+    <node pkg="offb_posctl" type="pos_ref.py" name="pos_ref" > </node>
     <node pkg="offb_posctl" type="offb_posctl" name="offb_posctl" output="screen"> </node>
     <!--<node pkg="rqt_graph" type="rqt_graph" name="rqt_graph"> </node>-->
 

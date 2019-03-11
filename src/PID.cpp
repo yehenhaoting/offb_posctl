@@ -20,14 +20,14 @@ using namespace std;
 
 PID::PID() {
     error_list.push_back(make_pair(0.0f, 0.0f));
-    filter_list.push_back(make_pair(0.0f, 0.0f));
-    filter_data = 0;
+//    filter_list.push_back(make_pair(0.0f, 0.0f));
+//    filter_data = 0;
     error = 0;
     P_Out = 0;
     I_Out = 0;
     D_Out = 0;
     Output = 0;
-    Output_filter = 0;
+//    Output_filter = 0;
     start_intergrate_flag = false;
 }
 
@@ -110,32 +110,33 @@ void PID::pid_output(void)
     Output = satfunc(Output, Output_max, errThres);
 }
 
-bool PID::filter_input(float data2fliter, float curtime)
-{
-    filter_data = data2fliter;
-    if(filter_list.size() < 10){
-        filter_list.push_back(make_pair(curtime, filter_data));
-    }
-    else{
-        vector<pair<float, float > > ::iterator fil_iter = filter_list.begin();
-        filter_list.erase(fil_iter);
-        std::pair<float, float > temp_iter(curtime, filter_data);
-        filter_list.push_back(temp_iter);
-    }
-    return true;
-}
-
-void PID::filter_output()
-{
-    if(filter_list.size() < 10 || ! start_intergrate_flag){
-        Output_filter = 0;
-    }
-    else{
-        vector<pair<float, float> >::iterator filter_k;
-        float filter_sum = 0;
-        for(filter_k = filter_list.begin(); filter_k != filter_list.end(); ++ filter_k){
-            filter_sum = filter_sum + filter_k->second;
-        }
-        Output_filter = filter_sum * delta_time/(filter_list.back().first - filter_list.front().first);
-    }
-}
+//bool PID::filter_input(float data2fliter, float curtime)
+//{
+//    filter_data = data2fliter;
+//    if(filter_list.size() < 10){
+//        filter_list.push_back(make_pair(curtime, filter_data));
+//    }
+//    else{
+//        vector<pair<float, float > > ::iterator fil_iter = filter_list.begin();
+//        filter_list.erase(fil_iter);
+//        std::pair<float, float > temp_iter(curtime, filter_data);
+//        filter_list.push_back(temp_iter);
+//    }
+//    return true;
+//}
+//
+//void PID::filter_output()
+//{
+//    if(filter_list.size() < 10 || ! start_intergrate_flag){
+//        Output_filter = 0;
+//    }
+//    else{
+//        vector<pair<float, float> >::iterator filter_k;
+//        float filter_sum = 0;
+//        for(filter_k = filter_list.begin(); filter_k != filter_list.end(); ++ filter_k){
+//            filter_sum = filter_sum + filter_k->second;
+//        }
+//        Output_filter = filter_sum * delta_time/(filter_list.back().first - filter_list.front().first);
+//
+//    }
+//}

@@ -17,17 +17,17 @@ public:
     float Kd;                          //参数D
 
     float error;                       //误差量 = 实际值 - 期望值
-    float filter_data;                 //待滤波的数据
+//    float filter_data;                 //待滤波的数据
     float delta_time;                  //时间间隔dt
 
     std::vector <std::pair<float, float> > error_list; //误差表,用作计算微分项 平滑窗口 [2nd data, 1st time]
-    std::vector <std::pair<float, float> > filter_list; //积分平均表
+//    std::vector <std::pair<float, float> > filter_list; //积分平均表
 
     float P_Out;                       //P环节输出
     float I_Out;                       //I环节输出
     float D_Out;                       //D环节输出
     float Output;                      //输出
-    float Output_filter;               //积分滤波的输出
+//    float Output_filter;               //积分滤波的输出
 
     bool start_intergrate_flag;        //是否积分标志[进入offboard(启控)后,才开始积分]
     float Imax;                        //积分上限
@@ -42,9 +42,9 @@ public:
     bool add_error(float input_error, float curtime);
     void pid_output(void);
 
-    //积分平均滤波器
-    bool filter_input(float data2fliter, float curtime);
-    void filter_output(void);
+//    //积分平均滤波器
+//    bool filter_input(float data2fliter, float curtime);
+//    void filter_output(void);
 
     //饱和函数
     float satfunc(float data, float Max, float Thres);
