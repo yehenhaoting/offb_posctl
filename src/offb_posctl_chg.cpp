@@ -54,6 +54,9 @@ geometry_msgs::TwistStamped vel_drone;      //读入的无人机当前速度
 geometry_msgs::PoseStamped att_drone;       //读入的无人机姿态
 geometry_msgs::Vector3 angle_receive;       //读入的无人机姿态（欧拉角）
 
+std::vector<geometry_msgs::PoseStamped> pose_stack;
+const int pose_stack_max_size = 10;
+
 geometry_msgs::Quaternion orientation_target;   //发给无人机的姿态指令
 geometry_msgs::Vector3 angle_target;
 geometry_msgs::Vector3 vel_target;
@@ -64,6 +67,14 @@ float Yaw_Locked = 0;           //锁定的偏航角(一般锁定为0)
 PID PIDVX, PIDVY, PIDVZ;    //声明PID类
 Parameter param;
 std::ofstream logfile;
+
+geometry_msgs::Vector3 target_p;
+geometry_msgs::Vector3 target_v;
+
+Eigen::MatrixXd traj_p;
+Eigen::MatrixXd traj_v; 
+Eigen::MatrixXd traj_a; 
+Eigen::VectorXd traj_t;
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>声 明 函 数<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -84,6 +95,16 @@ void state_cb(const mavros_msgs::State::ConstPtr &msg){
 
 void pos_cb(const geometry_msgs::PoseStamped::ConstPtr &msg){
     pos_drone = *msg;
+    if(pose_stack.size() <= pose_stack_max_size)
+    {
+        pose_stack.push_back(pos_drone);
+    }
+    else  //delete the first one and add the current position
+    {
+        std::vector<geometry_msgs::PoseStamped>::iterator iter=pose_stack.begin(); 
+        pose_stack.erase(iter);
+        pose_stack.push_back(pos_drone);
+    }
 }
 
 void vel_cb(const geometry_msgs::TwistStamped::ConstPtr &msg){
@@ -97,10 +118,126 @@ void att_cb(const geometry_msgs::PoseStamped::ConstPtr &msg){
     angle_receive = quaternion2euler(att_drone.pose.orientation.x, att_drone.pose.orientation.y, att_drone.pose.orientation.z, att_drone.pose.orientation.w);
 }
 
+
+void motion_primitives(Eigen::Vector3d p0, Eigen::Vector3d v0, Eigen::Vector3d a0, double yaw0, Eigen::Vector3d goal, double d, double v_max, double delt_t,
+                       Eigen::MatrixXd &p, Eigen::MatrixXd &v, Eigen::MatrixXd &a, Eigen::VectorXd &t)
+{
+    // double delt_x = d*cos(theta_v)*cos(theta_h+yaw0);
+    // double delt_y = d*cos(theta_v)*sin(theta_h+yaw0);
+    // double delt_z = d*sin(theta_v);
+
+    Eigen::Vector3d pf = goal;
+    Eigen::Vector3d vf;
+    vf << 0.0, 0.0, 0.0; // % Note: 0 maybe better, for the p curve wont go down to meet the vf
+
+    Eigen::Vector3d af = Eigen::Vector3d::Zero();
+    
+    double j_limit = 4;
+    double a_limit = 3;
+    double v_limit = 0.8;
+
+    double T1 = fabs(af(0)-a0(0))/j_limit > fabs(af(1)-a0(1))/j_limit ? fabs(af(0)-a0(0))/j_limit : fabs(af(1)-a0(1))/j_limit;
+    T1 = T1 > fabs(af(2)-a0(2))/j_limit ? T1 : fabs(af(2)-a0(2))/j_limit;
+    double T2 = fabs(vf(0)-v0(0))/a_limit > fabs(vf(1)-v0(1))/a_limit ? fabs(vf(0)-v0(0))/a_limit : fabs(vf(1)-v0(1))/a_limit;
+    T2 = T2 > fabs(vf(2)-v0(2))/a_limit ? T2 : fabs(vf(2)-v0(2))/a_limit;
+    double T3 = fabs(pf(0)-p0(0))/v_limit > fabs(pf(1)-p0(1))/v_limit ? fabs(pf(0)-p0(0))/v_limit : fabs(pf(1)-p0(1))/v_limit;
+    T3 = T3 > fabs(pf(2)-p0(2))/v_limit ? T3 : fabs(pf(2)-p0(2))/v_limit;
+
+    double T = T1 > T2 ? T1 : T2;
+    T = T > T3 ? T : T3;
+    T = T < 0.5 ? 0.5 : T;
+
+    int times = T / delt_t;
+
+    p = Eigen::MatrixXd::Zero(times, 3);
+    v = Eigen::MatrixXd::Zero(times, 3);
+    a = Eigen::MatrixXd::Zero(times, 3);
+    t = Eigen::VectorXd::Zero(times);
+
+    // % calculate optimal jerk controls by Mark W. Miller
+    for(int ii=0; ii<3; ii++)
+    {
+        double delt_a = af(ii) - a0(ii);
+        double delt_v = vf(ii) - v0(ii) - a0(ii)*T;
+        double delt_p = pf(ii) - p0(ii) - v0(ii)*T - 0.5*a0(ii)*T*T;
+
+        //%  if vf is not free
+        double alpha = delt_a*60/pow(T,3) - delt_v*360/pow(T,4) + delt_p*720/pow(T,5);
+        double beta = -delt_a*24/pow(T,2) + delt_v*168/pow(T,3) - delt_p*360/pow(T,4);
+        double gamma = delt_a*3/T - delt_v*24/pow(T,2) + delt_p*60/pow(T,3);
+
+        for(int jj=0; jj<times; jj++)
+        {
+            double tt = (jj + 1)*delt_t;
+            t(jj) = tt;
+            p(jj,ii) = alpha/120*pow(tt,5) + beta/24*pow(tt,4) + gamma/6*pow(tt,3) + a0(ii)/2*pow(tt,2) + v0(ii)*tt + p0(ii);
+            v(jj,ii) = alpha/24*pow(tt,4) + beta/6*pow(tt,3) + gamma/2*pow(tt,2) + a0(ii)*tt + v0(ii);
+            a(jj,ii) = alpha/6*pow(tt,3) + beta/2*pow(tt,2) + gamma*tt + a0(ii);
+        }
+    }
+}
+
+
+void trajectoryTimerCallback(const ros::TimerEvent& event)
+{
+    const int wait_times = 160;
+    static int calculation_times = 0;
+    static int send_times = 0;
+    static double rise_z_delt = param.pos_z / (double)wait_times;
+    
+    if(current_state.mode != "OFFBOARD"){
+        return;
+    }
+
+
+    if(calculation_times < wait_times)
+    {
+        calculation_times ++;
+        target_p.x = param.pos_x;
+        target_p.y = param.pos_y;
+        target_p.z += rise_z_delt;
+
+        target_v.x = 0.0;
+        target_v.y = 0.0;
+        target_v.z = 0.0;
+    }
+    else if(calculation_times == wait_times) // Calculate once
+    {
+        Eigen::Vector3d p0;
+        p0 << pos_drone.pose.position.x, pos_drone.pose.position.y, pos_drone.pose.position.z;
+        Eigen::Vector3d v0;
+        v0 << vel_drone.twist.linear.x, vel_drone.twist.linear.y, vel_drone.twist.linear.z;
+        Eigen::Vector3d a0;
+        a0 << 0.0, 0.0, 0.0;
+
+        Eigen::Vector3d pT;
+        pT << 1.0, 1.0, 1.5;
+
+        motion_primitives(p0, v0, a0, Yaw_Locked, pT, 1.4, 1.0, 0.05, traj_p, traj_v, traj_a, traj_t);
+        calculation_times ++;
+    }
+    else //send from the calculated trajectory
+    {
+        send_times ++;
+
+        if(send_times < traj_t.rows())
+        {
+            target_p.x = traj_p(send_times, 0);
+            target_p.y = traj_p(send_times, 1);
+            target_p.z = traj_p(send_times, 2);
+
+            target_v.x = traj_v(send_times, 0);
+            target_v.y = traj_v(send_times, 1);
+            target_v.z = traj_v(send_times, 2);
+        }
+    }
+}
+
+
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>主 函 数<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "position_control");
+    ros::init(argc, argv, "position_control_chg");
     ros::NodeHandle nh;
     std::ofstream logfile;
 
@@ -129,7 +266,6 @@ int main(int argc, char **argv)
         return 0;
     }
 
-
     // 设置速度环PID参数 比例参数 积分参数 微分参数
     PIDVX.setPID(param.vx_p, param.vx_i, param.vx_d);
     PIDVY.setPID(param.vy_p, param.vy_i, param.vy_d);
@@ -148,22 +284,33 @@ int main(int argc, char **argv)
     }
     ROS_INFO("Connected!!");
 
-    // while(ros::ok() && !hasGotAtt)
-    // {
-    //     ros::Duration(1).sleep();
-    //     ros::spinOnce();
-    //     ROS_INFO_STREAM("waitting for att...");
-    // }
-    // float x = att_drone.pose.orientation.x;
-    // float y = att_drone.pose.orientation.y;
-    // float z = att_drone.pose.orientation.z;
-    // float w = att_drone.pose.orientation.w;
-    // angle_receive = quaternion2euler(x, y, z, w);
-    // Yaw_Init = angle_receive.z;
-    // ROS_INFO_STREAM("Got Yaw_Init: " << Yaw_Init);
+    while(ros::ok() && !hasGotAtt)
+    {
+        ros::Duration(1).sleep();
+        ros::spinOnce();
+        ROS_INFO_STREAM("waitting for att...");
+    }
+    float x = att_drone.pose.orientation.x;
+    float y = att_drone.pose.orientation.y;
+    float z = att_drone.pose.orientation.z;
+    float w = att_drone.pose.orientation.w;
+    angle_receive = quaternion2euler(x, y, z, w);
+    Yaw_Init = angle_receive.z;
+    ROS_INFO_STREAM("Got Yaw_Init: " << Yaw_Init);
 
     // 记录启控时间
     ros::Time begin_time = ros::Time::now();
+
+    // CHG trajectory
+    target_p.x = param.pos_x;
+    target_p.y = param.pos_y;
+    target_p.z = 0.0;
+
+    target_v.x = 0.0;
+    target_v.y = 0.0;
+    target_v.z = 0.0;
+
+    ros::Timer timer = nh.createTimer(ros::Duration(0.05), trajectoryTimerCallback);
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>主  循  环<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     while(ros::ok())
@@ -213,14 +360,15 @@ int pix_controller(float cur_time)
 {
 //位 置 环
     //计算误差
-    float error_x = param.pos_x - pos_drone.pose.position.x;
-    float error_y = param.pos_y - pos_drone.pose.position.y;
-    float error_z = param.pos_z - pos_drone.pose.position.z;
-    std::cout << "error: x：" << error_x << "\ty：" << error_y << "\tz：" << error_z << std::endl;
+    float error_x = target_p.x - pos_drone.pose.position.x;
+    float error_y = target_p.y - pos_drone.pose.position.y;
+    float error_z = target_p.z - pos_drone.pose.position.z;
+    std::cout << "target_p: x：" << target_p.x << "\ty：" << target_p.y << "\tz：" << target_p.z << std::endl;
+    // std::cout << "error: x：" << error_x << "\ty：" << error_y << "\tz：" << error_z << std::endl;
     //计算指定速度误差
-    float vel_xd = param.x_p * error_x;
-    float vel_yd = param.y_p * error_y;
-    float vel_zd = param.z_p * error_z;
+    float vel_xd = param.x_p * error_x; // + target_v.x;  //chg
+    float vel_yd = param.y_p * error_y; // + target_v.y;  //chg
+    float vel_zd = param.z_p * error_z; // + target_v.z;  //chg
     vel_target.x = vel_xd;
     vel_target.y = vel_yd;
     vel_target.z = vel_zd;
@@ -255,10 +403,11 @@ int pix_controller(float cur_time)
     Vector2f euler_temp= 1/9.8 * A_yaw.inverse() * mat_temp;
     angle_target.x = euler_temp[0];
     angle_target.y = euler_temp[1];
-    // angle_target.z = Yaw_Locked + Yaw_Init;
-    angle_target.z = Yaw_Locked - 1.35;
+    angle_target.z = Yaw_Locked + Yaw_Init;
+    // angle_target.z = Yaw_Locked - 0.95;
+
     orientation_target = euler2quaternion(angle_target.x, angle_target.y, angle_target.z);
-    thrust_target = (float)(-0.0 + 0.05 * (9.8 + PIDVZ.Output));   //目标推力值
+    thrust_target = (float)(0.05 * (9.8 + PIDVZ.Output));   //目标推力值
 
     return 0;
 }

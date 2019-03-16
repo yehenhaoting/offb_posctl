@@ -52,11 +52,5 @@ add_executable(offb_posctl_chg_tracking
         src/offb_posctl_chg_tracking.cpp)
 target_link_libraries(offb_posctl_chg_tracking ${catkin_LIBRARIES} thelib)
 
-add_executable(offb_posctl_chg_viconRot
-        src/offb_posctl_chg_viconRot.cpp)
-target_link_libraries(offb_posctl_chg_viconRot ${catkin_LIBRARIES} thelib2)
-
-
-
 #add_dependencies(offb_posctl offb_posctl_generate_messages_cpp)
 

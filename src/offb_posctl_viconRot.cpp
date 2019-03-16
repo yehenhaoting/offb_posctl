@@ -26,7 +26,7 @@
 #include <Eigen/Core> 
 
 #include <ros/ros.h>
-#include "Parameter.h"
+#include "Parameter_viconRot.h"
 #include <PID.h>
 
 
@@ -40,6 +40,7 @@
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <mavros_msgs/State.h>
 #include <mavros_msgs/AttitudeTarget.h>
+#include <sensor_msgs/Imu.h>
 
 #include <std_msgs/Bool.h>
 #include <std_msgs/Float32.h>
@@ -49,9 +50,12 @@ using namespace Eigen;
 // //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>全 局 变 量<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 mavros_msgs::State current_state;           //无人机当前状态
+sensor_msgs::Imu att_drone;                 //读入的无人机姿态
 geometry_msgs::PoseStamped pos_drone;       //读入的无人机当前位置
+geometry_msgs::PoseStamped pos_drone_last;       //读入的无人机last位置
+
 geometry_msgs::TwistStamped vel_drone;      //读入的无人机当前速度
-geometry_msgs::PoseStamped att_drone;       //读入的无人机姿态
+// geometry_msgs::PoseStamped att_drone;       //读入的无人机姿态
 geometry_msgs::Vector3 angle_receive;       //读入的无人机姿态（欧拉角）
 
 geometry_msgs::Quaternion orientation_target;   //发给无人机的姿态指令
@@ -59,11 +63,13 @@ geometry_msgs::Vector3 angle_target;
 geometry_msgs::Vector3 vel_target;
 
 float thrust_target;        //期望推力
-float Yaw_Init;
+float Yaw_Init, angel_init, angel_vicon, angle_deviation;
 float Yaw_Locked = 0;           //锁定的偏航角(一般锁定为0)
-PID PIDVX, PIDVY, PIDVZ;    //声明PID类
-Parameter param;
+PID PIDX, PIDY, PIDZ, PIDVX, PIDVY, PIDVZ;    //声明PID类
+Parameter_viconRot param;
 std::ofstream logfile;
+
+const float MAX_POSITION_MEASURE_ERROR = 0.2;
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>声 明 函 数<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -82,8 +88,25 @@ void state_cb(const mavros_msgs::State::ConstPtr &msg){
 
 }
 
+bool pose_initialized = false;
 void pos_cb(const geometry_msgs::PoseStamped::ConstPtr &msg){
-    pos_drone = *msg;
+    
+    if(!pose_initialized)
+    {
+        pose_initialized = true;
+        pos_drone = *msg;
+        pos_drone_last = pos_drone;
+        return;
+    }
+
+    if(fabs(pos_drone.pose.position.x - pos_drone_last.pose.position.x) < MAX_POSITION_MEASURE_ERROR &&
+        fabs(pos_drone.pose.position.y - pos_drone_last.pose.position.y) < MAX_POSITION_MEASURE_ERROR &&
+        fabs(pos_drone.pose.position.z - pos_drone_last.pose.position.z) < MAX_POSITION_MEASURE_ERROR)
+    {
+        pos_drone = *msg;
+        pos_drone_last = pos_drone;
+    }
+    
 }
 
 void vel_cb(const geometry_msgs::TwistStamped::ConstPtr &msg){
@@ -91,10 +114,10 @@ void vel_cb(const geometry_msgs::TwistStamped::ConstPtr &msg){
 }
 
 bool hasGotAtt = false;
-void att_cb(const geometry_msgs::PoseStamped::ConstPtr &msg){
+void att_cb(const sensor_msgs::Imu::ConstPtr &msg){
     att_drone = *msg;
     hasGotAtt = true;
-    angle_receive = quaternion2euler(att_drone.pose.orientation.x, att_drone.pose.orientation.y, att_drone.pose.orientation.z, att_drone.pose.orientation.w);
+    angle_receive = quaternion2euler(att_drone.orientation.x, att_drone.orientation.y, att_drone.orientation.z, att_drone.orientation.w);
 }
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>主 函 数<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -102,13 +125,12 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "position_control");
     ros::NodeHandle nh;
-    std::ofstream logfile;
 
     // 【订阅】无人机当前状态/位置/速度信息
     ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>("mavros/state", 20, state_cb);
     ros::Subscriber position_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mocap/pose", 20, pos_cb);
     ros::Subscriber velocity_sub = nh.subscribe<geometry_msgs::TwistStamped>("/mocap/vel", 20, vel_cb);
-    ros::Subscriber attitude_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 20, att_cb);
+    ros::Subscriber attitude_sub = nh.subscribe<sensor_msgs::Imu>("/mavros/imu/data", 20, att_cb);
     // 【发布】飞机姿态/拉力信息 坐标系:NED系
     ros::Publisher thrust_pub = nh.advertise<std_msgs::Float32>("/cmd/thrust", 20);
     ros::Publisher orientataion_pub = nh.advertise<geometry_msgs::Quaternion>("/cmd/orientation", 20);
@@ -116,7 +138,7 @@ int main(int argc, char **argv)
     ros::Rate rate(20.0);
 
     // 读取PID参数
-    std::string paraadr("/home/ubuntu/catkin_mz/src/offb_posctl/src/paramlss150");
+    std::string paraadr("/home/ubuntu/catkin_mz/src/offb_posctl/src/param150_viconRot");
     if (param.readParam(paraadr.c_str()) == 0){
         std::cout<<"read config file error!"<<std::endl;
         return 0;
@@ -128,6 +150,20 @@ int main(int argc, char **argv)
         std::cout<<"log to file error!"<<std::endl;
         return 0;
     }
+
+
+    // 设置POSITION环PID参数 比例参数 积分参数 微分参数
+    PIDX.setPID(param.x_p, param.x_i, param.x_d);
+    PIDY.setPID(param.y_p, param.y_i, param.y_d);
+    PIDZ.setPID(param.z_p, param.z_i, param.z_d);
+    std::cout << "param:x_p" << param.x_p << "param:x_i" << param.x_i <<std::endl;
+
+
+    // 设置POSITION环积分上限 控制量最大值 误差死区
+    PIDX.set_sat(2, 3, 0.01);
+    PIDY.set_sat(2, 3, 0.01);
+    PIDZ.set_sat(2, 5, 0.01);
+
 
 
     // 设置速度环PID参数 比例参数 积分参数 微分参数
@@ -148,19 +184,21 @@ int main(int argc, char **argv)
     }
     ROS_INFO("Connected!!");
 
-    // while(ros::ok() && !hasGotAtt)
-    // {
-    //     ros::Duration(1).sleep();
-    //     ros::spinOnce();
-    //     ROS_INFO_STREAM("waitting for att...");
-    // }
-    // float x = att_drone.pose.orientation.x;
-    // float y = att_drone.pose.orientation.y;
-    // float z = att_drone.pose.orientation.z;
-    // float w = att_drone.pose.orientation.w;
-    // angle_receive = quaternion2euler(x, y, z, w);
-    // Yaw_Init = angle_receive.z;
-    // ROS_INFO_STREAM("Got Yaw_Init: " << Yaw_Init);
+    while(ros::ok() && !hasGotAtt)
+    {
+        ros::Duration(1).sleep();
+        ros::spinOnce();
+        ROS_INFO_STREAM("waitting for att...");
+    }
+    float x = att_drone.orientation.x;
+    float y = att_drone.orientation.y;
+    float z = att_drone.orientation.z;
+    float w = att_drone.orientation.w;
+    angle_receive = quaternion2euler(x, y, z, w);
+    Yaw_Init = angle_receive.z;
+    ROS_INFO_STREAM("Got Yaw_Init: " << Yaw_Init);
+
+    angel_init = pos_drone.pose.orientation.y;
 
     // 记录启控时间
     ros::Time begin_time = ros::Time::now();
@@ -176,15 +214,6 @@ int main(int argc, char **argv)
         if(current_state.mode == "OFFBOARD"){
             data_log(cur_time);                     //log输出
         }
-        logfile <<cur_time<<","<<param.pos_x <<","<<param.pos_y <<","<<param.pos_z <<","                           //set_pos
-                <<pos_drone.pose.position.x <<","<<pos_drone.pose.position.y <<","<<pos_drone.pose.position.z <<","    //uav_pos
-                <<vel_target.x <<","<<vel_target.y <<","<<vel_target.z <<","                                           //set_vel
-                <<vel_drone.twist.linear.x <<","<<vel_drone.twist.linear.y <<","<<vel_drone.twist.linear.z <<","       //uav_vel
-                <<angle_target.x  <<","<<angle_target.y  <<","<<angle_target.z  <<","                                  //set_att
-                <<angle_receive.x <<","<<angle_receive.y <<","<<angle_receive.z <<","                                  //uav_att
-                <<thrust_target<<std::endl;
-
-
 
         std_msgs::Float32 data2pub;
         data2pub.data = thrust_target;
@@ -212,18 +241,50 @@ float get_ros_time(ros::Time time_begin)
 int pix_controller(float cur_time)
 {
 //位 置 环
+    //积分标志位.未进入OFFBOARD时,不累积积分项;进入OFFBOARD时,开始积分.
+    PIDX.start_intergrate_flag = true;
+    PIDY.start_intergrate_flag = true;
+    PIDZ.start_intergrate_flag = true;
+    if(current_state.mode != "OFFBOARD"){
+        PIDX.start_intergrate_flag = false;
+        PIDY.start_intergrate_flag = false;
+        PIDZ.start_intergrate_flag = false;
+    }
     //计算误差
     float error_x = param.pos_x - pos_drone.pose.position.x;
     float error_y = param.pos_y - pos_drone.pose.position.y;
     float error_z = param.pos_z - pos_drone.pose.position.z;
     std::cout << "error: x：" << error_x << "\ty：" << error_y << "\tz：" << error_z << std::endl;
+
+    //传递误差
+    PIDX.add_error(error_x, cur_time);
+    PIDY.add_error(error_y, cur_time);
+    PIDZ.add_error(error_z, cur_time);
+    //计算输出
+    PIDX.pid_output();
+    PIDY.pid_output();
+    PIDZ.pid_output();
     //计算指定速度误差
-    float vel_xd = param.x_p * error_x;
-    float vel_yd = param.y_p * error_y;
-    float vel_zd = param.z_p * error_z;
+    float vel_xd = PIDX.Output;
+    float vel_yd = PIDY.Output;
+    float vel_zd = PIDZ.Output;
     vel_target.x = vel_xd;
     vel_target.y = vel_yd;
     vel_target.z = vel_zd;
+
+
+    // //计算误差
+    // float error_x = param.pos_x - pos_drone.pose.position.x;
+    // float error_y = param.pos_y - pos_drone.pose.position.y;
+    // float error_z = param.pos_z - pos_drone.pose.position.z;
+    // std::cout << "error: x：" << error_x << "\ty：" << error_y << "\tz：" << error_z << std::endl;
+    // //计算指定速度误差
+    // float vel_xd = param.x_p * error_x;
+    // float vel_yd = param.y_p * error_y;
+    // float vel_zd = param.z_p * error_z;
+    // vel_target.x = vel_xd;
+    // vel_target.y = vel_yd;
+    // vel_target.z = vel_zd;
 
 //速 度 环
     //积分标志位.未进入OFFBOARD时,不累积积分项;进入OFFBOARD时,开始积分.
@@ -256,7 +317,19 @@ int pix_controller(float cur_time)
     angle_target.x = euler_temp[0];
     angle_target.y = euler_temp[1];
     // angle_target.z = Yaw_Locked + Yaw_Init;
-    angle_target.z = Yaw_Locked - 1.35;
+
+
+    angel_vicon = pos_drone.pose.orientation.y;
+    std::cout << "Euler_vicon: yaw：" << angel_vicon * 60 << std::endl;
+    // std::cout << "Euler_vicon: roll：" << pos_drone.pose.orientation.x << "\tpitch：" << pos_drone.pose.orientation.y << "\tyaw：" << pos_drone.pose.orientation.z << std::endl;
+    angle_deviation = angel_vicon - angel_init;
+    if (fabs(angle_deviation) < 0.05)
+    {
+        angle_deviation = 0;
+    }
+
+
+    angle_target.z = Yaw_Init + Yaw_Locked + angle_deviation;
     orientation_target = euler2quaternion(angle_target.x, angle_target.y, angle_target.z);
     thrust_target = (float)(-0.0 + 0.05 * (9.8 + PIDVZ.Output));   //目标推力值
 

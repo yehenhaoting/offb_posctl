@@ -4,7 +4,7 @@
         <arg name="fcu_url" value="/dev/ttyUSB0:57600"/> </include>
 
     <node pkg="offb_posctl" type="uavinstance.py" name="uavinstance" > </node>
-    <node pkg="offb_posctl" type="offb_posctl" name="offb_posctl" output="screen"> </node>
+    <node pkg="offb_posctl" type="offb_posctl_vicon_Rot" name="offb_posctl_vicon_Rot" output="screen"> </node>
     <!--<node pkg="rqt_graph" type="rqt_graph" name="rqt_graph"> </node>-->
 
 </launch>

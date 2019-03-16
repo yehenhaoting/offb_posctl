@@ -86,8 +86,8 @@ class UAV:
 
             if((self.current_state.mode != "OFFBOARD") and (rospy.get_rostime().secs-last_request > 2)):
                 rospy.loginfo(self.current_state.mode)
-                if((set_mode_client.call(offb_set_mode) == True) and (offb_set_mode.response.success == True)):
-                    rospy.loginfo(self.uav_id+" offboard enabled")
+                # if((set_mode_client.call(offb_set_mode) == True) and (offb_set_mode.response.success == True)):
+                #     rospy.loginfo(self.uav_id+" offboard enabled")
                 last_request = rospy.get_rostime().secs
            
             else:
