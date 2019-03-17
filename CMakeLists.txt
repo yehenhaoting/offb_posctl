@@ -35,18 +35,25 @@ add_library(thelib2
         src/PID.h
         src/PID.cpp)
 
+#######----------mz
 add_executable(offb_posctl
         src/offb_posctl.cpp)
 target_link_libraries(offb_posctl ${catkin_LIBRARIES} thelib)
-
-add_executable(offb_posctl_chg
-        src/offb_posctl_chg.cpp)
-target_link_libraries(offb_posctl_chg ${catkin_LIBRARIES} thelib)
 
 add_executable(offb_posctl_viconRot
         src/offb_posctl_viconRot.cpp)
 target_link_libraries(offb_posctl_viconRot ${catkin_LIBRARIES} thelib2)
 
+add_executable(offb_posctl300_viconRot
+        src/offb_posctl300_viconRot.cpp)
+target_link_libraries(offb_posctl300_viconRot ${catkin_LIBRARIES} thelib2)
+
+
+
+######### ---------chg
+add_executable(offb_posctl_chg
+        src/offb_posctl_chg.cpp)
+target_link_libraries(offb_posctl_chg ${catkin_LIBRARIES} thelib)
 
 add_executable(offb_posctl_chg_tracking
         src/offb_posctl_chg_tracking.cpp)

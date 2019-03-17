@@ -1,0 +1,10 @@
+<launch>
+
+    <include file="$(find mavros)/launch/px4.launch" >
+        <arg name="fcu_url" value="/dev/ttyUSB0:57600"/> </include>
+
+    <node pkg="offb_posctl" type="uavinstance.py" name="uavinstance" > </node>
+    <node pkg="offb_posctl" type="offb_posctl300_viconRot" name="offb_posctl300_viconRot" output="screen"> </node>
+    <node pkg="rqt_plot" type="rqt_plot" name="rqt_plot"> </node>
+
+</launch>
