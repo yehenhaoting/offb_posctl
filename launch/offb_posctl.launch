@@ -6,6 +6,6 @@
     <node pkg="offb_posctl" type="uavinstance.py" name="uavinstance" > </node>
     <node pkg="offb_posctl" type="pos_ref.py" name="pos_ref" > </node>
     <node pkg="offb_posctl" type="offb_posctl" name="offb_posctl" output="screen"> </node>
-    <!--<node pkg="rqt_graph" type="rqt_graph" name="rqt_graph"> </node>-->
+    <node pkg="rqt_plot" type="rqt_plot" name="rqt_plot"> </node>
 
 </launch>

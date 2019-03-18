@@ -203,10 +203,12 @@ include_directories(
         src/)
 
 add_library(thelib
-        src/Parameter.h
-        src/Parameter.cpp
         src/PID.h
-        src/PID.cpp src/FILTER.h src/FILTER.cpp)
+        src/PID.cpp
+        src/FILTER.h
+        src/FILTER.cpp
+        src/Parameter_viconRot.h
+        src/Parameter_viconRot.cpp)
 
 add_executable(offb_posctl
         src/offb_posctl.cpp)

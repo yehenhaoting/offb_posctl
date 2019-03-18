@@ -21,7 +21,7 @@ public:
     float filter_data;                 //待滤波的数据
     float Output_filter;               //积分滤波的输出
     float delta_time;                  //时间间隔dt
-    bool start_intergrate_flag;        //是否积分标志[进入offboard(启控)后,才开始积分]
+    bool start_filter_flag;        //是否积分标志[进入offboard(启控)后,才开始积分]
 
 
 

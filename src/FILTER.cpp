@@ -15,7 +15,7 @@ FILTER::FILTER(){
     filter_list.push_back(make_pair(0.0f, 0.0f));
     filter_data = 0;
     Output_filter = 0;
-    start_intergrate_flag = false;
+    start_filter_flag = false;
 
 }
 
@@ -56,7 +56,7 @@ bool FILTER::filter_input(float data2fliter, float curtime)
 
 void FILTER::filter_output()
 {
-    if(filter_list.size() < 10 || ! start_intergrate_flag){
+    if(filter_list.size() < 10 || ! start_filter_flag){
         Output_filter = 0;
     }
     else{
