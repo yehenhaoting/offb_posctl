@@ -26,9 +26,9 @@
 #include <Eigen/Core> 
 
 #include <ros/ros.h>
-#include "Parameter_viconRot.h"
-#include <PID.h>
-#include <FILTER.h>
+#include "PARAM.h"
+#include "PID.h"
+#include "FILTER.h"
 
 
 //topic
@@ -82,7 +82,7 @@ float alpha = 0.0;
 
 PID PIDX, PIDY, PIDZ, PIDVX, PIDVY, PIDVZ;    //声明PID类
 FILTER FilterX, FilterY;
-Parameter_viconRot param;
+PARAM param;
 std::ofstream logfile;
 std::ofstream debugfile;
 
@@ -171,14 +171,11 @@ int main(int argc, char **argv)
 
 
 
-
-
     // 频率 [20Hz]
     ros::Rate rate(20.0);
 
     // 读取PID参数
-    std::string paraadr("/home/zm/catkin_ws/src/offb_posctl/param/param_gazebo");
-    if (param.readParam(paraadr.c_str()) == 0){
+    if (! param.readParam()){
         std::cout<<"read config file error!"<<std::endl;
         return 0;
     }
@@ -200,7 +197,6 @@ int main(int argc, char **argv)
     PIDX.setPID(param.x_p, param.x_i, param.x_d);
     PIDY.setPID(param.y_p, param.y_i, param.y_d);
     PIDZ.setPID(param.z_p, param.z_i, param.z_d);
-//    std::cout << "param:x_p" << param.x_p << "param:x_i" << param.x_i <<std::endl;
 
     // 设置位置环积分上限 控制量最大值 误差死区
     PIDX.set_sat(0.3, 3, 0.01);

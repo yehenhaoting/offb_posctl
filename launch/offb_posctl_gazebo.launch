@@ -3,12 +3,12 @@
     <include file="$(find mavros)/launch/px4.launch" >
         <arg name="fcu_url" value="udp://:14540@127.0.0.1:14557"/> </include>
 
-    <node pkg="offb_enable" type="offb_enable" name="offb_enable" > </node>
+    <node pkg="offb_enable" type="offb_enable_simulation" name="offb_enable_simulation" > </node>
 
     <node pkg="offb_posctl" type="pos_ref.py" name="pos_ref" > </node>
     <node pkg="offb_posctl" type="offb_posctl" name="offb_posctl" output="screen">
             <rosparam
-            file="$(find offb_posctl)/param/param_vicon.yaml" command="load"
+            file="$(find offb_posctl)/param/param.yaml" command="load"
             />
     </node>
     <!--<node pkg="rqt_plot" type="rqt_plot" name="rqt_plot"> </node>-->

@@ -1,13 +1,15 @@
 //
-// Created by zm on 19-3-18.
+// Created by zm on 19-4-14.
 //
 
-#ifndef OFFB_POSCTL_PARAMETER_VICONROT_H
-#define OFFB_POSCTL_PARAMETER_VICONROT_H
+#ifndef OFFB_POSCTL_PARAM_H
+#define OFFB_POSCTL_PARAM_H
 
-class Parameter_viconRot {
+
+class PARAM {
 
 public:
+
     float pos_x;
     float pos_y;
     float pos_z;
@@ -37,8 +39,9 @@ public:
     float vz_d;
 
 
-    bool readParam(const char* addr);
+    bool readParam();
 
 };
 
-#endif //OFFB_POSCTL_PARAMETER_VICONROT_H
+
+#endif //OFFB_POSCTL_PARAM_H
