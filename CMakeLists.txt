@@ -30,7 +30,7 @@ add_library(thelib
         src/FILTER.h
         src/FILTER.cpp
         src/PARAM.h
-        src/PARAM.cpp)
+        src/PARAM.cpp src/DOB.h src/DOB.cpp)
 
 add_executable(offb_posctl
         src/offb_posctl.cpp)

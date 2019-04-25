@@ -29,6 +29,7 @@
 #include "PARAM.h"
 #include "PID.h"
 #include "FILTER.h"
+#include "DOB.h"
 
 
 //topic
@@ -65,7 +66,7 @@ geometry_msgs::Vector3 angle_receive;       //读入的无人机姿态（欧拉�
 geometry_msgs::Quaternion orientation_target;   //发给无人机的姿态指令
 
 geometry_msgs::Vector3 angle_des;            //线性模型输出的理想值
-geometry_msgs::Vector3 angle_dis;            //DOB控制器估计的扰动值
+//geometry_msgs::Vector3 angle_dis;            //DOB控制器估计的扰动值
 geometry_msgs::Vector3 angle_target;            //经DOB控制器作用后的实际系统输入值
 geometry_msgs::Vector3 vel_target;
 geometry_msgs::Vector3 pos_error;
@@ -81,6 +82,7 @@ float Yaw_Locked = 0;           //锁定的偏航角(一般锁定为0)
 float alpha = 0.0;
 
 PID PIDX, PIDY, PIDZ, PIDVX, PIDVY, PIDVZ;    //声明PID类
+DOB DOBX, DOBY, DOBZ;                         //声明DOB类
 FILTER FilterX, FilterY;
 PARAM param;
 std::ofstream logfile;
@@ -362,36 +364,59 @@ int pix_controller(float cur_time)
     angle_des.z = Yaw_Init + Yaw_Locked + angle_deviation;
 
 
+    //DOB 干扰观测器（利用积分平均的方法）
 
-// DOB 干扰观测器
-    Vector2f acc_real(acc_receive.x, acc_receive.y);
-    Vector2f euler_DOB = 1/9.8 * A_yaw.inverse() * acc_real;
+    Vector2f temp_angle(angle_target.x , angle_target.y);
+    Vector2f acc_des = 9.8 * A_yaw * temp_angle;     //理论的加速度值
 
-    FilterX.start_filter_flag = true;
-    FilterY.start_filter_flag = true;
-    if(current_state.mode != "OFFBOARD"){
-        FilterX.start_filter_flag = true;
-        FilterY.start_filter_flag = true;
-    }
-    //滤波器输入
-    filter_in.x = angle_target.x - euler_DOB[0];
-    filter_in.y = angle_target.y - euler_DOB[1];
-    FilterX.filter_input(filter_in.x, cur_time);
-    FilterY.filter_input(filter_in.y, cur_time);
-//    PIDVZ.filter_input(PIDVZ.Output - acc_receive.z, cur_time);
-    //计算滤波器输出
-    FilterX.filter_output();
-    FilterY.filter_output();
-    filter_out.x = FilterX.Output_filter;
-    filter_out.y = FilterY.Output_filter;
-//    PIDVZ.filter_output();
+    DOBX.add_data(cur_time, vel_drone.twist.linear.x, acc_des[0]);
+    DOBY.add_data(cur_time, vel_drone.twist.linear.y, acc_des[1]);
 
-    angle_dis.x = FilterX.satfunc(filter_out.x, 0.08, 0);
-    angle_dis.y = FilterY.satfunc(filter_out.y, 0.08, 0);
+    Vector2f acc_dis(DOBX.dob_output(), DOBY.dob_output());
+    Vector2f angle_dis = 1/9.8 * A_yaw.inverse() * acc_dis;
 
-    angle_target.x = angle_des.x + alpha * angle_dis.x;
-    angle_target.y = angle_des.y + alpha * angle_dis.y;
+
+    angle_target.x = angle_des.x + alpha * angle_dis[0];
+    angle_target.y = angle_des.y + alpha * angle_dis[1];
     angle_target.z = angle_des.z;
+
+
+
+
+
+//// DOB 干扰观测器
+//    Vector2f acc_real(acc_receive.x, acc_receive.y);
+//    Vector2f euler_DOB = 1/9.8 * A_yaw.inverse() * acc_real;
+//
+//    FilterX.start_filter_flag = true;
+//    FilterY.start_filter_flag = true;
+//    if(current_state.mode != "OFFBOARD"){
+//        FilterX.start_filter_flag = true;
+//        FilterY.start_filter_flag = true;
+//    }
+//    //滤波器输入
+//    filter_in.x = angle_target.x - euler_DOB[0];
+//    filter_in.y = angle_target.y - euler_DOB[1];
+//    FilterX.filter_input(filter_in.x, cur_time);
+//    FilterY.filter_input(filter_in.y, cur_time);
+////    PIDVZ.filter_input(PIDVZ.Output - acc_receive.z, cur_time);
+//    //计算滤波器输出
+//    FilterX.filter_output();
+//    FilterY.filter_output();
+//    filter_out.x = FilterX.Output_filter;
+//    filter_out.y = FilterY.Output_filter;
+////    PIDVZ.filter_output();
+//
+//    angle_dis.x = FilterX.satfunc(filter_out.x, 0.08, 0);
+//    angle_dis.y = FilterY.satfunc(filter_out.y, 0.08, 0);
+
+
+
+
+
+//    angle_target.x = angle_des.x + alpha * angle_dis.x;
+//    angle_target.y = angle_des.y + alpha * angle_dis.y;
+//    angle_target.z = angle_des.z;
 
     orientation_target = euler2quaternion(angle_target.x + 0.0, angle_target.y - 0.0, angle_target.z);
     thrust_target = (float)(0.05 * (9.8 + PIDVZ.Output ));   //目标推力值

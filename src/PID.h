@@ -39,8 +39,8 @@ public:
     //设置积分上限 控制量最大值 误差死区
     void set_sat(float i_max, float con_max, float thres);
     //输入 误差 和 当前时间
-    bool add_error(float input_error, float curtime);
-    void pid_output(void);
+    void add_error(float input_error, float curtime);
+    void pid_output();
 
 //    //积分平均滤波器
 //    bool filter_input(float data2fliter, float curtime);

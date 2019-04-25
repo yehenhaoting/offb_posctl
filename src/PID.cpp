@@ -58,7 +58,7 @@ void PID::set_sat(float i_max, float con_max, float thres)
     errThres = thres;
 }
 
-bool PID::add_error(float input_error, float curtime)
+void PID::add_error(float input_error, float curtime)
 {
     error = input_error;
     // delta_time = 0.05; /////////////////////////////////////////////////////////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!1
@@ -79,11 +79,9 @@ bool PID::add_error(float input_error, float curtime)
         std::pair<float,float > p1(curtime, error);
         error_list.push_back(p1);
     }
-
-    return true;
 }
 
-void PID::pid_output(void)
+void PID::pid_output()
 {
     P_Out = Kp * error;                          //P环节输出值
     I_Out = I_Out + Ki *error*delta_time;        //I环节输出值
