@@ -11,6 +11,6 @@
             file="$(find offb_posctl)/param/param.yaml" command="load"
             />
     </node>
-    <!--<node pkg="rqt_plot" type="rqt_plot" name="rqt_plot"> </node>-->
+    <node pkg="rqt_plot" type="rqt_plot" name="rqt_plot"> </node>
 
 </launch>

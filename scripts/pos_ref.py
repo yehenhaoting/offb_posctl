@@ -10,7 +10,7 @@ POS_REF = PoseStamped()
 def pos_talker():
     pub = rospy.Publisher('/cmd/pos_ref', PoseStamped, queue_size=10)
     rospy.init_node('pos_ref', anonymous=True)
-    rate = rospy.Rate(1) # 20hz
+    rate = rospy.Rate(0.5) # 20hz
 
     # while not rospy.is_shutdown():
         # POS_REF.pose.position.x = 0

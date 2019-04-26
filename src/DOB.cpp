@@ -45,7 +45,7 @@ float DOB::dob_output() {
         for(dob_k = DOB_list.begin(); dob_k != DOB_list.end(); ++ dob_k){
             acc_sum = acc_sum + dob_k->des_acc;
         }
-        float data2return = ( (DOB_list.back().cur_vel - DOB_list.front().cur_vel) - acc_sum * delta_time ) / (DOB_list.back().cur_time - DOB_list.front().cur_time);
+        float data2return = ( acc_sum * delta_time - (DOB_list.back().cur_vel - DOB_list.front().cur_vel) ) / (DOB_list.back().cur_time - DOB_list.front().cur_time);
 
         return data2return;
     }

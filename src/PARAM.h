@@ -10,6 +10,8 @@ class PARAM {
 
 public:
 
+    float alpha;
+
     float pos_x;
     float pos_y;
     float pos_z;

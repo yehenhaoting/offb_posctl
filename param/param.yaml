@@ -1,16 +1,21 @@
+# system param
+DOB_rate: 0.5
+
+
+
 # Desired positon for pos_control HOLD
 POS_X: 0.0
 POS_Y: 0.0
 POS_Z: 1.0
 
 # PID parameters for pos_error
-MC_X_P: 1.5
+MC_X_P: 3.0
 MC_X_I: 0.05
-MC_X_D: 0.1
+MC_X_D: 0.0
 
-MC_Y_P: 1.5
+MC_Y_P: 3.0
 MC_Y_I: 0.05
-MC_Y_D: 0.1
+MC_Y_D: 0.0
 
 MC_Z_P: 1.5
 MC_Z_I: 0.05
@@ -27,4 +32,4 @@ MC_VY_D: 0.5
 
 MC_VZ_P: 3
 MC_VZ_I: 0.2
-MC_VZ_D: 0.5
+MC_VZ_D: 0.0

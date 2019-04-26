@@ -12,6 +12,10 @@ bool PARAM::readParam() {
 
 
     if( !(
+
+        ros::param::get("offb_posctl/DOB_rate", alpha) &&
+
+
         ros::param::get("offb_posctl/POS_X", pos_x) &&
         ros::param::get("offb_posctl/POS_Y", pos_y) &&
         ros::param::get("offb_posctl/POS_Z", pos_z) &&

@@ -79,7 +79,7 @@ geometry_msgs::Vector3 filter_out;
 float thrust_target;        //期望推力
 float Yaw_Init, angel_init, angel_vicon, angle_deviation;
 float Yaw_Locked = 0;           //锁定的偏航角(一般锁定为0)
-float alpha = 0.0;
+//float alpha = 1.0;
 
 PID PIDX, PIDY, PIDZ, PIDVX, PIDVY, PIDVZ;    //声明PID类
 DOB DOBX, DOBY, DOBZ;                         //声明DOB类
@@ -99,6 +99,7 @@ geometry_msgs::Vector3 quaternion2euler(float x, float y, float z, float w);
 
 float get_ros_time(ros::Time time_begin);                                            //获取ros当前时间
 int pix_controller(float cur_time);                                                  //控制程序
+float satfunc(float data, float Max, float Thres);
 void data_log(std::ofstream &logfile, float cur_time);
 void debug_log(std::ofstream &debugfile, float cur_time);
 
@@ -210,12 +211,13 @@ int main(int argc, char **argv)
     PIDVY.setPID(param.vy_p, param.vy_i, param.vy_d);
     PIDVZ.setPID(param.vz_p, param.vz_i, param.vz_d);
     // 设置速度环积分上限 控制量最大值 误差死区
-    PIDVX.set_sat(2, 1.5, 0);
-    PIDVY.set_sat(2, 1.5, 0);
+    PIDVX.set_sat(2, 2.5, 0);
+    PIDVY.set_sat(2, 2.5, 0);
     PIDVZ.set_sat(2, 5, 0);
 
     angle_target.x = 0;
     angle_target.y = 0;
+    thrust_target = 0.3;
 
     // 等待和飞控的连接
     while(ros::ok() && current_state.connected == 0)
@@ -367,20 +369,28 @@ int pix_controller(float cur_time)
     //DOB 干扰观测器（利用积分平均的方法）
 
     Vector2f temp_angle(angle_target.x , angle_target.y);
-    Vector2f acc_des = 9.8 * A_yaw * temp_angle;     //理论的加速度值
+    Vector2f acc_xy_des = 9.8 * A_yaw * temp_angle;     //理论的加速度值
 
-    DOBX.add_data(cur_time, vel_drone.twist.linear.x, acc_des[0]);
-    DOBY.add_data(cur_time, vel_drone.twist.linear.y, acc_des[1]);
+    DOBX.add_data(cur_time, vel_drone.twist.linear.x, acc_xy_des[0]);
+    DOBY.add_data(cur_time, vel_drone.twist.linear.y, acc_xy_des[1]);
 
-    Vector2f acc_dis(DOBX.dob_output(), DOBY.dob_output());
-    Vector2f angle_dis = 1/9.8 * A_yaw.inverse() * acc_dis;
+    Vector2f acc_xy_dis(DOBX.dob_output(), DOBY.dob_output());
+    Vector2f angle_dis = 1/9.8 * A_yaw.inverse() * acc_xy_dis;
 
 
-    angle_target.x = angle_des.x + alpha * angle_dis[0];
-    angle_target.y = angle_des.y + alpha * angle_dis[1];
+    auto thrust_des = (float)(0.05 * (9.8 + PIDVZ.Output ));
+    auto acc_z_des = (float)(9.8 - 1/0.05 * thrust_target);
+    DOBZ.add_data(cur_time, vel_drone.twist.linear.z, acc_z_des);
+    auto acc_z_dis = DOBZ.dob_output();
+    auto thrust_dis = (float)(0.05 * (9.8 + acc_z_dis));
+
+
+    angle_target.x = satfunc((angle_des.x + param.alpha * angle_dis[0]), 0.314f, 0.0f);
+    angle_target.y = satfunc((angle_des.y + param.alpha * angle_dis[1]), 0.314f, 0.0f);
     angle_target.z = angle_des.z;
+    orientation_target = euler2quaternion(angle_target.x + 0.15, angle_target.y - 0.15, angle_target.z);
 
-
+    thrust_target = satfunc((thrust_des + param.alpha * thrust_dis), 0.80f, 0.0f);   //目标推力值
 
 
 
@@ -418,8 +428,8 @@ int pix_controller(float cur_time)
 //    angle_target.y = angle_des.y + alpha * angle_dis.y;
 //    angle_target.z = angle_des.z;
 
-    orientation_target = euler2quaternion(angle_target.x + 0.0, angle_target.y - 0.0, angle_target.z);
-    thrust_target = (float)(0.05 * (9.8 + PIDVZ.Output ));   //目标推力值
+//    orientation_target = euler2quaternion(angle_target.x + 0.15, angle_target.y - 0.15, angle_target.z);
+//    thrust_target = (float)(0.05 * (9.8 + PIDVZ.Output ));   //目标推力值
 
     return 0;
 }
@@ -457,6 +467,26 @@ geometry_msgs::Vector3 quaternion2euler(float x, float y, float z, float w)
     temp.z = atan2(2.0 * (w * z + x * y), 1.0 - 2.0 * (y * y + z * z));
     return temp;
 }
+
+/**
+ * 限幅函数
+ * @param data 输入的数据
+ * @param Max 数据的最大值
+ * @param Thres 零死区
+ * @return 返回输出值
+ */
+float satfunc(float data, float Max, float Thres)
+{
+    if (fabs(data)<Thres)
+        return 0;
+    else if(fabs(data)>Max){
+        return (data>0)?Max:-Max;
+    }
+    else{
+        return data;
+    }
+}
+
 
 /**
  * 将进入offboard后的位置&速度&姿态信息记录进文件
