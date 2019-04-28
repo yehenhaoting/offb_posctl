@@ -30,9 +30,26 @@ add_library(thelib
         src/FILTER.h
         src/FILTER.cpp
         src/PARAM.h
-        src/PARAM.cpp src/DOB.h src/DOB.cpp)
+        src/PARAM.cpp
+        src/DOB.h
+        src/DOB.cpp)
+
+add_library(thelib_vicon
+        src/PID.h
+        src/PID.cpp
+        src/FILTER.h
+        src/FILTER.cpp
+        src/DOB.h
+        src/DOB.cpp
+        src/PARAM_VICON.h
+        src/PARAM_VICON.cpp)
+
 
 add_executable(offb_posctl
         src/offb_posctl.cpp)
 target_link_libraries(offb_posctl ${catkin_LIBRARIES} thelib)
 
+
+add_executable(offb_posctl_vicon
+        src/offb_posctl_vicon.cpp)
+target_link_libraries(offb_posctl_vicon ${catkin_LIBRARIES} thelib_vicon)

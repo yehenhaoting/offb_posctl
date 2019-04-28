@@ -12,7 +12,6 @@ bool PARAM::readParam() {
 
 
     if( !(
-
         ros::param::get("offb_posctl/DOB_rate", alpha) &&
 
 
@@ -42,7 +41,8 @@ bool PARAM::readParam() {
 
         ros::param::get("offb_posctl/MC_VX_D", vx_d) &&
         ros::param::get("offb_posctl/MC_VY_D", vy_d) &&
-        ros::param::get("offb_posctl/MC_VZ_D", vz_d)) )
+        ros::param::get("offb_posctl/MC_VZ_D", vz_d)
+        ) )
     {
         std::cout << "parameter file err" << std::endl;
         return false;
