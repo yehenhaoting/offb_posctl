@@ -13,6 +13,7 @@ bool PARAM::readParam() {
 
     if( !(
             ros::param::get("offb_posctl_vicon/DOB_rate", alpha) &&
+            ros::param::get("offb_posctl_vicon/THR_HOVER", thr_hover) &&
 
 
             ros::param::get("offb_posctl_vicon/POS_X", pos_x) &&

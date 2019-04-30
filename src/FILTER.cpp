@@ -7,12 +7,10 @@
 #include <cmath>
 #include <queue>
 #include <vector>
-
-
-using namespace std;
+#include <iostream>
 
 FILTER::FILTER(){
-    filter_list.push_back(make_pair(0.0f, 0.0f));
+    filter_list.push_back(std::make_pair(0.0f, 0.0f));
     filter_data = 0;
     Output_filter = 0;
     start_filter_flag = false;
@@ -39,14 +37,15 @@ bool FILTER::filter_input(float data2fliter, float curtime)
     }
     else{
         delta_time = curtime - filter_list.rbegin()->first;
+//        std::cout<<delta_time<<endl;
     }
 
     filter_data = data2fliter;
-    if(filter_list.size() < 10){
-        filter_list.push_back(make_pair(curtime, filter_data));
+    if(filter_list.size() < 5){
+        filter_list.push_back(std::make_pair(curtime, filter_data));
     }
     else{
-        vector<pair<float, float > > ::iterator fil_iter = filter_list.begin();
+        std::vector<std::pair<float, float > > ::iterator fil_iter = filter_list.begin();
         filter_list.erase(fil_iter);
         std::pair<float, float > temp_iter(curtime, filter_data);
         filter_list.push_back(temp_iter);
@@ -56,11 +55,11 @@ bool FILTER::filter_input(float data2fliter, float curtime)
 
 void FILTER::filter_output()
 {
-    if(filter_list.size() < 10 || ! start_filter_flag){
+    if(filter_list.size() < 5 || ! start_filter_flag){
         Output_filter = 0;
     }
     else{
-        vector<pair<float, float> >::iterator filter_k;
+        std::vector<std::pair<float, float> >::iterator filter_k;
         float filter_sum = 0;
         for(filter_k = filter_list.begin(); filter_k != filter_list.end(); ++ filter_k){
             filter_sum = filter_sum + filter_k->second;

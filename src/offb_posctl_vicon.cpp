@@ -68,10 +68,14 @@ geometry_msgs::Quaternion orientation_target;   //发给无人机的姿态指令
 geometry_msgs::Vector3 angle_des;            //线性模型输出的理想值
 //geometry_msgs::Vector3 angle_dis;            //DOB控制器估计的扰动值
 geometry_msgs::Vector3 angle_target;            //经DOB控制器作用后的实际系统输入值
-geometry_msgs::Vector3 vel_target;
+geometry_msgs::Vector3 vel_target, vel_read, vel_read2;
 geometry_msgs::Vector3 pos_error;
 geometry_msgs::Vector3 filter_in;
 geometry_msgs::Vector3 filter_out;
+
+// debug data
+geometry_msgs::Vector3 vel_vicon;
+
 
 
 
@@ -83,7 +87,7 @@ float Yaw_Locked = 0;           //锁定的偏航角(一般锁定为0)
 
 PID PIDX, PIDY, PIDZ, PIDVX, PIDVY, PIDVZ;    //声明PID类
 DOB DOBX, DOBY, DOBZ;                         //声明DOB类
-FILTER FilterX, FilterY;
+FILTER FilterVX, FilterVY, FilterVZ;
 PARAM param;
 std::ofstream logfile;
 std::ofstream debugfile;
@@ -139,8 +143,22 @@ void pos_cb(const geometry_msgs::PoseStamped::ConstPtr &msg){
     }
 }
 
+bool vel_initialized = false;
 void vel_cb(const geometry_msgs::TwistStamped::ConstPtr &msg){
+    if(!vel_initialized)
+    {
+        vel_initialized = true;
+        vel_drone = *msg;
+        vel_read = vel_drone.twist.linear;
+        return;
+    }
     vel_drone = *msg;
+    // lowpass filter 1p
+    vel_read.x = 0.25 * vel_drone.twist.linear.x + 0.75 * vel_read.x;
+    vel_read.y = 0.25 * vel_drone.twist.linear.y + 0.75 * vel_read.y;
+    vel_read.z = 0.25 * vel_drone.twist.linear.z + 0.75 * vel_read.z;
+
+    vel_vicon = vel_drone.twist.linear;
 }
 
 
@@ -155,13 +173,13 @@ int main(int argc, char **argv)
 
     ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>("mavros/state", 10, state_cb);
     ros::Subscriber imu_sub   = nh.subscribe<sensor_msgs::Imu>("/mavros/imu/data", 10, imu_cb);
-
-    //Gazebo 仿真数据
-    ros::Subscriber position_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 10, pos_cb);
-    ros::Subscriber velocity_sub = nh.subscribe<geometry_msgs::TwistStamped>("/mavros/local_position/velocity", 10, vel_cb);
-//    //vicon 数据
-//    ros::Subscriber position_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mocap/pose", 10, pos_cb);
-//    ros::Subscriber velocity_sub = nh.subscribe<geometry_msgs::TwistStamped>("/mocap/vel", 10, vel_cb);
+//
+//    //Gazebo 仿真数据
+//    ros::Subscriber position_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 10, pos_cb);
+//    ros::Subscriber velocity_sub = nh.subscribe<geometry_msgs::TwistStamped>("/mavros/local_position/velocity", 10, vel_cb);
+    //vicon 数据
+    ros::Subscriber position_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mocap/pose", 10, pos_cb);
+    ros::Subscriber velocity_sub = nh.subscribe<geometry_msgs::TwistStamped>("/mocap/vel", 10, vel_cb);
 
  // 【发布】飞机姿态/拉力信息 坐标系:NED系
     ros::Publisher thrust_pub = nh.advertise<std_msgs::Float32>("/cmd/thrust", 10);
@@ -169,8 +187,16 @@ int main(int argc, char **argv)
 
 
     ros::Publisher error_pub = nh.advertise<geometry_msgs::Vector3>("/plot/pos_error", 10);
-    ros::Publisher filter_pub = nh.advertise<geometry_msgs::Vector3>("/plot/filter_out", 10);
-    ros::Publisher filter_pub2 = nh.advertise<geometry_msgs::Vector3>("/plot/filter_in", 10);
+//    ros::Publisher filter_pub = nh.advertise<geometry_msgs::Vector3>("/plot/filter_out", 10);
+//    ros::Publisher filter_pub2 = nh.advertise<geometry_msgs::Vector3>("/plot/filter_in", 10);
+
+    //debug pub
+    ros::Publisher viconvel_pub = nh.advertise<geometry_msgs::Vector3>("/plot/viconvel_read", 10);
+    ros::Publisher filtervel_pub = nh.advertise<geometry_msgs::Vector3>("/plot/filtervel_read", 10);
+//    ros::Publisher filtervel_pub2 = nh.advertise<geometry_msgs::Vector3>("/plot/filtervel2_read", 10);
+
+    ros::Publisher targetvel_pub = nh.advertise<geometry_msgs::Vector3>("/plot/target_vel", 10);
+
 
 
 
@@ -202,9 +228,9 @@ int main(int argc, char **argv)
     PIDZ.setPID(param.z_p, param.z_i, param.z_d);
 
     // 设置位置环积分上限 控制量最大值 误差死区
-    PIDX.set_sat(0.3, 3, 0.01);
-    PIDY.set_sat(0.3, 3, 0.01);
-    PIDZ.set_sat(0.3, 5, 0.01);
+    PIDX.set_sat(0.3, 3, 0.0);
+    PIDY.set_sat(0.3, 3, 0.0);
+    PIDZ.set_sat(0.05, 5, 0.0);
 
     // 设置速度环PID参数 比例参数 积分参数 微分参数
     PIDVX.setPID(param.vx_p, param.vx_i, param.vx_d);
@@ -213,11 +239,16 @@ int main(int argc, char **argv)
     // 设置速度环积分上限 控制量最大值 误差死区
     PIDVX.set_sat(0.5, 1.5, 0);
     PIDVY.set_sat(0.5, 1.5, 0);
-    PIDVZ.set_sat(0.5, 5, 0);
+    PIDVZ.set_sat(1.5, 5.0, 0);
 
     angle_target.x = 0;
     angle_target.y = 0;
     thrust_target = 0.3;
+
+
+//    vel_read2.x = 0.0;
+//    vel_read2.y = 0.0;
+//    vel_read2.z = 0.0;
 
     // 等待和飞控的连接
     while(ros::ok() && current_state.connected == 0)
@@ -261,8 +292,15 @@ int main(int argc, char **argv)
 
 
         error_pub.publish(pos_error);
-        filter_pub.publish(filter_out);
-        filter_pub2.publish(filter_in);
+//        filter_pub.publish(filter_out);
+//        filter_pub2.publish(filter_in);
+
+
+        //debug pub
+        viconvel_pub.publish(vel_vicon);
+        filtervel_pub.publish(vel_read);
+//        filtervel_pub2.publish(vel_read2);
+        targetvel_pub.publish(vel_target);
 
 
         rate.sleep();
@@ -323,6 +361,32 @@ int pix_controller(float cur_time)
     vel_target.z = PIDZ.Output;
 
 //速 度 环
+//    FilterVX.start_filter_flag = true;
+//    FilterVY.start_filter_flag = true;
+//    FilterVZ.start_filter_flag = true;
+//
+//    if(current_state.mode != "OFFBOARD"){
+//        FilterVX.start_filter_flag = true;
+//        FilterVY.start_filter_flag = true;
+//        FilterVZ.start_filter_flag = true;
+//    }
+//    //滤波器输入
+//    FilterVX.filter_input(vel_drone.twist.linear.x, cur_time);
+//    FilterVY.filter_input(vel_drone.twist.linear.y, cur_time);
+//    FilterVZ.filter_input(vel_drone.twist.linear.z, cur_time);
+//    //计算滤波器输出
+//    FilterVX.filter_output();
+//    FilterVY.filter_output();
+//    FilterVZ.filter_output();
+//    vel_read.x = FilterVX.Output_filter;
+//    vel_read.y = FilterVY.Output_filter;
+//    vel_read.z = FilterVZ.Output_filter;
+//
+//    vel_read2.x = 0.3 * vel_drone.twist.linear.x + 0.7 * vel_read2.x;
+//    vel_read2.y = 0.3 * vel_drone.twist.linear.y + 0.7 * vel_read2.y;
+//    vel_read2.z = 0.3 * vel_drone.twist.linear.z + 0.7 * vel_read2.z;
+
+
     //积分标志位.未进入OFFBOARD时,不累积积分项;进入OFFBOARD时,开始积分.
     PIDVX.start_intergrate_flag = true;
     PIDVY.start_intergrate_flag = true;
@@ -333,9 +397,9 @@ int pix_controller(float cur_time)
         PIDVZ.start_intergrate_flag = false;
     }
     //计算误差
-    float error_vx = vel_target.x - vel_drone.twist.linear.x;
-    float error_vy = vel_target.y - vel_drone.twist.linear.y;
-    float error_vz = vel_target.z - vel_drone.twist.linear.z;
+    float error_vx = vel_target.x - vel_vicon.x;
+    float error_vy = vel_target.y - vel_vicon.y;
+    float error_vz = vel_target.z - vel_vicon.z;
     //传递误差
     PIDVX.add_error(error_vx, cur_time);
     PIDVY.add_error(error_vy, cur_time);
@@ -374,12 +438,16 @@ int pix_controller(float cur_time)
     DOBX.add_data(cur_time, vel_drone.twist.linear.x, acc_xy_des[0]);
     DOBY.add_data(cur_time, vel_drone.twist.linear.y, acc_xy_des[1]);
 
+//    DOBX.add_data(cur_time, vel_read.x, acc_xy_des[0]);
+//    DOBY.add_data(cur_time, vel_read.y, acc_xy_des[1]);
+
     Vector2f acc_xy_dis(DOBX.dob_output(), DOBY.dob_output());
     Vector2f angle_dis = 1/9.8 * A_yaw.inverse() * acc_xy_dis;
 
 
     auto thrust_des = (float)(0.05 * (9.8 + PIDVZ.Output ));
     auto acc_z_des = (float)(9.8 - 1/0.05 * thrust_target);
+//    auto acc_z_des = (float)(1/0.05 * thrust_target - 9.8);
     DOBZ.add_data(cur_time, vel_drone.twist.linear.z, acc_z_des);
     auto acc_z_dis = DOBZ.dob_output();
     auto thrust_dis = (float)(0.05 * (9.8 + acc_z_dis));
@@ -388,9 +456,10 @@ int pix_controller(float cur_time)
     angle_target.x = satfunc((angle_des.x + param.alpha * angle_dis[0]), 0.314f, 0.0f);
     angle_target.y = satfunc((angle_des.y + param.alpha * angle_dis[1]), 0.314f, 0.0f);
     angle_target.z = angle_des.z;
-    orientation_target = euler2quaternion(angle_target.x + 0.15, angle_target.y - 0.15, angle_target.z);
+    orientation_target = euler2quaternion(angle_target.x, angle_target.y, angle_target.z);
 
-    thrust_target = satfunc((thrust_des + param.alpha * thrust_dis), 0.80f, 0.0f);   //目标推力值
+//    thrust_target = thrust_des + param.alpha * thrust_dis + (param.thr_hover - 0.5f);  //目标推力值
+    thrust_target = satfunc((thrust_des + 0 * param.alpha * thrust_dis + (param.thr_hover - 0.5f)), 0.80f, 0.0f);  //目标推力值
 
 
 

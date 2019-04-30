@@ -10,6 +10,7 @@ class PARAM {
 public:
 
     float alpha;
+    float thr_hover;
 
     float pos_x;
     float pos_y;
