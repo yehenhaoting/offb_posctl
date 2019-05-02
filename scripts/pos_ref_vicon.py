@@ -24,12 +24,12 @@ def pos_talker():
             POS_REF.pose.position.y = 0.25
             POS_REF.pose.position.z = 0.8
         elif(ii<20):
-            POS_REF.pose.position.x = 0.25
-            POS_REF.pose.position.y = -0.25
+            POS_REF.pose.position.x = -0.25
+            POS_REF.pose.position.y = 0.25
             POS_REF.pose.position.z = 0.8
         elif(ii<30):
-            POS_REF.pose.position.x = -0.25
-            POS_REF.pose.position.y = -0.25
+            POS_REF.pose.position.x = 0.25
+            POS_REF.pose.position.y = 0.25
             POS_REF.pose.position.z = 0.8
         elif(ii<40):
             POS_REF.pose.position.x = -0.25

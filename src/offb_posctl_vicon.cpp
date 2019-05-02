@@ -459,7 +459,7 @@ int pix_controller(float cur_time)
     orientation_target = euler2quaternion(angle_target.x, angle_target.y, angle_target.z);
 
 //    thrust_target = thrust_des + param.alpha * thrust_dis + (param.thr_hover - 0.5f);  //目标推力值
-    thrust_target = satfunc((thrust_des + 0 * param.alpha * thrust_dis + (param.thr_hover - 0.5f)), 0.80f, 0.0f);  //目标推力值
+    thrust_target = satfunc((thrust_des + 0.2 * param.alpha * thrust_dis + (param.thr_hover - 0.5f)), 0.80f, 0.0f);  //目标推力值
 
 
 

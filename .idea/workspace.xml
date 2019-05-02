@@ -56,7 +56,12 @@
   <component name="ChangeListManager">
     <list default="true" id="92b45cc0-e905-4be9-b9f0-f61d64e4b724" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/debug031101.csv" beforeDir="false" afterPath="$PROJECT_DIR$/log/debug031101.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log031102.csv" beforeDir="false" afterPath="$PROJECT_DIR$/log/log031102.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/param/param_vicon.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/param/param_vicon.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/pos_ref_vicon.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/pos_ref_vicon.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PID.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/PID.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/offb_posctl_vicon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/offb_posctl_vicon.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -71,17 +76,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/param/param_vicon.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="76">
-              <caret line="4" selection-start-line="4" selection-end-line="4" />
+            <state relative-caret-position="570">
+              <caret line="30" column="13" lean-forward="true" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/offb_posctl_vicon.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1480">
-              <caret line="461" column="42" selection-start-line="461" selection-start-column="42" selection-end-line="461" selection-end-column="42" />
+            <state relative-caret-position="625">
+              <caret line="461" column="45" selection-start-line="461" selection-start-column="45" selection-end-line="461" selection-end-column="45" />
               <folding>
                 <element signature="e#187#205#0" expanded="true" />
               </folding>
@@ -89,11 +94,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PID.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1009">
-              <caret line="122" lean-forward="true" selection-start-line="122" selection-end-line="122" />
+            <state relative-caret-position="1788">
+              <caret line="147" column="28" lean-forward="true" selection-start-line="147" selection-start-column="28" selection-end-line="147" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -110,8 +115,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/pos_ref_vicon.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="13" selection-start-line="13" selection-end-line="13" />
+            <state relative-caret-position="779">
+              <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
               <folding>
                 <element signature="e#52#64#0" expanded="true" />
               </folding>
@@ -143,11 +148,12 @@
         <option value="$PROJECT_DIR$/launch/offb_posctl_vicon.launch" />
         <option value="$PROJECT_DIR$/src/PARAM_VICON.h" />
         <option value="$PROJECT_DIR$/src/PARAM_VICON.cpp" />
-        <option value="$PROJECT_DIR$/scripts/pos_ref_vicon.py" />
         <option value="$PROJECT_DIR$/src/FILTER.cpp" />
+        <option value="$PROJECT_DIR$/param/param_vicon0501.yaml" />
+        <option value="$PROJECT_DIR$/src/PID.cpp" />
+        <option value="$PROJECT_DIR$/scripts/pos_ref_vicon.py" />
         <option value="$PROJECT_DIR$/param/param_vicon.yaml" />
         <option value="$PROJECT_DIR$/src/offb_posctl_vicon.cpp" />
-        <option value="$PROJECT_DIR$/src/PID.cpp" />
       </list>
     </option>
   </component>
@@ -219,6 +225,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/param" />
       <recent name="$PROJECT_DIR$/scripts" />
       <recent name="$PROJECT_DIR$/src" />
     </key>
@@ -543,7 +550,7 @@
       <workItem from="1556441651042" duration="4360000" />
       <workItem from="1556452611589" duration="1094000" />
       <workItem from="1556499718823" duration="22473000" />
-      <workItem from="1556765142795" duration="1130000" />
+      <workItem from="1556765142795" duration="6234000" />
     </task>
     <task id="LOCAL-00001" summary="something wrong with DOB Z">
       <created>1556634376675</created>
@@ -552,14 +559,21 @@
       <option name="project" value="LOCAL" />
       <updated>1556634376675</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="new I_out">
+      <created>1556767460986</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1556767460986</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29057000" />
+    <option name="totallyTimeSpent" value="34161000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
@@ -590,7 +604,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="something wrong with DOB Z" />
-    <option name="LAST_COMMIT_MESSAGE" value="something wrong with DOB Z" />
+    <MESSAGE value="new I_out" />
+    <option name="LAST_COMMIT_MESSAGE" value="new I_out" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/offb_posctl.cpp">
@@ -665,13 +680,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/param/param_vicon.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/launch/offb_posctl_vicon.launch">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -679,30 +687,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/param/param_vicon0501.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/PID.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1788">
+          <caret line="147" column="28" lean-forward="true" selection-start-line="147" selection-start-column="28" selection-end-line="147" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/pos_ref_vicon.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        <state relative-caret-position="779">
+          <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
           <folding>
             <element signature="e#52#64#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/offb_posctl_vicon.cpp">
+    <entry file="file://$PROJECT_DIR$/param/param_vicon.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1480">
-          <caret line="461" column="42" selection-start-line="461" selection-start-column="42" selection-end-line="461" selection-end-column="42" />
-          <folding>
-            <element signature="e#187#205#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="570">
+          <caret line="30" column="13" lean-forward="true" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/PID.cpp">
+    <entry file="file://$PROJECT_DIR$/src/offb_posctl_vicon.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1009">
-          <caret line="122" lean-forward="true" selection-start-line="122" selection-end-line="122" />
+        <state relative-caret-position="625">
+          <caret line="461" column="45" selection-start-line="461" selection-start-column="45" selection-end-line="461" selection-end-column="45" />
+          <folding>
+            <element signature="e#187#205#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
