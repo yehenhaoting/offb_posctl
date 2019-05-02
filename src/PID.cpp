@@ -84,12 +84,29 @@ void PID::add_error(float input_error, float curtime)
 void PID::pid_output()
 {
     P_Out = Kp * error;                          //P环节输出值
-    I_Out = I_Out + Ki *error*delta_time;        //I环节输出值
-    I_Out = satfunc(I_Out, Imax, 0);             //I环节限幅[I_Out<=Imax]
-    if(start_intergrate_flag == 0)
+//    I_Out = I_Out + Ki *error*delta_time;        //I环节输出值
+//    I_Out = satfunc(I_Out, Imax, 0);             //I环节限幅[I_Out<=Imax]
+//    if(start_intergrate_flag == 0)
+//    {
+//        I_Out = 0;
+//    }
+
+
+    if(error_list.size() < 10 || Ki == 0 || !start_intergrate_flag)
     {
         I_Out = 0;
     }
+    else{
+        vector<pair<float, float> >::iterator Iout_k;
+        float Iout_sum = 0;
+        for(Iout_k = error_list.begin(); Iout_k != error_list.end(); ++ Iout_k) {
+            Iout_sum = Iout_sum + Iout_k->second;
+        }
+        I_Out = Ki * Iout_sum * delta_time;
+    }
+    I_Out = satfunc(I_Out, Imax, 0);             //I环节限幅[I_Out<=Imax]
+
+
 
     D_Out = 0;
 
