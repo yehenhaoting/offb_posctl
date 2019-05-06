@@ -7,7 +7,6 @@
       <config projectName="offb_posctl" targetName="roscpp_generate_messages_cpp" />
       <config projectName="offb_posctl" targetName="nav_msgs_generate_messages_lisp" />
       <config projectName="offb_posctl" targetName="diagnostic_msgs_generate_messages_cpp" />
-      <config projectName="offb_posctl" targetName="doxygen" />
       <config projectName="offb_posctl" targetName="offb_posctl_vicon" />
       <config projectName="offb_posctl" targetName="actionlib_msgs_generate_messages_cpp" />
       <config projectName="offb_posctl" targetName="actionlib_generate_messages_lisp" />
@@ -25,6 +24,7 @@
       <config projectName="offb_posctl" targetName="geometry_msgs_generate_messages_py" />
       <config projectName="offb_posctl" targetName="thelib" />
       <config projectName="offb_posctl" targetName="geometry_msgs_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="nav_msgs_generate_messages_cpp" />
       <config projectName="offb_posctl" targetName="tf2_msgs_generate_messages_py" />
       <config projectName="offb_posctl" targetName="rosgraph_msgs_generate_messages_cpp" />
       <config projectName="offb_posctl" targetName="sensor_msgs_generate_messages_py" />
@@ -44,7 +44,7 @@
       <config projectName="offb_posctl" targetName="roscpp_generate_messages_py" />
       <config projectName="offb_posctl" targetName="actionlib_msgs_generate_messages_lisp" />
       <config projectName="offb_posctl" targetName="rosgraph_msgs_generate_messages_lisp" />
-      <config projectName="offb_posctl" targetName="nav_msgs_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="doxygen" />
       <config projectName="offb_posctl" targetName="gtest" />
     </generated>
   </component>
@@ -59,9 +59,6 @@
       <change beforePath="$PROJECT_DIR$/log/debug031101.csv" beforeDir="false" afterPath="$PROJECT_DIR$/log/debug031101.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log/log031102.csv" beforeDir="false" afterPath="$PROJECT_DIR$/log/log031102.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/param/param_vicon.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/param/param_vicon.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/pos_ref_vicon.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/pos_ref_vicon.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PID.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/PID.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/offb_posctl_vicon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/offb_posctl_vicon.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -73,22 +70,23 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/param/param_vicon.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="30" column="13" lean-forward="true" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+            <state relative-caret-position="19">
+              <caret line="1" column="14" selection-start-line="1" selection-start-column="14" selection-end-line="1" selection-end-column="14" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/offb_posctl_vicon.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="625">
-              <caret line="461" column="45" selection-start-line="461" selection-start-column="45" selection-end-line="461" selection-end-column="45" />
+            <state relative-caret-position="1102">
+              <caret line="391" column="39" lean-forward="true" selection-start-line="391" selection-start-column="39" selection-end-line="391" selection-end-column="39" />
               <folding>
                 <element signature="e#187#205#0" expanded="true" />
+                <element signature="e#576#608#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -97,8 +95,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PID.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1788">
-              <caret line="147" column="28" lean-forward="true" selection-start-line="147" selection-start-column="28" selection-end-line="147" selection-end-column="28" />
+            <state relative-caret-position="2793">
+              <caret line="147" column="28" selection-start-line="147" selection-start-column="28" selection-end-line="147" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -115,8 +113,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/pos_ref_vicon.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="779">
-              <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
+            <state relative-caret-position="722">
+              <caret line="41" selection-start-line="41" selection-end-line="41" />
               <folding>
                 <element signature="e#52#64#0" expanded="true" />
               </folding>
@@ -135,6 +133,11 @@
       <find>viconvel_pub</find>
       <find>vel_read</find>
       <find>DOBZ</find>
+      <find>pub</find>
+      <find>publish</find>
+      <find>error_pub</find>
+      <find>pos_error</find>
+      <find>thrust_pub</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -152,12 +155,12 @@
         <option value="$PROJECT_DIR$/param/param_vicon0501.yaml" />
         <option value="$PROJECT_DIR$/src/PID.cpp" />
         <option value="$PROJECT_DIR$/scripts/pos_ref_vicon.py" />
-        <option value="$PROJECT_DIR$/param/param_vicon.yaml" />
         <option value="$PROJECT_DIR$/src/offb_posctl_vicon.cpp" />
+        <option value="$PROJECT_DIR$/param/param_vicon.yaml" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="992" />
     <option name="y" value="24" />
     <option name="width" value="927" />
@@ -171,6 +174,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -217,7 +221,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -551,6 +554,10 @@
       <workItem from="1556452611589" duration="1094000" />
       <workItem from="1556499718823" duration="22473000" />
       <workItem from="1556765142795" duration="6234000" />
+      <workItem from="1556783657829" duration="153000" />
+      <workItem from="1556852184460" duration="386000" />
+      <workItem from="1556856479744" duration="31000" />
+      <workItem from="1557039237163" duration="4314000" />
     </task>
     <task id="LOCAL-00001" summary="something wrong with DOB Z">
       <created>1556634376675</created>
@@ -566,25 +573,32 @@
       <option name="project" value="LOCAL" />
       <updated>1556767460986</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="DOB basic realized with param0502">
+      <created>1556783788438</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1556783788438</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34161000" />
+    <option name="totallyTimeSpent" value="39045000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.18608503" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.19491993" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="CMake" order="0" />
       <window_info anchor="bottom" id="Inspection Results" order="1" weight="0.32952183" />
       <window_info anchor="bottom" id="Terminal" order="2" />
       <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="4" />
-      <window_info active="true" anchor="bottom" id="Messages" order="5" visible="true" weight="0.33471933" />
+      <window_info anchor="bottom" id="Messages" order="5" visible="true" weight="0.33471933" />
       <window_info anchor="bottom" id="Message" order="6" />
       <window_info anchor="bottom" id="Find" order="7" />
       <window_info anchor="bottom" id="Run" order="8" />
@@ -605,7 +619,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="something wrong with DOB Z" />
     <MESSAGE value="new I_out" />
-    <option name="LAST_COMMIT_MESSAGE" value="new I_out" />
+    <MESSAGE value="DOB basic realized with param0502" />
+    <option name="LAST_COMMIT_MESSAGE" value="DOB basic realized with param0502" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/offb_posctl.cpp">
@@ -680,13 +695,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/launch/offb_posctl_vicon.launch">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/param/param_vicon0501.yaml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
@@ -696,35 +704,50 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PID.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1788">
-          <caret line="147" column="28" lean-forward="true" selection-start-line="147" selection-start-column="28" selection-end-line="147" selection-end-column="28" />
+        <state relative-caret-position="2793">
+          <caret line="147" column="28" selection-start-line="147" selection-start-column="28" selection-end-line="147" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/launch/offb_posctl_vicon.launch">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/pos_ref_vicon.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="779">
-          <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
+        <state relative-caret-position="722">
+          <caret line="41" selection-start-line="41" selection-end-line="41" />
           <folding>
             <element signature="e#52#64#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/param/param_vicon.yaml">
+    <entry file="file://$PROJECT_DIR$/param/param_vicon0502.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="30" column="13" lean-forward="true" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+        <state relative-caret-position="342">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/offb_posctl_vicon.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="625">
-          <caret line="461" column="45" selection-start-line="461" selection-start-column="45" selection-end-line="461" selection-end-column="45" />
+        <state relative-caret-position="1102">
+          <caret line="391" column="39" lean-forward="true" selection-start-line="391" selection-start-column="39" selection-end-line="391" selection-end-column="39" />
           <folding>
             <element signature="e#187#205#0" expanded="true" />
+            <element signature="e#576#608#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/param/param_vicon.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="14" selection-start-line="1" selection-start-column="14" selection-end-line="1" selection-end-column="14" />
         </state>
       </provider>
     </entry>
