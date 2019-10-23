@@ -1,0 +1,8 @@
+prefix=/home/zm/catkin_ws/src/offb_posctl/cmake-build-debug/devel
+
+Name: offb_posctl
+Description: Description of offb_posctl
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/zm/catkin_ws/src/offb_posctl/cmake-build-debug/devel/lib 
+Requires: 

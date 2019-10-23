@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/zm/catkin_ws/src/offb_posctl/cmake-build-debug/devel/setup.sh
