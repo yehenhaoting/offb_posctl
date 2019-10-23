@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -g  -shared -Wl,-soname,libthelib.so -o devel/lib/libthelib.so CMakeFiles/thelib.dir/src/Parameter.cpp.o CMakeFiles/thelib.dir/src/PID.cpp.o 
