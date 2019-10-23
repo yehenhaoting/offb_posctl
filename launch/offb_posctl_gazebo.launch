@@ -1,0 +1,29 @@
+<launch>
+
+    <!--注：  使用Gazebo仿真，须首先启动PX4在Gazebo下的仿真场景                     -->
+    <!--     定位到px4源码的package，执行：make posix_sitl_default gazebo        -->
+
+    <!--启动mavros，连接到本地host服务器-->
+    <include file="$(find mavros)/launch/px4.launch" >
+        <arg name="fcu_url" value="udp://:14540@127.0.0.1:14557"/> </include>
+
+    <!--启动offboard控制，该节点为通过service消息程序启动offboard控制-->
+    <node pkg="offb_posctl" type="offb_enable" name="offb_enable" > </node>
+
+    <!--发送期望位置点-->
+    <node pkg="offb_posctl" type="pos_ref.py" name="pos_ref" > </node>
+
+    <!--启动PID位置控制程序-->
+    <!--<node pkg="offb_posctl" type="offb_posctl" name="offb_posctl" output="screen"> </node>-->
+    <node pkg="offb_posctl" type="offb_posctl" name="offb_posctl" output="screen">
+            <rosparam
+            file="$(find offb_posctl)/param/param.yaml" command="load"
+            />
+    </node>
+
+    <!--启动rqt曲线观测及参数调整器-->
+    <!--<node pkg="rqt_plot" type="rqt_plot" name="rqt_plot"> </node>-->
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure"> </node>
+
+
+</launch>

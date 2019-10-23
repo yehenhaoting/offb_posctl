@@ -1,14 +1,17 @@
 //
-// Created by zm on 18-12-1.
+// Created by zm on 19-4-14.
 //
 
-#ifndef OFFB_POSCTL_PARAMETER_H
-#define OFFB_POSCTL_PARAMETER_H
+#ifndef OFFB_POSCTL_PARAM_H
+#define OFFB_POSCTL_PARAM_H
 
 
-class Parameter {
+class PARAM {
 
 public:
+
+    float alpha;
+
     float pos_x;
     float pos_y;
     float pos_z;
@@ -16,6 +19,14 @@ public:
     float x_p;
     float y_p;
     float z_p;
+
+    float x_i;
+    float y_i;
+    float z_i;
+
+    float x_d;
+    float y_d;
+    float z_d;
 
     float vx_p;
     float vy_p;
@@ -30,9 +41,9 @@ public:
     float vz_d;
 
 
-    bool readParam(const char* addr);
+    bool readParam();
 
 };
 
 
-#endif //OFFB_POSCTL_PARAMATER_H
+#endif //OFFB_POSCTL_PARAM_H
