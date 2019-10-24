@@ -2,7 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/thelib_vicon.dir/src/PID.cpp.o"
   "CMakeFiles/thelib_vicon.dir/src/FILTER.cpp.o"
   "CMakeFiles/thelib_vicon.dir/src/DOB.cpp.o"
-  "CMakeFiles/thelib_vicon.dir/src/PARAM_VICON.cpp.o"
+  "CMakeFiles/thelib_vicon.dir/src/BUFFER.cpp.o"
   "devel/lib/libthelib_vicon.pdb"
   "devel/lib/libthelib_vicon.so"
 )

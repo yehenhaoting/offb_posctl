@@ -6,7 +6,6 @@ CMakeFiles/offb_posctl.dir/src/offb_posctl.cpp.o
  /home/ubuntu/Rotors/devel/include/mavros_msgs/State.h
  /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/DOB.h
  /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/FILTER.h
- /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/PARAM.h
  /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/PID.h
  /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/offb_posctl.cpp
  /home/ubuntu/catkin_ws/devel/include/Eigen/Cholesky
@@ -214,6 +213,19 @@ CMakeFiles/offb_posctl.dir/src/offb_posctl.cpp.o
  /home/ubuntu/catkin_ws/devel/include/Eigen/src/plugins/MatrixCwiseUnaryOps.h
  /opt/ros/indigo/include/XmlRpcDecl.h
  /opt/ros/indigo/include/XmlRpcValue.h
+ /opt/ros/indigo/include/dynamic_reconfigure/BoolParameter.h
+ /opt/ros/indigo/include/dynamic_reconfigure/Config.h
+ /opt/ros/indigo/include/dynamic_reconfigure/ConfigDescription.h
+ /opt/ros/indigo/include/dynamic_reconfigure/DoubleParameter.h
+ /opt/ros/indigo/include/dynamic_reconfigure/Group.h
+ /opt/ros/indigo/include/dynamic_reconfigure/GroupState.h
+ /opt/ros/indigo/include/dynamic_reconfigure/IntParameter.h
+ /opt/ros/indigo/include/dynamic_reconfigure/ParamDescription.h
+ /opt/ros/indigo/include/dynamic_reconfigure/Reconfigure.h
+ /opt/ros/indigo/include/dynamic_reconfigure/ReconfigureRequest.h
+ /opt/ros/indigo/include/dynamic_reconfigure/ReconfigureResponse.h
+ /opt/ros/indigo/include/dynamic_reconfigure/StrParameter.h
+ /opt/ros/indigo/include/dynamic_reconfigure/server.h
  /opt/ros/indigo/include/geometry_msgs/Point.h
  /opt/ros/indigo/include/geometry_msgs/Pose.h
  /opt/ros/indigo/include/geometry_msgs/PoseStamped.h

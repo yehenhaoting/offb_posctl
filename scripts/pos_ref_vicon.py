@@ -19,22 +19,41 @@ def pos_talker():
 
     ii = 0
     while not rospy.is_shutdown():
+        # if(ii<10):
+        #     POS_REF.pose.position.x = 0.0
+        #     POS_REF.pose.position.y = 0.0
+        #     POS_REF.pose.position.z = 0.6
+        # elif(ii<20):
+        #     POS_REF.pose.position.x = -0.0
+        #     POS_REF.pose.position.y = 0.0
+        #     POS_REF.pose.position.z = 1.0
+        # elif(ii<30):
+        #     POS_REF.pose.position.x = 0.0
+        #     POS_REF.pose.position.y = 0.0
+        #     POS_REF.pose.position.z = 0.6
+        # elif(ii<40):
+        #     POS_REF.pose.position.x = -0.0
+        #     POS_REF.pose.position.y = 0.0
+        #     POS_REF.pose.position.z = 1.0
+        # else:
+        #     ii = 0
+
         if(ii<10):
             POS_REF.pose.position.x = 0.25
             POS_REF.pose.position.y = 0.25
-            POS_REF.pose.position.z = 0.8
+            POS_REF.pose.position.z = 0.6
         elif(ii<20):
             POS_REF.pose.position.x = -0.25
             POS_REF.pose.position.y = 0.25
-            POS_REF.pose.position.z = 0.8
+            POS_REF.pose.position.z = 1.0
         elif(ii<30):
-            POS_REF.pose.position.x = 0.25
-            POS_REF.pose.position.y = 0.25
-            POS_REF.pose.position.z = 0.8
-        elif(ii<40):
             POS_REF.pose.position.x = -0.25
-            POS_REF.pose.position.y = 0.25
-            POS_REF.pose.position.z = 0.8
+            POS_REF.pose.position.y = -0.25
+            POS_REF.pose.position.z = 0.6
+        elif(ii<40):
+            POS_REF.pose.position.x = 0.25
+            POS_REF.pose.position.y = -0.25
+            POS_REF.pose.position.z = 1.0
         else:
             ii = 0
 

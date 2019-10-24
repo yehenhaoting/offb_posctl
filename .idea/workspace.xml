@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< Updated upstream
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
       <config projectName="offb_posctl" targetName="diagnostic_msgs_generate_messages_lisp" />
@@ -7,6 +8,7 @@
       <config projectName="offb_posctl" targetName="roscpp_generate_messages_cpp" />
       <config projectName="offb_posctl" targetName="nav_msgs_generate_messages_lisp" />
       <config projectName="offb_posctl" targetName="diagnostic_msgs_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="doxygen" />
       <config projectName="offb_posctl" targetName="offb_posctl_vicon" />
       <config projectName="offb_posctl" targetName="actionlib_msgs_generate_messages_cpp" />
       <config projectName="offb_posctl" targetName="actionlib_generate_messages_lisp" />
@@ -24,7 +26,6 @@
       <config projectName="offb_posctl" targetName="geometry_msgs_generate_messages_py" />
       <config projectName="offb_posctl" targetName="thelib" />
       <config projectName="offb_posctl" targetName="geometry_msgs_generate_messages_cpp" />
-      <config projectName="offb_posctl" targetName="nav_msgs_generate_messages_cpp" />
       <config projectName="offb_posctl" targetName="tf2_msgs_generate_messages_py" />
       <config projectName="offb_posctl" targetName="rosgraph_msgs_generate_messages_cpp" />
       <config projectName="offb_posctl" targetName="sensor_msgs_generate_messages_py" />
@@ -44,12 +45,93 @@
       <config projectName="offb_posctl" targetName="roscpp_generate_messages_py" />
       <config projectName="offb_posctl" targetName="actionlib_msgs_generate_messages_lisp" />
       <config projectName="offb_posctl" targetName="rosgraph_msgs_generate_messages_lisp" />
-      <config projectName="offb_posctl" targetName="doxygen" />
+      <config projectName="offb_posctl" targetName="nav_msgs_generate_messages_cpp" />
       <config projectName="offb_posctl" targetName="gtest" />
+=======
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
+    <generated>
+      <config projectName="offb_posctl" targetName="actionlib_msgs_generate_messages_eus" />
+      <config projectName="offb_posctl" targetName="gtest_main" />
+      <config projectName="offb_posctl" targetName="actionlib_generate_messages_lisp" />
+      <config projectName="offb_posctl" targetName="tests" />
+      <config projectName="offb_posctl" targetName="sensor_msgs_generate_messages_nodejs" />
+      <config projectName="offb_posctl" targetName="roscpp_generate_messages_lisp" />
+      <config projectName="offb_posctl" targetName="nav_msgs_generate_messages_eus" />
+      <config projectName="offb_posctl" targetName="tf2_msgs_generate_messages_py" />
+      <config projectName="offb_posctl" targetName="roscpp_generate_messages_py" />
+      <config projectName="offb_posctl" targetName="rosgraph_msgs_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="uuid_msgs_generate_messages_lisp" />
+      <config projectName="offb_posctl" targetName="diagnostic_msgs_generate_messages_py" />
+      <config projectName="offb_posctl" targetName="diagnostic_msgs_generate_messages_lisp" />
+      <config projectName="offb_posctl" targetName="actionlib_generate_messages_eus" />
+      <config projectName="offb_posctl" targetName="geographic_msgs_generate_messages_nodejs" />
+      <config projectName="offb_posctl" targetName="clean_test_results" />
+      <config projectName="offb_posctl" targetName="diagnostic_msgs_generate_messages_eus" />
+      <config projectName="offb_posctl" targetName="sensor_msgs_generate_messages_lisp" />
+      <config projectName="offb_posctl" targetName="rosgraph_msgs_generate_messages_lisp" />
+      <config projectName="offb_posctl" targetName="uuid_msgs_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="diagnostic_msgs_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="geometry_msgs_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="actionlib_msgs_generate_messages_py" />
+      <config projectName="offb_posctl" targetName="gtest" />
+      <config projectName="offb_posctl" targetName="gmock_main" />
+      <config projectName="offb_posctl" targetName="std_msgs_generate_messages_py" />
+      <config projectName="offb_posctl" targetName="sensor_msgs_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="download_extra_data" />
+      <config projectName="offb_posctl" targetName="actionlib_generate_messages_py" />
+      <config projectName="offb_posctl" targetName="geographic_msgs_generate_messages_lisp" />
+      <config projectName="offb_posctl" targetName="geometry_msgs_generate_messages_nodejs" />
+      <config projectName="offb_posctl" targetName="rosgraph_msgs_generate_messages_py" />
+      <config projectName="offb_posctl" targetName="doxygen" />
+      <config projectName="offb_posctl" targetName="actionlib_generate_messages_nodejs" />
+      <config projectName="offb_posctl" targetName="std_msgs_generate_messages_nodejs" />
+      <config projectName="offb_posctl" targetName="std_msgs_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="nav_msgs_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="roscpp_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="uuid_msgs_generate_messages_eus" />
+      <config projectName="offb_posctl" targetName="geometry_msgs_generate_messages_eus" />
+      <config projectName="offb_posctl" targetName="tf2_msgs_generate_messages_eus" />
+      <config projectName="offb_posctl" targetName="geographic_msgs_generate_messages_py" />
+      <config projectName="offb_posctl" targetName="nav_msgs_generate_messages_nodejs" />
+      <config projectName="offb_posctl" targetName="uuid_msgs_generate_messages_nodejs" />
+      <config projectName="offb_posctl" targetName="uuid_msgs_generate_messages_py" />
+      <config projectName="offb_posctl" targetName="mavros_msgs_generate_messages_nodejs" />
+      <config projectName="offb_posctl" targetName="geographic_msgs_generate_messages_eus" />
+      <config projectName="offb_posctl" targetName="tf2_msgs_generate_messages_nodejs" />
+      <config projectName="offb_posctl" targetName="offb_posctl" />
+      <config projectName="offb_posctl" targetName="roscpp_generate_messages_eus" />
+      <config projectName="offb_posctl" targetName="diagnostic_msgs_generate_messages_nodejs" />
+      <config projectName="offb_posctl" targetName="mavros_msgs_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="thelib" />
+      <config projectName="offb_posctl" targetName="nav_msgs_generate_messages_py" />
+      <config projectName="offb_posctl" targetName="geometry_msgs_generate_messages_lisp" />
+      <config projectName="offb_posctl" targetName="std_msgs_generate_messages_eus" />
+      <config projectName="offb_posctl" targetName="mavros_msgs_generate_messages_lisp" />
+      <config projectName="offb_posctl" targetName="geographic_msgs_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="nav_msgs_generate_messages_lisp" />
+      <config projectName="offb_posctl" targetName="actionlib_msgs_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="roscpp_generate_messages_nodejs" />
+      <config projectName="offb_posctl" targetName="geometry_msgs_generate_messages_py" />
+      <config projectName="offb_posctl" targetName="tf2_msgs_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="rosgraph_msgs_generate_messages_nodejs" />
+      <config projectName="offb_posctl" targetName="gmock" />
+      <config projectName="offb_posctl" targetName="sensor_msgs_generate_messages_eus" />
+      <config projectName="offb_posctl" targetName="actionlib_msgs_generate_messages_nodejs" />
+      <config projectName="offb_posctl" targetName="mavros_msgs_generate_messages_py" />
+      <config projectName="offb_posctl" targetName="std_msgs_generate_messages_lisp" />
+      <config projectName="offb_posctl" targetName="actionlib_msgs_generate_messages_lisp" />
+      <config projectName="offb_posctl" targetName="rosgraph_msgs_generate_messages_eus" />
+      <config projectName="offb_posctl" targetName="actionlib_generate_messages_cpp" />
+      <config projectName="offb_posctl" targetName="sensor_msgs_generate_messages_py" />
+      <config projectName="offb_posctl" targetName="mavros_msgs_generate_messages_eus" />
+      <config projectName="offb_posctl" targetName="run_tests" />
+      <config projectName="offb_posctl" targetName="tf2_msgs_generate_messages_lisp" />
+>>>>>>> Stashed changes
     </generated>
   </component>
   <component name="CMakeSettings">
     <configurations>
+<<<<<<< Updated upstream
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
     </configurations>
   </component>
@@ -59,64 +141,146 @@
       <change beforePath="$PROJECT_DIR$/log/debug031101.csv" beforeDir="false" afterPath="$PROJECT_DIR$/log/debug031101.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log/log031102.csv" beforeDir="false" afterPath="$PROJECT_DIR$/log/log031102.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/param/param_vicon.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/param/param_vicon.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/pos_ref_vicon.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/pos_ref_vicon.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PID.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/PID.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/offb_posctl_vicon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/offb_posctl_vicon.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+=======
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" GENERATION_DIR="$USER_HOME$/ClionBuild/oofb_posctl" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="024cc874-8223-41f3-976d-e5fa58265f76" name="Default Changelist" comment="" />
+>>>>>>> Stashed changes
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+<<<<<<< Updated upstream
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/param/param_vicon.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19">
-              <caret line="1" column="14" selection-start-line="1" selection-start-column="14" selection-end-line="1" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/offb_posctl_vicon.cpp">
+<<<<<<< Updated upstream
+            <state relative-caret-position="570">
+              <caret line="30" column="13" lean-forward="true" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+=======
+            <state relative-caret-position="76">
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
+=======
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/offb_posctl.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1102">
-              <caret line="391" column="39" lean-forward="true" selection-start-line="391" selection-start-column="39" selection-end-line="391" selection-end-column="39" />
+            <state relative-caret-position="56">
+              <caret line="372" selection-start-line="372" selection-end-line="372" />
               <folding>
                 <element signature="e#187#205#0" expanded="true" />
-                <element signature="e#576#608#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/launch/offb_posctl_gazebo.launch">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="304">
+              <caret line="16" selection-start-line="16" selection-end-line="16" />
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< Updated upstream
+      <file pinned="false" current-in-tab="true">
+=======
+      <file pinned="false" current-in-tab="false">
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+        <entry file="file://$PROJECT_DIR$/src/offb_posctl_vicon.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="625">
+              <caret line="461" column="45" selection-start-line="461" selection-start-column="45" selection-end-line="461" selection-end-column="45" />
+              <folding>
+                <element signature="e#187#205#0" expanded="true" />
+              </folding>
+=======
+        <entry file="file://$PROJECT_DIR$/src/DOB.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="380">
+              <caret line="20" column="25" selection-start-line="20" selection-start-column="25" selection-end-line="20" selection-end-column="25" />
+>>>>>>> Stashed changes
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< Updated upstream
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PID.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2793">
-              <caret line="147" column="28" selection-start-line="147" selection-start-column="28" selection-end-line="147" selection-end-column="28" />
+            <state relative-caret-position="1788">
+              <caret line="147" column="28" lean-forward="true" selection-start-line="147" selection-start-column="28" selection-end-line="147" selection-end-column="28" />
+=======
+<<<<<<< Updated upstream
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/PID.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1009">
+              <caret line="122" lean-forward="true" selection-start-line="122" selection-end-line="122" />
+=======
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="627">
+              <caret line="33" selection-start-line="33" selection-end-line="33" />
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< Updated upstream
         <entry file="file://$PROJECT_DIR$/launch/offb_posctl_vicon.launch">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="285">
               <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+=======
+        <entry file="file://$PROJECT_DIR$/src/DOB.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="931">
+              <caret line="49" column="27" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="27" />
+              <folding>
+                <element signature="e#36#52#0" expanded="true" />
+              </folding>
+>>>>>>> Stashed changes
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< Updated upstream
         <entry file="file://$PROJECT_DIR$/scripts/pos_ref_vicon.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="722">
-              <caret line="41" selection-start-line="41" selection-end-line="41" />
+            <state relative-caret-position="779">
+              <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
               <folding>
                 <element signature="e#52#64#0" expanded="true" />
+=======
+        <entry file="file://$PROJECT_DIR$/src/PID.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="646">
+              <caret line="34" selection-start-line="34" selection-end-line="44" selection-end-column="1" />
+              <folding>
+                <element signature="e#36#52#0" expanded="true" />
+>>>>>>> Stashed changes
               </folding>
             </state>
           </provider>
@@ -124,6 +288,7 @@
       </file>
     </leaf>
   </component>
+<<<<<<< Updated upstream
   <component name="FindInProjectRecents">
     <findStrings>
       <find>imu_drone</find>
@@ -133,11 +298,6 @@
       <find>viconvel_pub</find>
       <find>vel_read</find>
       <find>DOBZ</find>
-      <find>pub</find>
-      <find>publish</find>
-      <find>error_pub</find>
-      <find>pos_error</find>
-      <find>thrust_pub</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -155,12 +315,12 @@
         <option value="$PROJECT_DIR$/param/param_vicon0501.yaml" />
         <option value="$PROJECT_DIR$/src/PID.cpp" />
         <option value="$PROJECT_DIR$/scripts/pos_ref_vicon.py" />
-        <option value="$PROJECT_DIR$/src/offb_posctl_vicon.cpp" />
         <option value="$PROJECT_DIR$/param/param_vicon.yaml" />
+        <option value="$PROJECT_DIR$/src/offb_posctl_vicon.cpp" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="992" />
     <option name="y" value="24" />
     <option name="width" value="927" />
@@ -168,13 +328,22 @@
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
+=======
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+>>>>>>> Stashed changes
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -197,12 +366,15 @@
               <item name="offb_posctl" type="b2602c69:ProjectViewProjectNode" />
               <item name="offb_posctl" type="47feb1d3:ProjectViewModuleNode" />
               <item name="offb_posctl" type="462c0819:PsiDirectoryNode" />
+<<<<<<< Updated upstream
               <item name="log" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="offb_posctl" type="b2602c69:ProjectViewProjectNode" />
               <item name="offb_posctl" type="47feb1d3:ProjectViewModuleNode" />
               <item name="offb_posctl" type="462c0819:PsiDirectoryNode" />
+=======
+>>>>>>> Stashed changes
               <item name="param" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -211,18 +383,23 @@
               <item name="offb_posctl" type="462c0819:PsiDirectoryNode" />
               <item name="scripts" type="462c0819:PsiDirectoryNode" />
             </path>
+<<<<<<< Updated upstream
             <path>
               <item name="offb_posctl" type="b2602c69:ProjectViewProjectNode" />
               <item name="offb_posctl" type="47feb1d3:ProjectViewModuleNode" />
               <item name="offb_posctl" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
+=======
+>>>>>>> Stashed changes
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
+<<<<<<< Updated upstream
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
@@ -233,6 +410,8 @@
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
+=======
+>>>>>>> Stashed changes
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -245,6 +424,7 @@
       </list>
     </option>
   </component>
+<<<<<<< Updated upstream
   <component name="RunManager" selected="Application.offb_posctl_vicon">
     <configuration name="actionlib_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="offb_posctl" TARGET_NAME="actionlib_generate_messages_cpp" CONFIG_NAME="Debug">
       <method v="2">
@@ -540,11 +720,14 @@
       </list>
     </recent_temporary>
   </component>
+=======
+>>>>>>> Stashed changes
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+<<<<<<< Updated upstream
       <changelist id="92b45cc0-e905-4be9-b9f0-f61d64e4b724" name="Default Changelist" comment="" />
       <created>1556441649709</created>
       <option name="number" value="Default" />
@@ -554,10 +737,6 @@
       <workItem from="1556452611589" duration="1094000" />
       <workItem from="1556499718823" duration="22473000" />
       <workItem from="1556765142795" duration="6234000" />
-      <workItem from="1556783657829" duration="153000" />
-      <workItem from="1556852184460" duration="386000" />
-      <workItem from="1556856479744" duration="31000" />
-      <workItem from="1557039237163" duration="4314000" />
     </task>
     <task id="LOCAL-00001" summary="something wrong with DOB Z">
       <created>1556634376675</created>
@@ -573,32 +752,25 @@
       <option name="project" value="LOCAL" />
       <updated>1556767460986</updated>
     </task>
-    <task id="LOCAL-00003" summary="DOB basic realized with param0502">
-      <created>1556783788438</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1556783788438</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39045000" />
+    <option name="totallyTimeSpent" value="34161000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1084" extended-state="7" />
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.19491993" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.18608503" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="CMake" order="0" />
       <window_info anchor="bottom" id="Inspection Results" order="1" weight="0.32952183" />
       <window_info anchor="bottom" id="Terminal" order="2" />
       <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="4" />
-      <window_info anchor="bottom" id="Messages" order="5" visible="true" weight="0.33471933" />
+      <window_info active="true" anchor="bottom" id="Messages" order="5" visible="true" weight="0.33471933" />
       <window_info anchor="bottom" id="Message" order="6" />
       <window_info anchor="bottom" id="Find" order="7" />
       <window_info anchor="bottom" id="Run" order="8" />
@@ -619,8 +791,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="something wrong with DOB Z" />
     <MESSAGE value="new I_out" />
-    <MESSAGE value="DOB basic realized with param0502" />
-    <option name="LAST_COMMIT_MESSAGE" value="DOB basic realized with param0502" />
+    <option name="LAST_COMMIT_MESSAGE" value="new I_out" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/offb_posctl.cpp">
@@ -695,6 +866,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/launch/offb_posctl_vicon.launch">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/param/param_vicon0501.yaml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
@@ -704,52 +882,236 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PID.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2793">
-          <caret line="147" column="28" selection-start-line="147" selection-start-column="28" selection-end-line="147" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/launch/offb_posctl_vicon.launch">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+        <state relative-caret-position="1788">
+          <caret line="147" column="28" lean-forward="true" selection-start-line="147" selection-start-column="28" selection-end-line="147" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/pos_ref_vicon.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="722">
-          <caret line="41" selection-start-line="41" selection-end-line="41" />
+        <state relative-caret-position="779">
+          <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
           <folding>
             <element signature="e#52#64#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/param/param_vicon0502.yaml">
+    <entry file="file://$PROJECT_DIR$/param/param_vicon.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+        <state relative-caret-position="570">
+          <caret line="30" column="13" lean-forward="true" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/offb_posctl_vicon.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1102">
-          <caret line="391" column="39" lean-forward="true" selection-start-line="391" selection-start-column="39" selection-end-line="391" selection-end-column="39" />
+        <state relative-caret-position="625">
+          <caret line="461" column="45" selection-start-line="461" selection-start-column="45" selection-end-line="461" selection-end-column="45" />
           <folding>
             <element signature="e#187#205#0" expanded="true" />
-            <element signature="e#576#608#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/param/param_vicon.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" column="14" selection-start-line="1" selection-start-column="14" selection-end-line="1" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
+=======
+      <changelist id="bc38c01f-67f9-4c74-98cf-cd9ee3321c17" name="Default Changelist" comment="" />
+      <created>1543542549298</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1543542549298</updated>
+      <workItem from="1543542550736" duration="839000" />
+      <workItem from="1543543648703" duration="16894000" />
+      <workItem from="1543625782879" duration="4275000" />
+      <workItem from="1543649138964" duration="8258000" />
+      <workItem from="1543660310929" duration="1397000" />
+      <workItem from="1545532828315" duration="635000" />
+      <workItem from="1546478779821" duration="1842000" />
+      <workItem from="1546482074483" duration="288000" />
+      <workItem from="1546482406586" duration="2123000" />
+      <workItem from="1546498390178" duration="12267000" />
+      <workItem from="1546585300994" duration="5165000" />
+      <workItem from="1546936632409" duration="1198000" />
+      <workItem from="1551519391580" duration="920000" />
+      <workItem from="1551689226918" duration="9894000" />
+      <workItem from="1552032970596" duration="6560000" />
+      <workItem from="1552050421681" duration="3038000" />
+      <workItem from="1552268741188" duration="7137000" />
+      <workItem from="1552283266628" duration="12928000" />
+      <workItem from="1552789172534" duration="23000" />
+      <workItem from="1552790365401" duration="470000" />
+      <workItem from="1552790864563" duration="521000" />
+      <workItem from="1552791417206" duration="612000" />
+      <workItem from="1552801172699" duration="764000" />
+      <workItem from="1552805471209" duration="10240000" />
+      <workItem from="1552896821624" duration="757000" />
+      <workItem from="1552909353660" duration="69000" />
+      <workItem from="1553242106038" duration="1726000" />
+      <workItem from="1553306801225" duration="599000" />
+      <workItem from="1553329863750" duration="599000" />
+      <workItem from="1553493638366" duration="461000" />
+      <workItem from="1553503114466" duration="1826000" />
+      <workItem from="1554087048290" duration="2458000" />
+      <workItem from="1554113936361" duration="4216000" />
+      <workItem from="1554693809452" duration="6543000" />
+      <workItem from="1554704916443" duration="6376000" />
+      <workItem from="1554799770734" duration="620000" />
+      <workItem from="1555207491280" duration="9079000" />
+      <workItem from="1555226448389" duration="3323000" />
+      <workItem from="1556169981242" duration="12395000" />
+      <workItem from="1556259607116" duration="8547000" />
+      <workItem from="1556772319232" duration="320000" />
+    </task>
+    <task id="LOCAL-00001" summary="first init commit">
+      <created>1543661042322</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1543661042322</updated>
+    </task>
+    <task id="LOCAL-00002" summary="try again">
+      <created>1543661285923</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1543661285923</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add write log">
+      <created>1546485311396</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1546485311397</updated>
+    </task>
+    <task id="LOCAL-00004" summary="DOB V0.0">
+      <created>1546512453518</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1546512453518</updated>
+    </task>
+    <task id="LOCAL-00005" summary="DOB V1.0">
+      <created>1546592507871</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1546592507872</updated>
+    </task>
+    <task id="LOCAL-00006" summary="DOB V2.0">
+      <created>1552285424729</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1552285424729</updated>
+    </task>
+    <task id="LOCAL-00007" summary="DOB V2.1">
+      <created>1552882816299</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1552882816299</updated>
+    </task>
+    <task id="LOCAL-00008" summary="DOB using in lab_vicon">
+      <created>1552892833966</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1552892833966</updated>
+    </task>
+    <task id="LOCAL-00009" summary="DOB using in lab_vicon">
+      <created>1552896861039</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1552896861039</updated>
+    </task>
+    <task id="LOCAL-00010" summary="using getparam() for param read">
+      <created>1555229043357</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1555229043357</updated>
+    </task>
+    <task id="LOCAL-00011" summary="DOB using vel">
+      <created>1556193060893</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1556193060893</updated>
+    </task>
+    <task id="LOCAL-00012" summary="DOB using vel V0.1">
+      <created>1556269039294</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1556269039294</updated>
+    </task>
+    <task id="LOCAL-00013" summary="DOB using vel V1.1">
+      <created>1556772536998</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1556772536998</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="12000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="64" y="125" width="1857" height="1092" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22830293" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32879582" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.2973822" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39895287" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" x="356" y="264" width="957" height="526" id="Messages" order="8" visible="true" weight="0.26806283" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32984293" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5002764" side_tool="true" weight="0.26304802" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.32879582" />
+      <window_info anchor="bottom" id="CMake" order="12" sideWeight="0.4997236" weight="0.25688073" />
+      <window_info anchor="bottom" id="Inspection Results" order="13" weight="0.32984293" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" weight="0.32946378" />
+    </layout>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="first init commit" />
+    <MESSAGE value="first init commit again" />
+    <MESSAGE value="try again" />
+    <MESSAGE value="add write log" />
+    <MESSAGE value="DOB V0.0" />
+    <MESSAGE value="DOB V1.0" />
+    <MESSAGE value="DOB V2.0" />
+    <MESSAGE value="DOB V2.1" />
+    <MESSAGE value="DOB using in lab_vicon" />
+    <MESSAGE value="using getparam() for param read" />
+    <MESSAGE value="DOB using vel" />
+    <MESSAGE value="DOB using vel V0.1" />
+    <MESSAGE value="DOB using vel V1.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="DOB using vel V1.1" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/scripts/uavinstance.py</url>
+          <line>1</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+>>>>>>> Stashed changes
   </component>
 </project>

@@ -23,13 +23,15 @@
 #include <stdio.h>
 #include <Eigen/Eigen>
 #include <Eigen/Geometry> 
-#include <Eigen/Core> 
+#include <Eigen/Core>
+#include <dynamic_reconfigure/server.h>
+#include <offb_posctl/offb_Config.h>
 
 #include <ros/ros.h>
-#include "PARAM_VICON.h"
 #include "PID.h"
 #include "FILTER.h"
 #include "DOB.h"
+#include "BUFFER.h"
 
 
 //topic
@@ -88,7 +90,8 @@ float Yaw_Locked = 0;           //锁定的偏航角(一般锁定为0)
 PID PIDX, PIDY, PIDZ, PIDVX, PIDVY, PIDVZ;    //声明PID类
 DOB DOBX, DOBY, DOBZ;                         //声明DOB类
 FILTER FilterVX, FilterVY, FilterVZ;
-PARAM param;
+BUFFER Buffer;
+offb_posctl::offb_Config param;
 std::ofstream logfile;
 std::ofstream debugfile;
 
@@ -108,6 +111,12 @@ void data_log(std::ofstream &logfile, float cur_time);
 void debug_log(std::ofstream &debugfile, float cur_time);
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>回 调 函 数<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+void param_cb(const offb_posctl::offb_Config &config, uint32_t level)
+{
+    param = config;
+}
+
 
 void ref_cb(const geometry_msgs::PoseStamped::ConstPtr &msg){
     pos_ref = *msg;
@@ -141,6 +150,8 @@ void pos_cb(const geometry_msgs::PoseStamped::ConstPtr &msg){
         pos_drone_last = pos_drone;
         pos_drone = *msg;
     }
+//    Buffer.delay_step = param.Delay_step;
+//    pos_drone.pose.position = Buffer.pos_buffer(pos_drone.pose.position);
 }
 
 bool vel_initialized = false;
@@ -153,6 +164,8 @@ void vel_cb(const geometry_msgs::TwistStamped::ConstPtr &msg){
         return;
     }
     vel_drone = *msg;
+//    vel_drone.twist.linear = Buffer.vel_buffer(vel_drone.twist.linear);
+
     // lowpass filter 1p
     vel_read.x = 0.25 * vel_drone.twist.linear.x + 0.75 * vel_read.x;
     vel_read.y = 0.25 * vel_drone.twist.linear.y + 0.75 * vel_read.y;
@@ -167,6 +180,12 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "position_control");
     ros::NodeHandle nh;
+
+    dynamic_reconfigure::Server<offb_posctl::offb_Config> server;
+    dynamic_reconfigure::Server<offb_posctl::offb_Config>::CallbackType ff;
+    ff = boost::bind(&param_cb, _1, _2);
+    server.setCallback(ff);
+
 
     // 【订阅】无人机当前状态/位置/速度信息
     ros::Subscriber pos_ref_sub  = nh.subscribe<geometry_msgs::PoseStamped>("/cmd/pos_ref", 10, ref_cb);
@@ -193,6 +212,10 @@ int main(int argc, char **argv)
     //debug pub
     ros::Publisher viconvel_pub = nh.advertise<geometry_msgs::Vector3>("/plot/viconvel_read", 10);
     ros::Publisher filtervel_pub = nh.advertise<geometry_msgs::Vector3>("/plot/filtervel_read", 10);
+
+    ros::Publisher acc_imu_pub = nh.advertise<geometry_msgs::Vector3>("/plot/acc_imu", 10);
+    ros::Publisher acc_mop_pub = nh.advertise<geometry_msgs::Vector3>("/plot/acc_mop", 10);
+
 //    ros::Publisher filtervel_pub2 = nh.advertise<geometry_msgs::Vector3>("/plot/filtervel2_read", 10);
 
     ros::Publisher targetvel_pub = nh.advertise<geometry_msgs::Vector3>("/plot/target_vel", 10);
@@ -203,11 +226,11 @@ int main(int argc, char **argv)
     // 频率 [20Hz]
     ros::Rate rate(20.0);
 
-    // 读取PID参数
-    if (! param.readParam()){
-        ROS_ERROR("read config file error!");
-        return 0;
-    }
+//    // 读取PID参数
+//    if (! param.readParam()){
+//        ROS_ERROR("read config file error!");
+//        return 0;
+//    }
 
     // log输出文件初始化
     logfile.open("/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/log/log031102.csv", std::ios::out);
@@ -222,20 +245,20 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    // 设置位置环PID参数 比例参数 积分参数 微分参数
-    PIDX.setPID(param.x_p, param.x_i, param.x_d);
-    PIDY.setPID(param.y_p, param.y_i, param.y_d);
-    PIDZ.setPID(param.z_p, param.z_i, param.z_d);
+//    // 设置位置环PID参数 比例参数 积分参数 微分参数
+//    PIDX.setPID(param.x_p, param.x_i, param.x_d);
+//    PIDY.setPID(param.y_p, param.y_i, param.y_d);
+//    PIDZ.setPID(param.z_p, param.z_i, param.z_d);
 
     // 设置位置环积分上限 控制量最大值 误差死区
     PIDX.set_sat(0.3, 3, 0.0);
     PIDY.set_sat(0.3, 3, 0.0);
     PIDZ.set_sat(0.05, 5, 0.0);
 
-    // 设置速度环PID参数 比例参数 积分参数 微分参数
-    PIDVX.setPID(param.vx_p, param.vx_i, param.vx_d);
-    PIDVY.setPID(param.vy_p, param.vy_i, param.vy_d);
-    PIDVZ.setPID(param.vz_p, param.vz_i, param.vz_d);
+//    // 设置速度环PID参数 比例参数 积分参数 微分参数
+//    PIDVX.setPID(param.vx_p, param.vx_i, param.vx_d);
+//    PIDVY.setPID(param.vy_p, param.vy_i, param.vy_d);
+//    PIDVZ.setPID(param.vz_p, param.vz_i, param.vz_d);
     // 设置速度环积分上限 控制量最大值 误差死区
     PIDVX.set_sat(0.5, 1.5, 0);
     PIDVY.set_sat(0.5, 1.5, 0);
@@ -280,9 +303,9 @@ int main(int argc, char **argv)
         float cur_time = get_ros_time(begin_time);  // 当前时间
         pix_controller(cur_time);                   //控制程序
 
-        if(current_state.mode == "OFFBOARD"){
+        if(current_state.mode == "OFFBOARD" && param.LOG_to_file){
             data_log(logfile, cur_time);                     //log输出
-            debug_log(debugfile, cur_time);
+//            debug_log(debugfile, cur_time);
         }
 
         std_msgs::Float32 data2pub;
@@ -331,7 +354,13 @@ float get_ros_time(ros::Time time_begin)
 int pix_controller(float cur_time)
 {
 
+
 //位 置 环
+    // 设置位置环PID参数 比例参数 积分参数 微分参数
+    PIDX.setPID(param.MC_X_P, param.MC_X_I, param.MC_X_D);
+//    PIDY.setPID(param.MC_Y_P, param.MC_Y_I, param.MC_Y_D);
+    PIDY.setPID(param.MC_X_P, param.MC_X_I, param.MC_X_D);
+    PIDZ.setPID(param.MC_Z_P, param.MC_Z_I, param.MC_Z_D);
     //积分标志位.未进入OFFBOARD时,不累积积分项;进入OFFBOARD时,开始积分.
     PIDX.start_intergrate_flag = true;
     PIDY.start_intergrate_flag = true;
@@ -386,7 +415,12 @@ int pix_controller(float cur_time)
 //    vel_read2.y = 0.3 * vel_drone.twist.linear.y + 0.7 * vel_read2.y;
 //    vel_read2.z = 0.3 * vel_drone.twist.linear.z + 0.7 * vel_read2.z;
 
-
+//速 度 环
+    // 设置位置环PID参数 比例参数 积分参数 微分参数
+    PIDVX.setPID(param.MC_VX_P, param.MC_VX_I, param.MC_VX_D);
+//    PIDVY.setPID(param.MC_VY_P, param.MC_VY_I, param.MC_VY_D);
+    PIDVY.setPID(param.MC_VX_P, param.MC_VX_I, param.MC_VX_D);
+    PIDVZ.setPID(param.MC_VZ_P, param.MC_VZ_I, param.MC_VZ_D);
     //积分标志位.未进入OFFBOARD时,不累积积分项;进入OFFBOARD时,开始积分.
     PIDVX.start_intergrate_flag = true;
     PIDVY.start_intergrate_flag = true;
@@ -453,13 +487,13 @@ int pix_controller(float cur_time)
     auto thrust_dis = (float)(0.05 * (9.8 + acc_z_dis));
 
 
-    angle_target.x = satfunc((angle_des.x + param.alpha * angle_dis[0]), 0.314f, 0.0f);
-    angle_target.y = satfunc((angle_des.y + param.alpha * angle_dis[1]), 0.314f, 0.0f);
+    angle_target.x = satfunc((angle_des.x + param.DOB_rate * angle_dis[0]), 0.314f, 0.0f);
+    angle_target.y = satfunc((angle_des.y + param.DOB_rate * angle_dis[1]), 0.314f, 0.0f);
     angle_target.z = angle_des.z;
     orientation_target = euler2quaternion(angle_target.x, angle_target.y, angle_target.z);
 
-//    thrust_target = thrust_des + param.alpha * thrust_dis + (param.thr_hover - 0.5f);  //目标推力值
-    thrust_target = satfunc((thrust_des + 0.2 * param.alpha * thrust_dis + (param.thr_hover - 0.5f)), 0.80f, 0.0f);  //目标推力值
+    thrust_target = thrust_des + 0.0 * param.DOB_rate * thrust_dis + (param.THR_HOVER - 0.5f);  //目标推力值
+//    thrust_target = satfunc((thrust_des + 0.0 * param.DOB_rate * thrust_dis + (param.THR_HOVER - 0.5f)), 0.80f, 0.0f);  //目标推力值
 
 
 
@@ -563,14 +597,19 @@ float satfunc(float data, float Max, float Thres)
  */
 void data_log(std::ofstream &logfile, float cur_time)
 {
-    logfile <<cur_time<<","<<param.pos_x <<","<<param.pos_y <<","<<param.pos_z <<","                           //set_pos
-        <<pos_drone.pose.position.x <<","<<pos_drone.pose.position.y <<","<<pos_drone.pose.position.z <<","    //uav_pos
-        <<vel_target.x <<","<<vel_target.y <<","<<vel_target.z <<","                                           //set_vel
-        <<vel_drone.twist.linear.x <<","<<vel_drone.twist.linear.y <<","<<vel_drone.twist.linear.z <<","       //uav_vel
-        <<angle_target.x  <<","<<angle_target.y  <<","<<angle_target.z  <<","                                  //set_att
-        <<angle_receive.x <<","<<angle_receive.y <<","<<angle_receive.z <<","                                  //uav_att
-//        <<acc_receive.x   <<","<<acc_receive.y   <<","<<acc_receive.z   <<","                                  //uav_acc
-        <<thrust_target<<std::endl;
+//    logfile<<pos_drone.pose.position.x <<","<<pos_drone.pose.position.y <<","<<pos_drone.pose.position.z <<","    //uav_pos
+//        <<vel_target.x <<","<<vel_target.y <<","<<vel_target.z <<","                                           //set_vel
+//        <<vel_drone.twist.linear.x <<","<<vel_drone.twist.linear.y <<","<<vel_drone.twist.linear.z <<","       //uav_vel
+//        <<angle_target.x  <<","<<angle_target.y  <<","<<angle_target.z  <<","                                  //set_att
+//        <<angle_receive.x <<","<<angle_receive.y <<","<<angle_receive.z <<","                                  //uav_att
+////        <<acc_receive.x   <<","<<acc_receive.y   <<","<<acc_receive.z   <<","                                  //uav_acc
+//        <<thrust_target<<std::endl;
+    logfile<<cur_time <<","<<param.DOB_rate<<","
+           <<pos_drone.pose.position.x <<","<<pos_drone.pose.position.y <<","<<pos_drone.pose.position.z <<","    //uav_pos
+           <<pos_ref.pose.position.x <<","<<pos_ref.pose.position.y <<","<<pos_ref.pose.position.z <<","          //ref_pos
+           <<vel_target.x <<","<<vel_target.y <<","<<vel_target.z <<","                                           //set_vel
+           <<vel_drone.twist.linear.x <<","<<vel_drone.twist.linear.y <<","<<vel_drone.twist.linear.z <<","       //uav_vel
+           <<std::endl;
 
 }
 

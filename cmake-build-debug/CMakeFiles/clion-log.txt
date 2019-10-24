@@ -12,6 +12,15 @@
 -- Using Python nosetests: /usr/local/bin/nosetests-2.7
 -- catkin 0.6.19
 -- Using these message generators: gencpp;genlisp;genpy
+CMake Warning at /opt/ros/indigo/share/catkin/cmake/catkin_package.cmake:411 (message):
+  catkin_package() include dir
+  '/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/devel/include'
+  should be placed in the devel space instead of the build space
+Call Stack (most recent call first):
+  /opt/ros/indigo/share/catkin/cmake/catkin_package.cmake:100 (_catkin_package)
+  CMakeLists.txt:22 (catkin_package)
+
+
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug

@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/BUFFER.cpp" "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles/thelib_vicon.dir/src/BUFFER.cpp.o"
   "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/DOB.cpp" "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles/thelib_vicon.dir/src/DOB.cpp.o"
   "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/FILTER.cpp" "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles/thelib_vicon.dir/src/FILTER.cpp.o"
-  "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/PARAM_VICON.cpp" "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles/thelib_vicon.dir/src/PARAM_VICON.cpp.o"
   "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/PID.cpp" "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles/thelib_vicon.dir/src/PID.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
@@ -19,6 +19,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "devel/include"
   "/home/ubuntu/Rotors/devel/include"
   "/home/ubuntu/Rotors/devel/.private/mavros_msgs/include"
   "/home/ubuntu/Rotors/src/mavros/libmavconn/include"

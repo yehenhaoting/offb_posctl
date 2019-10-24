@@ -16,6 +16,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "devel/include"
   "/home/ubuntu/Rotors/devel/include"
   "/home/ubuntu/Rotors/devel/.private/mavros_msgs/include"
   "/home/ubuntu/Rotors/src/mavros/libmavconn/include"

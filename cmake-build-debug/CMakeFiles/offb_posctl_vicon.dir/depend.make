@@ -3,9 +3,9 @@
 
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /home/ubuntu/Rotors/devel/include/mavros_msgs/AttitudeTarget.h
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /home/ubuntu/Rotors/devel/include/mavros_msgs/State.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: ../src/BUFFER.h
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: ../src/DOB.h
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: ../src/FILTER.h
-CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: ../src/PARAM_VICON.h
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: ../src/PID.h
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: ../src/offb_posctl_vicon.cpp
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /home/ubuntu/catkin_ws/devel/include/Eigen/Cholesky
@@ -213,6 +213,21 @@ CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /home/ubuntu/catki
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /home/ubuntu/catkin_ws/devel/include/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/XmlRpcDecl.h
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/XmlRpcValue.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/BoolParameter.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/Config.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/ConfigDescription.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/DoubleParameter.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/Group.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/GroupState.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/IntParameter.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/ParamDescription.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/Reconfigure.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/ReconfigureRequest.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/ReconfigureResponse.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/StrParameter.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/config_init_mutex.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/config_tools.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/dynamic_reconfigure/server.h
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/geometry_msgs/Point.h
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/geometry_msgs/Pose.h
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/geometry_msgs/PoseStamped.h
@@ -280,4 +295,5 @@ CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/in
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/std_msgs/Bool.h
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/std_msgs/Float32.h
 CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: /opt/ros/indigo/include/std_msgs/Header.h
+CMakeFiles/offb_posctl_vicon.dir/src/offb_posctl_vicon.cpp.o: devel/include/offb_posctl/offb_Config.h
 

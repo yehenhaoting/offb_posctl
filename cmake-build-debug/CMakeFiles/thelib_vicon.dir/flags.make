@@ -6,5 +6,5 @@ CXX_FLAGS = -g -fPIC   -std=c++11
 
 CXX_DEFINES = -DROSCONSOLE_BACKEND_LOG4CXX -DROS_PACKAGE_NAME=\"offb_posctl\" -Dthelib_vicon_EXPORTS
 
-CXX_INCLUDES = -I/home/ubuntu/Rotors/devel/include -I/home/ubuntu/Rotors/devel/.private/mavros_msgs/include -I/home/ubuntu/Rotors/src/mavros/libmavconn/include -I/home/ubuntu/Rotors/src/mavros/mavros_msgs/include -I/home/ubuntu/Rotors/src/mavros/mavros/include -I/home/ubuntu/catkin_ws/devel/include -I/opt/ros/indigo/include -I/usr/include/eigen3 -I/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src 
+CXX_INCLUDES = -I/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/devel/include -I/home/ubuntu/Rotors/devel/include -I/home/ubuntu/Rotors/devel/.private/mavros_msgs/include -I/home/ubuntu/Rotors/src/mavros/libmavconn/include -I/home/ubuntu/Rotors/src/mavros/mavros_msgs/include -I/home/ubuntu/Rotors/src/mavros/mavros/include -I/home/ubuntu/catkin_ws/devel/include -I/opt/ros/indigo/include -I/usr/include/eigen3 -I/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src 
 

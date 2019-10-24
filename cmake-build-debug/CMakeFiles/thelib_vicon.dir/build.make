@@ -96,25 +96,25 @@ CMakeFiles/thelib_vicon.dir/src/DOB.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/thelib_vicon.dir/src/DOB.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/DOB.cpp -o CMakeFiles/thelib_vicon.dir/src/DOB.cpp.s
 
-CMakeFiles/thelib_vicon.dir/src/PARAM_VICON.cpp.o: CMakeFiles/thelib_vicon.dir/flags.make
-CMakeFiles/thelib_vicon.dir/src/PARAM_VICON.cpp.o: ../src/PARAM_VICON.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/thelib_vicon.dir/src/PARAM_VICON.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/thelib_vicon.dir/src/PARAM_VICON.cpp.o -c /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/PARAM_VICON.cpp
+CMakeFiles/thelib_vicon.dir/src/BUFFER.cpp.o: CMakeFiles/thelib_vicon.dir/flags.make
+CMakeFiles/thelib_vicon.dir/src/BUFFER.cpp.o: ../src/BUFFER.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/thelib_vicon.dir/src/BUFFER.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/thelib_vicon.dir/src/BUFFER.cpp.o -c /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/BUFFER.cpp
 
-CMakeFiles/thelib_vicon.dir/src/PARAM_VICON.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/thelib_vicon.dir/src/PARAM_VICON.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/PARAM_VICON.cpp > CMakeFiles/thelib_vicon.dir/src/PARAM_VICON.cpp.i
+CMakeFiles/thelib_vicon.dir/src/BUFFER.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/thelib_vicon.dir/src/BUFFER.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/BUFFER.cpp > CMakeFiles/thelib_vicon.dir/src/BUFFER.cpp.i
 
-CMakeFiles/thelib_vicon.dir/src/PARAM_VICON.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/thelib_vicon.dir/src/PARAM_VICON.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/PARAM_VICON.cpp -o CMakeFiles/thelib_vicon.dir/src/PARAM_VICON.cpp.s
+CMakeFiles/thelib_vicon.dir/src/BUFFER.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/thelib_vicon.dir/src/BUFFER.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/BUFFER.cpp -o CMakeFiles/thelib_vicon.dir/src/BUFFER.cpp.s
 
 # Object files for target thelib_vicon
 thelib_vicon_OBJECTS = \
 "CMakeFiles/thelib_vicon.dir/src/PID.cpp.o" \
 "CMakeFiles/thelib_vicon.dir/src/FILTER.cpp.o" \
 "CMakeFiles/thelib_vicon.dir/src/DOB.cpp.o" \
-"CMakeFiles/thelib_vicon.dir/src/PARAM_VICON.cpp.o"
+"CMakeFiles/thelib_vicon.dir/src/BUFFER.cpp.o"
 
 # External object files for target thelib_vicon
 thelib_vicon_EXTERNAL_OBJECTS =
@@ -122,7 +122,7 @@ thelib_vicon_EXTERNAL_OBJECTS =
 devel/lib/libthelib_vicon.so: CMakeFiles/thelib_vicon.dir/src/PID.cpp.o
 devel/lib/libthelib_vicon.so: CMakeFiles/thelib_vicon.dir/src/FILTER.cpp.o
 devel/lib/libthelib_vicon.so: CMakeFiles/thelib_vicon.dir/src/DOB.cpp.o
-devel/lib/libthelib_vicon.so: CMakeFiles/thelib_vicon.dir/src/PARAM_VICON.cpp.o
+devel/lib/libthelib_vicon.so: CMakeFiles/thelib_vicon.dir/src/BUFFER.cpp.o
 devel/lib/libthelib_vicon.so: CMakeFiles/thelib_vicon.dir/build.make
 devel/lib/libthelib_vicon.so: CMakeFiles/thelib_vicon.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX shared library devel/lib/libthelib_vicon.so"
