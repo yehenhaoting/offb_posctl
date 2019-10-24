@@ -229,7 +229,7 @@ int main(int argc, char **argv)
 
 
     // 频率 [100Hz],选用100Hz，是考虑到控制的需要，数据传输是20Hz，运算频率建议2倍以上，由于该算法算力消耗很低，故采用100Hz
-    ros::Rate rate(100.0);
+    ros::Rate rate(20.0);
 
 //    // 读取PID参数
 //    if (! param.readParam()){
