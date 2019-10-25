@@ -1,0 +1,16 @@
+<launch>
+
+    <include file="$(find mavros)/launch/px4.launch" >
+        <arg name="fcu_url" value="/dev/ttyUSB0:57600"/> </include>
+
+    <node pkg="offb_enable" type="offb_enable" name="offb_enable" > </node>
+    <!--<node pkg="offb_enable" type="offb_enable_xbee" name="offb_enable_xbee" > </node>-->
+
+    <node pkg="offb_posctl" type="pos_ref_vicon.py" name="pos_ref_vicon" > </node>
+    <node pkg="offb_posctl" type="offb_posctl_vicon" name="offb_posctl_vicon" output="screen"> </node>
+
+    <node pkg="rqt_plot" type="rqt_plot" name="rqt_plot"> </node>
+    <!--<node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure"> </node>-->
+
+
+</launch>
