@@ -4,8 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/DOB.cpp" "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles/thelib.dir/src/DOB.cpp.o"
+  "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/FILTER.cpp" "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles/thelib.dir/src/FILTER.cpp.o"
   "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/PID.cpp" "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles/thelib.dir/src/PID.cpp.o"
-  "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/Parameter.cpp" "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles/thelib.dir/src/Parameter.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -17,6 +18,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "devel/include"
   "/home/ubuntu/Rotors/devel/include"
   "/home/ubuntu/Rotors/devel/.private/mavros_msgs/include"
   "/home/ubuntu/Rotors/src/mavros/libmavconn/include"

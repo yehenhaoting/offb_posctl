@@ -120,6 +120,22 @@ file(INSTALL DESTINATION "/usr/local" TYPE FILE FILES "/home/ubuntu/catkin_px4_O
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/offb_posctl" TYPE FILE FILES "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/devel/include/offb_posctl/offb_cfgConfig.h")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages/offb_posctl" TYPE FILE FILES "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/devel/lib/python2.7/dist-packages/offb_posctl/__init__.py")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  execute_process(COMMAND "/usr/bin/python" -m compileall "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/devel/lib/python2.7/dist-packages/offb_posctl/cfg")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages/offb_posctl" TYPE DIRECTORY FILES "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/devel/lib/python2.7/dist-packages/offb_posctl/cfg")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/catkin_generated/installspace/offb_posctl.pc")
 endif()
 

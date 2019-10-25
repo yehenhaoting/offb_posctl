@@ -57,22 +57,9 @@ include CMakeFiles/thelib.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/thelib.dir/flags.make
 
-CMakeFiles/thelib.dir/src/Parameter.cpp.o: CMakeFiles/thelib.dir/flags.make
-CMakeFiles/thelib.dir/src/Parameter.cpp.o: ../src/Parameter.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/thelib.dir/src/Parameter.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/thelib.dir/src/Parameter.cpp.o -c /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/Parameter.cpp
-
-CMakeFiles/thelib.dir/src/Parameter.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/thelib.dir/src/Parameter.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/Parameter.cpp > CMakeFiles/thelib.dir/src/Parameter.cpp.i
-
-CMakeFiles/thelib.dir/src/Parameter.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/thelib.dir/src/Parameter.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/Parameter.cpp -o CMakeFiles/thelib.dir/src/Parameter.cpp.s
-
 CMakeFiles/thelib.dir/src/PID.cpp.o: CMakeFiles/thelib.dir/flags.make
 CMakeFiles/thelib.dir/src/PID.cpp.o: ../src/PID.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/thelib.dir/src/PID.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/thelib.dir/src/PID.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/thelib.dir/src/PID.cpp.o -c /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/PID.cpp
 
 CMakeFiles/thelib.dir/src/PID.cpp.i: cmake_force
@@ -83,19 +70,47 @@ CMakeFiles/thelib.dir/src/PID.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/thelib.dir/src/PID.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/PID.cpp -o CMakeFiles/thelib.dir/src/PID.cpp.s
 
+CMakeFiles/thelib.dir/src/FILTER.cpp.o: CMakeFiles/thelib.dir/flags.make
+CMakeFiles/thelib.dir/src/FILTER.cpp.o: ../src/FILTER.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/thelib.dir/src/FILTER.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/thelib.dir/src/FILTER.cpp.o -c /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/FILTER.cpp
+
+CMakeFiles/thelib.dir/src/FILTER.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/thelib.dir/src/FILTER.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/FILTER.cpp > CMakeFiles/thelib.dir/src/FILTER.cpp.i
+
+CMakeFiles/thelib.dir/src/FILTER.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/thelib.dir/src/FILTER.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/FILTER.cpp -o CMakeFiles/thelib.dir/src/FILTER.cpp.s
+
+CMakeFiles/thelib.dir/src/DOB.cpp.o: CMakeFiles/thelib.dir/flags.make
+CMakeFiles/thelib.dir/src/DOB.cpp.o: ../src/DOB.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/thelib.dir/src/DOB.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/thelib.dir/src/DOB.cpp.o -c /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/DOB.cpp
+
+CMakeFiles/thelib.dir/src/DOB.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/thelib.dir/src/DOB.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/DOB.cpp > CMakeFiles/thelib.dir/src/DOB.cpp.i
+
+CMakeFiles/thelib.dir/src/DOB.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/thelib.dir/src/DOB.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/src/DOB.cpp -o CMakeFiles/thelib.dir/src/DOB.cpp.s
+
 # Object files for target thelib
 thelib_OBJECTS = \
-"CMakeFiles/thelib.dir/src/Parameter.cpp.o" \
-"CMakeFiles/thelib.dir/src/PID.cpp.o"
+"CMakeFiles/thelib.dir/src/PID.cpp.o" \
+"CMakeFiles/thelib.dir/src/FILTER.cpp.o" \
+"CMakeFiles/thelib.dir/src/DOB.cpp.o"
 
 # External object files for target thelib
 thelib_EXTERNAL_OBJECTS =
 
-devel/lib/libthelib.so: CMakeFiles/thelib.dir/src/Parameter.cpp.o
 devel/lib/libthelib.so: CMakeFiles/thelib.dir/src/PID.cpp.o
+devel/lib/libthelib.so: CMakeFiles/thelib.dir/src/FILTER.cpp.o
+devel/lib/libthelib.so: CMakeFiles/thelib.dir/src/DOB.cpp.o
 devel/lib/libthelib.so: CMakeFiles/thelib.dir/build.make
 devel/lib/libthelib.so: CMakeFiles/thelib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX shared library devel/lib/libthelib.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX shared library devel/lib/libthelib.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/thelib.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

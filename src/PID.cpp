@@ -20,11 +20,14 @@ using namespace std;
 
 PID::PID() {
     error_list.push_back(make_pair(0.0f, 0.0f));
+//    filter_list.push_back(make_pair(0.0f, 0.0f));
+//    filter_data = 0;
     error = 0;
     P_Out = 0;
     I_Out = 0;
     D_Out = 0;
     Output = 0;
+//    Output_filter = 0;
     start_intergrate_flag = false;
 }
 
@@ -55,7 +58,7 @@ void PID::set_sat(float i_max, float con_max, float thres)
     errThres = thres;
 }
 
-bool PID::add_error(float input_error, float curtime)
+void PID::add_error(float input_error, float curtime)
 {
     error = input_error;
     // delta_time = 0.05; /////////////////////////////////////////////////////////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!1
@@ -76,11 +79,9 @@ bool PID::add_error(float input_error, float curtime)
         std::pair<float,float > p1(curtime, error);
         error_list.push_back(p1);
     }
-
-    return true;
 }
 
-void PID::pid_output(void)
+void PID::pid_output()
 {
     P_Out = Kp * error;                          //P环节输出值
     I_Out = I_Out + Ki *error*delta_time;        //I环节输出值
@@ -89,6 +90,23 @@ void PID::pid_output(void)
     {
         I_Out = 0;
     }
+
+
+//    if(error_list.size() < 10 || Ki == 0 || !start_intergrate_flag)
+//    {
+//        I_Out = 0;
+//    }
+//    else{
+//        vector<pair<float, float> >::iterator Iout_k;
+//        float Iout_sum = 0;
+//        for(Iout_k = error_list.begin(); Iout_k != error_list.end(); ++ Iout_k) {
+//            Iout_sum = Iout_sum + Iout_k->second;
+//        }
+//        I_Out = Ki * Iout_sum * delta_time;
+//    }
+//    I_Out = satfunc(I_Out, Imax, 0);             //I环节限幅[I_Out<=Imax]
+
+
 
     D_Out = 0;
 
@@ -105,4 +123,37 @@ void PID::pid_output(void)
 
     Output = P_Out + I_Out + D_Out;
     Output = satfunc(Output, Output_max, errThres);
+
+//    std::cout<<"P_out: "<<P_Out<<"\tI_out: "<<I_Out<<"\tD_out: "<<D_Out<<std::endl;
 }
+
+//bool PID::filter_input(float data2fliter, float curtime)
+//{
+//    filter_data = data2fliter;
+//    if(filter_list.size() < 10){
+//        filter_list.push_back(make_pair(curtime, filter_data));
+//    }
+//    else{
+//        vector<pair<float, float > > ::iterator fil_iter = filter_list.begin();
+//        filter_list.erase(fil_iter);
+//        std::pair<float, float > temp_iter(curtime, filter_data);
+//        filter_list.push_back(temp_iter);
+//    }
+//    return true;
+//}
+//
+//void PID::filter_output()
+//{
+//    if(filter_list.size() < 10 || ! start_intergrate_flag){
+//        Output_filter = 0;
+//    }
+//    else{
+//        vector<pair<float, float> >::iterator filter_k;
+//        float filter_sum = 0;
+//        for(filter_k = filter_list.begin(); filter_k != filter_list.end(); ++ filter_k){
+//            filter_sum = filter_sum + filter_k->second;
+//        }
+//        Output_filter = filter_sum * delta_time/(filter_list.back().first - filter_list.front().first);
+//
+//    }
+//}

@@ -1,0 +1,35 @@
+# system param
+DOB_rate: 0.45
+THR_HOVER: 0.39
+
+
+# Desired positon for pos_control HOLD
+POS_X: 0.0
+POS_Y: 0.0
+POS_Z: 1.0
+
+# PID parameters for pos_error
+MC_X_P: 1.0
+MC_X_I: 0.2
+MC_X_D: 0.0
+
+MC_Y_P: 1.0
+MC_Y_I: 0.2
+MC_Y_D: 0.0
+
+MC_Z_P: 0.8
+MC_Z_I: 0.0
+MC_Z_D: 0.0
+
+# PID parameters for vel_error
+MC_VX_P: 1.4
+MC_VX_I: 0.2
+MC_VX_D: 0.05
+
+MC_VY_P: 1.4
+MC_VY_I: 0.2
+MC_VY_D: 0.05
+
+MC_VZ_P: 1.2
+MC_VZ_I: 1.1
+MC_VZ_D: 0.0
