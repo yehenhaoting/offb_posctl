@@ -20,6 +20,9 @@
 #include <stdlib.h>
 #include <iostream>
 #include <sstream>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <pwd.h>
 #include <stdio.h>
 #include <Eigen/Eigen>
 #include <Eigen/Geometry> 
@@ -102,6 +105,7 @@ geometry_msgs::Vector3 quaternion2euler(float x, float y, float z, float w);
 float get_ros_time(ros::Time time_begin);                                            //获取ros当前时间
 int pix_controller(float cur_time);                                                  //控制主程序
 float satfunc(float data, float Max, float Thres);                                   //设置死区及范围
+int set_file();
 void data_log(std::ofstream &logfile, float cur_time);                               //保存飞行数据
 void debug_log(std::ofstream &debugfile, float cur_time);                            //保存debug数据
 
@@ -209,19 +213,7 @@ int main(int argc, char **argv)
     // 频率 [100Hz],选用100Hz，是考虑到控制的需要，数据传输是20Hz，运算频率建议2倍以上，由于该算法算力消耗很低，故采用100Hz
     ros::Rate rate(20.0);
 
-    // log输出文件初始化
-    logfile.open("/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/log/log031102.csv", std::ios::out);
-    if (! logfile.is_open()){
-        std::cout<<"log to file error!"<<std::endl;
-        return 0;
-    }
-
-    // debug输出文件初始化
-    debugfile.open("/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/log/debug031101.csv", std::ios::out);
-    if (! debugfile.is_open()){
-        std::cout<<"debug to file error!"<<std::endl;
-        return 0;
-    }
+    set_file();
 
     // 设置位置环PID参数 比例参数 积分参数 微分参数
     PIDX.setPID(param.MC_X_P, param.MC_X_I, param.MC_X_D);
@@ -278,7 +270,7 @@ int main(int argc, char **argv)
         float cur_time = get_ros_time(begin_time);  // 获取当前系统时间
         pix_controller(cur_time);                   // 执行控制控制程序
 
-        if(current_state.mode == "OFFBOARD"){
+        if(current_state.mode == "OFFBOARD" && param.Enable_log_to_file){
             data_log(logfile, cur_time);                     //log输出
             debug_log(debugfile, cur_time);
         }
@@ -341,7 +333,7 @@ int pix_controller(float cur_time)
     pos_error.x = pos_ref.pose.position.x - pos_drone.pose.position.x;
     pos_error.y = pos_ref.pose.position.y - pos_drone.pose.position.y;
     pos_error.z = pos_ref.pose.position.z - pos_drone.pose.position.z;
-    std::cout << "error: x：" << pos_error.x << "\ty：" << pos_error.y << "\tz：" << pos_error.z << std::endl;
+    std::cout <<std::fixed << std::setprecision(3) << "error: \tx：" << pos_error.x << "\ty：" << pos_error.y << "\tz：" << pos_error.z << std::endl;
 
     //传递误差
     PIDX.add_error(pos_error.x, cur_time);
@@ -528,6 +520,46 @@ float satfunc(float data, float Max, float Thres)
     }
 }
 
+/**
+ * 设置log文件的储存方式
+ * @return
+ */
+int set_file()
+{
+    // 更新home的文件夹位置，在home目录下新建OFFBOARD_PX4_log文件夹，用于存放log数据
+    id_t uid;
+    struct passwd* pwd;
+    uid = getuid();
+    pwd = getpwuid(uid);
+    chdir(pwd->pw_dir);
+    mkdir("./OFFBOARD_PX4_log", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+
+    // 获取系统时间，作为log文件的文件名进行保存
+    time_t currtime = time(nullptr);
+    tm* p = localtime(&currtime);
+    char log_filename[100] = {0};
+    char debug_filename[100] = {0};
+
+
+    sprintf(log_filename,"./OFFBOARD_PX4_log/log_%d%02d%02d_%02d_%02d_%02d.csv",p->tm_year+1900,p->tm_mon+1,p->tm_mday,p->tm_hour,p->tm_min,p->tm_sec);
+    sprintf(debug_filename,"./OFFBOARD_PX4_log/debug_%d%02d%02d_%02d_%02d_%02d.csv",p->tm_year+1900,p->tm_mon+1,p->tm_mday,p->tm_hour,p->tm_min,p->tm_sec);
+
+
+    // log输出文件初始化
+    logfile.open(log_filename, std::ios::out);
+    if (! logfile.is_open()){
+        std::cerr<<"log to file error!"<<std::endl;
+        return -1;
+    }
+
+    // debug输出文件初始化
+    debugfile.open(debug_filename , std::ios::out);
+    if (! debugfile.is_open()){
+        std::cerr<<"debug to file error!"<<std::endl;
+        return -1;
+    }
+
+}
 
 /**
  * 将进入offboard后的位置&速度&姿态信息记录进文件

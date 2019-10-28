@@ -1,6 +1,6 @@
 # system param
 DOB_rate: 0.0
-Enable_log_to_file: True
+Enable_log_to_file: False
 
 # Desired positon for pos_control HOLD
 POS_X: 0.0
@@ -13,7 +13,7 @@ MC_X_P: 3.0
 MC_X_I: 0.05
 MC_X_D: 0.0
 
-MC_VX_P: 3.0
+MC_VX_P: 1.0
 MC_VX_I: 0.3
 MC_VX_D: 0.5
 
@@ -23,16 +23,16 @@ MC_Y_P: 3.0
 MC_Y_I: 0.05
 MC_Y_D: 0.0
 
-MC_VY_P: 3.0
+MC_VY_P: 1.0
 MC_VY_I: 0.3
 MC_VY_D: 0.5
 
 
 # PID parameters for Z pos_error & vel_error
-MC_Z_P: 1.5
-MC_Z_I: 0.05
+MC_Z_P: 1.3
+MC_Z_I: 0.0
 MC_Z_D: 0.0
 
-MC_VZ_P: 1
-MC_VZ_I: 0.2
-MC_VZ_D: 0.0
+MC_VZ_P: 0.85
+MC_VZ_I: 0.15
+MC_VZ_D: 1.25
