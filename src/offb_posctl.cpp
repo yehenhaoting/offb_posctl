@@ -29,7 +29,6 @@
 
 
 #include <ros/ros.h>
-//#include "PARAM.h"
 #include "PID.h"
 #include "FILTER.h"
 #include "DOB.h"
@@ -111,31 +110,10 @@ void debug_log(std::ofstream &debugfile, float cur_time);                       
 /**
  * 参数读取callback函数，用于获取飞行控制器的参数
  * @param config
- * @param level
  */
 void param_cb(const offb_posctl::offb_Config &config)
 {
     param = config;
-//            config.DOB_rate
-//            config.THR_HOVER
-//            config.MC_X_P
-//            config.MC_X_I
-//            config.MC_X_D
-//            config.MC_Y_P
-//            config.MC_Y_I
-//            config.MC_Y_D
-//            config.MC_Z_P
-//            config.MC_Z_I
-//            config.MC_Z_D
-//            config.MC_VX_P
-//            config.MC_VX_I
-//            config.MC_VX_D
-//            config.MC_VY_P
-//            config.MC_VY_I
-//            config.MC_VY_D
-//            config.MC_VZ_P
-//            config.MC_VZ_I
-//            config.MC_VZ_D
 }
 
 
@@ -231,21 +209,15 @@ int main(int argc, char **argv)
     // 频率 [100Hz],选用100Hz，是考虑到控制的需要，数据传输是20Hz，运算频率建议2倍以上，由于该算法算力消耗很低，故采用100Hz
     ros::Rate rate(20.0);
 
-//    // 读取PID参数
-//    if (! param.readParam()){
-//        std::cout<<"read config file error!"<<std::endl;
-//        return 0;
-//    }
-
     // log输出文件初始化
-    logfile.open("/home/zm/catkin_ws/src/offb_posctl/log/log031102.csv", std::ios::out);
+    logfile.open("/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/log/log031102.csv", std::ios::out);
     if (! logfile.is_open()){
         std::cout<<"log to file error!"<<std::endl;
         return 0;
     }
 
     // debug输出文件初始化
-    debugfile.open("/home/zm/catkin_ws/src/offb_posctl/log/debug031101.csv", std::ios::out);
+    debugfile.open("/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/log/debug031101.csv", std::ios::out);
     if (! debugfile.is_open()){
         std::cout<<"debug to file error!"<<std::endl;
         return 0;
@@ -310,7 +282,6 @@ int main(int argc, char **argv)
             data_log(logfile, cur_time);                     //log输出
             debug_log(debugfile, cur_time);
         }
-
 
         //发布姿态/油门指令
         std_msgs::Float32 data2pub;

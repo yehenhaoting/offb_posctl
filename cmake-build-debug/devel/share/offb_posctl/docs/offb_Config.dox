@@ -1,0 +1,27 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~LOG_to_file" : \b [bool] log to file min: False, default: False, max: True
+- \b "~Delay_step" : \b [int] delay for transision min: 1, default: 3, max: 5
+- \b "~DOB_rate" : \b [double] DOB rate in controller min: 0.0, default: 0.45, max: 1.0
+- \b "~THR_HOVER" : \b [double] Hover throttle min: 0.0, default: 0.39, max: 1.0
+- \b "~MC_X_P" : \b [double] P parameters for X pos_error min: 0.0, default: 1.0, max: 2.0
+- \b "~MC_X_I" : \b [double] I parameters for X pos_error min: 0.0, default: 0.2, max: 2.0
+- \b "~MC_X_D" : \b [double] D parameters for X pos_error min: 0.0, default: 0.0, max: 2.0
+- \b "~MC_Y_P" : \b [double] P parameters for Y pos_error min: 0.0, default: 1.0, max: 2.0
+- \b "~MC_Y_I" : \b [double] I parameters for Y pos_error min: 0.0, default: 0.2, max: 2.0
+- \b "~MC_Y_D" : \b [double] D parameters for Y pos_error min: 0.0, default: 0.0, max: 2.0
+- \b "~MC_Z_P" : \b [double] P parameters for Z pos_error min: 0.0, default: 0.8, max: 2.0
+- \b "~MC_Z_I" : \b [double] I parameters for Z pos_error min: 0.0, default: 0.0, max: 2.0
+- \b "~MC_Z_D" : \b [double] D parameters for Z pos_error min: 0.0, default: 0.0, max: 2.0
+- \b "~MC_VX_P" : \b [double] P parameters for X vel_error min: 0.0, default: 1.4, max: 2.0
+- \b "~MC_VX_I" : \b [double] I parameters for X vel_error min: 0.0, default: 0.2, max: 2.0
+- \b "~MC_VX_D" : \b [double] D parameters for X vel_error min: 0.0, default: 0.05, max: 2.0
+- \b "~MC_VY_P" : \b [double] P parameters for Y vel_error min: 0.0, default: 1.4, max: 2.0
+- \b "~MC_VY_I" : \b [double] I parameters for Y vel_error min: 0.0, default: 0.2, max: 2.0
+- \b "~MC_VY_D" : \b [double] D parameters for Y vel_error min: 0.0, default: 0.05, max: 2.0
+- \b "~MC_VZ_P" : \b [double] P parameters for Z vel_error min: 0.0, default: 1.2, max: 2.0
+- \b "~MC_VZ_I" : \b [double] I parameters for Z vel_error min: 0.0, default: 1.1, max: 2.0
+- \b "~MC_VZ_D" : \b [double] D parameters for Z vel_error min: 0.0, default: 0.0, max: 2.0
+

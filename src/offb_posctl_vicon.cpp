@@ -110,20 +110,32 @@ void debug_log(std::ofstream &debugfile, float cur_time);
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>回 调 函 数<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-void param_cb(const offb_posctl::offb_Config &config, uint32_t level)
+/**
+ * 参数读取callback函数，用于获取飞行控制器的参数
+ * @param config
+ */
+void param_cb(const offb_posctl::offb_Config &config)
 {
     param = config;
 }
 
-
+/**
+ * 通过callback函数获取期望的位置指令
+ * @param msg
+ */
 void ref_cb(const geometry_msgs::PoseStamped::ConstPtr &msg){
     pos_ref = *msg;
 }
 
+/**
+ * 通过callback函数获取无人机当前的飞行状态
+ * @param msg
+ */
 void state_cb(const mavros_msgs::State::ConstPtr &msg){
     current_state = *msg;
 }
 
+//获取无人机的IMU信息
 bool hasGotImu = false;
 void imu_cb(const sensor_msgs::Imu::ConstPtr &msg){
     hasGotImu = true;
@@ -141,6 +153,7 @@ void pos_cb(const geometry_msgs::PoseStamped::ConstPtr &msg){
         pos_drone_last = pos_drone;
         return;
     }
+    // 避免估计位置数据丢失等问题
     if(fabs(pos_drone.pose.position.x - pos_drone_last.pose.position.x) < MAX_POSITION_MEASURE_ERROR &&
        fabs(pos_drone.pose.position.y - pos_drone_last.pose.position.y) < MAX_POSITION_MEASURE_ERROR &&
        fabs(pos_drone.pose.position.z - pos_drone_last.pose.position.z) < MAX_POSITION_MEASURE_ERROR)
@@ -150,6 +163,10 @@ void pos_cb(const geometry_msgs::PoseStamped::ConstPtr &msg){
     }
 }
 
+/**
+ * 通过callback函数获取无人机当前的飞行速度
+ * @param msg
+ */
 bool vel_initialized = false;
 void vel_cb(const geometry_msgs::TwistStamped::ConstPtr &msg){
     if(!vel_initialized)
@@ -167,19 +184,23 @@ void vel_cb(const geometry_msgs::TwistStamped::ConstPtr &msg){
 
     vel_vicon = vel_drone.twist.linear;
 }
+//void vel_cb(const geometry_msgs::TwistStamped::ConstPtr &msg){
+//    vel_drone = *msg;
+//}
 
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>主 函 数<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 int main(int argc, char **argv)
 {
+    // ros初始化，节点为position_control
     ros::init(argc, argv, "position_control");
     ros::NodeHandle nh;
 
+    // 通过参数服务器的方式，获取控制器的参数
     dynamic_reconfigure::Server<offb_posctl::offb_Config> server;
     dynamic_reconfigure::Server<offb_posctl::offb_Config>::CallbackType ff;
-    ff = boost::bind(&param_cb, _1, _2);
+    ff = boost::bind(&param_cb, _1);
     server.setCallback(ff);
-
 
     // 【订阅】无人机当前状态/位置/速度信息
     ros::Subscriber pos_ref_sub  = nh.subscribe<geometry_msgs::PoseStamped>("/cmd/pos_ref", 10, ref_cb);
@@ -211,16 +232,8 @@ int main(int argc, char **argv)
     ros::Publisher targetvel_pub = nh.advertise<geometry_msgs::Vector3>("/plot/target_vel", 10);
 
 
-
-
-    // 频率 [20Hz]
-    ros::Rate rate(20.0);
-
-//    // 读取PID参数
-//    if (! param.readParam()){
-//        ROS_ERROR("read config file error!");
-//        return 0;
-//    }
+    // 频率 [100Hz],选用100Hz，是考虑到控制的需要，数据传输是20Hz，运算频率建议2倍以上，由于该算法算力消耗很低，故采用100Hz
+    ros::Rate rate(100.0);
 
     // log输出文件初始化
     logfile.open("/home/ubuntu/catkin_px4_OFFBOARD/src/offb_posctl/log/log031102.csv", std::ios::out);
@@ -272,6 +285,7 @@ int main(int argc, char **argv)
     }
     ROS_INFO("Connected!!");
 
+    // 等待获取无人机的IMU数据，用于无人机飞行过程中的偏航修正
     while(ros::ok() && !hasGotImu)
     {
         ros::Duration(1).sleep();
@@ -298,6 +312,7 @@ int main(int argc, char **argv)
             debug_log(debugfile, cur_time);
         }
 
+        //发布姿态/油门指令
         std_msgs::Float32 data2pub;
         data2pub.data = thrust_target;
         thrust_pub.publish(data2pub);
@@ -309,7 +324,7 @@ int main(int argc, char **argv)
 //        filter_pub2.publish(filter_in);
 
 
-        //debug pub
+        //发布debug消息，供实验测试
         viconvel_pub.publish(vel_vicon);
         filtervel_pub.publish(vel_read);
 //        filtervel_pub2.publish(vel_read2);
@@ -337,14 +352,14 @@ float get_ros_time(ros::Time time_begin)
 }
 
 /**
- * 控制函数
+ * 控制函数，采用了位置环、速度环串级PID控制，同时可选择增加DOB鲁棒控制模块
  * @param cur_time
  * @return
  */
 int pix_controller(float cur_time)
 {
 
-//位 置 环
+//位 置 环  PID 控制
     // 设置位置环PID参数 比例参数 积分参数 微分参数
     PIDX.setPID(param.MC_X_P, param.MC_X_I, param.MC_X_D);
     PIDY.setPID(param.MC_Y_P, param.MC_Y_I, param.MC_Y_D);
@@ -403,7 +418,7 @@ int pix_controller(float cur_time)
 //    vel_read2.y = 0.3 * vel_drone.twist.linear.y + 0.7 * vel_read2.y;
 //    vel_read2.z = 0.3 * vel_drone.twist.linear.z + 0.7 * vel_read2.z;
 
-//速 度 环
+//速 度 环  PID 控制
     // 设置位置环PID参数 比例参数 积分参数 微分参数
     PIDVX.setPID(param.MC_VX_P, param.MC_VX_I, param.MC_VX_D);
     PIDVY.setPID(param.MC_VY_P, param.MC_VY_I, param.MC_VY_D);
@@ -451,11 +466,12 @@ int pix_controller(float cur_time)
     angle_des.z = Yaw_Init + Yaw_Locked + angle_deviation;
 
 
-    //DOB 干扰观测器（利用积分平均的方法）
+//DOB 干扰观测器（利用积分平均的方法）
 
+    //-----------姿态求解部分-----------
     Vector2f temp_angle(angle_target.x , angle_target.y);
     Vector2f acc_xy_des = 9.8 * A_yaw * temp_angle;     //理论的加速度值
-
+    // 将无人机实际的速度和理想加速度值输入DOB模块
     DOBX.add_data(cur_time, vel_drone.twist.linear.x, acc_xy_des[0]);
     DOBY.add_data(cur_time, vel_drone.twist.linear.y, acc_xy_des[1]);
 
@@ -463,9 +479,9 @@ int pix_controller(float cur_time)
 //    DOBY.add_data(cur_time, vel_read.y, acc_xy_des[1]);
 
     Vector2f acc_xy_dis(DOBX.dob_output(), DOBY.dob_output());
-    Vector2f angle_dis = 1/9.8 * A_yaw.inverse() * acc_xy_dis;
+    Vector2f angle_dis = 1/9.8 * A_yaw.inverse() * acc_xy_dis;  //根据DOB干扰观测得到的角度叠加值
 
-
+    //-----------油门求解部分-----------
     auto thrust_des = (float)(0.05 * (9.8 + PIDVZ.Output ));
     auto acc_z_des = (float)(9.8 - 1/0.05 * thrust_target);
 //    auto acc_z_des = (float)(1/0.05 * thrust_target - 9.8);
@@ -473,14 +489,14 @@ int pix_controller(float cur_time)
     auto acc_z_dis = DOBZ.dob_output();
     auto thrust_dis = (float)(0.05 * (9.8 + acc_z_dis));
 
-
+//  计算最终的输出值
     angle_target.x = satfunc((angle_des.x + param.DOB_rate * angle_dis[0]), 0.314f, 0.0f);
     angle_target.y = satfunc((angle_des.y + param.DOB_rate * angle_dis[1]), 0.314f, 0.0f);
     angle_target.z = angle_des.z;
     orientation_target = euler2quaternion(angle_target.x, angle_target.y, angle_target.z);
 
 //    thrust_target = thrust_des + param.alpha * thrust_dis + (param.thr_hover - 0.5f);  //目标推力值
-    thrust_target = satfunc((thrust_des + 0.2 * param.DOB_rate * thrust_dis + (param.THR_HOVER - 0.5f)), 0.80f, 0.0f);  //目标推力值
+    thrust_target = satfunc((thrust_des + 0.0 * param.DOB_rate * thrust_dis + (param.THR_HOVER - 0.5f)), 0.80f, 0.0f);  //目标推力值
 
 
 

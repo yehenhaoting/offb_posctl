@@ -1,0 +1,28 @@
+\subsubsection usage Usage
+\verbatim
+<node name="offb_posctl" pkg="offb_posctl" type="offb_posctl">
+  <param name="LOG_to_file" type="bool" value="False" />
+  <param name="Delay_step" type="int" value="3" />
+  <param name="DOB_rate" type="double" value="0.45" />
+  <param name="THR_HOVER" type="double" value="0.39" />
+  <param name="MC_X_P" type="double" value="1.0" />
+  <param name="MC_X_I" type="double" value="0.2" />
+  <param name="MC_X_D" type="double" value="0.0" />
+  <param name="MC_Y_P" type="double" value="1.0" />
+  <param name="MC_Y_I" type="double" value="0.2" />
+  <param name="MC_Y_D" type="double" value="0.0" />
+  <param name="MC_Z_P" type="double" value="0.8" />
+  <param name="MC_Z_I" type="double" value="0.0" />
+  <param name="MC_Z_D" type="double" value="0.0" />
+  <param name="MC_VX_P" type="double" value="1.4" />
+  <param name="MC_VX_I" type="double" value="0.2" />
+  <param name="MC_VX_D" type="double" value="0.05" />
+  <param name="MC_VY_P" type="double" value="1.4" />
+  <param name="MC_VY_I" type="double" value="0.2" />
+  <param name="MC_VY_D" type="double" value="0.05" />
+  <param name="MC_VZ_P" type="double" value="1.2" />
+  <param name="MC_VZ_I" type="double" value="1.1" />
+  <param name="MC_VZ_D" type="double" value="0.0" />
+</node>
+\endverbatim
+
