@@ -4,8 +4,9 @@
 
 #include "DOB.h"
 #include <vector>
+#include <iostream>
 #include <queue>
-
+#include<iomanip>
 
 DOB::DOB() {
     DOB_data_in = {0.0f, 0.0f, 0.0f};
@@ -46,6 +47,11 @@ float DOB::dob_output() {
             acc_sum = acc_sum + dob_k->des_acc;
         }
         float data2return = ( acc_sum * delta_time - (DOB_list.back().cur_vel - DOB_list.front().cur_vel) ) / (DOB_list.back().cur_time - DOB_list.front().cur_time);
+
+        float acc_realdata = (DOB_list.back().cur_vel - DOB_list.front().cur_vel);
+        float acc_nominaldata = acc_sum * delta_time;
+        float acc_disdata = data2return;
+//        std::cout <<std::fixed << std::setprecision(3) << "acc_realdata:\t" << acc_realdata << std::endl<<"acc_nominaldata:\t" << acc_nominaldata <<std::endl<< "acc_disdata:\t" << acc_disdata << std::endl;
 
         return data2return;
     }

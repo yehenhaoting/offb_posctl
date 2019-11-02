@@ -85,7 +85,7 @@ geometry_msgs::Vector3 vel_vicon;
 
 
 float thrust_target;        //期望推力
-float Yaw_Init, angel_init, angel_vicon, angle_deviation;
+float Yaw_Init, angle_init, angle_vicon, angle_deviation;
 float Yaw_Locked = 0;           //锁定的偏航角(一般锁定为0)
 //float alpha = 1.0;
 
@@ -146,6 +146,7 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr &msg){
     imu_drone = *msg;
     acc_receive = imu_drone.linear_acceleration;
     angle_receive = quaternion2euler(imu_drone.orientation.x, imu_drone.orientation.y, imu_drone.orientation.z, imu_drone.orientation.w);
+    ROS_ERROR_STREAM(angle_receive);
 }
 
 bool pose_initialized = false;
@@ -155,6 +156,7 @@ void pos_cb(const geometry_msgs::PoseStamped::ConstPtr &msg){
         pose_initialized = true;
         pos_drone = *msg;
         pos_drone_last = pos_drone;
+        angle_init = pos_drone.pose.orientation.y;
         return;
     }
     // 避免估计位置数据丢失等问题
@@ -285,8 +287,8 @@ int main(int argc, char **argv)
         ros::spinOnce();
         ROS_INFO_STREAM("waitting for IMU message ...");
     }
-    auto angle_receive = quaternion2euler(imu_drone.orientation.x, imu_drone.orientation.y, imu_drone.orientation.z, imu_drone.orientation.w);
-    auto Yaw_Init = angle_receive.z;
+//    auto angle_receive = quaternion2euler(imu_drone.orientation.x, imu_drone.orientation.y, imu_drone.orientation.z, imu_drone.orientation.w);
+    Yaw_Init = angle_receive.z;
     ROS_INFO_STREAM("Got Yaw_Init: " << Yaw_Init);
 
     // 记录启控时间
@@ -300,9 +302,9 @@ int main(int argc, char **argv)
         float cur_time = get_ros_time(begin_time);  // 当前时间
         pix_controller(cur_time);                   //控制程序
 
-        if(current_state.mode == "OFFBOARD"){
+        if(current_state.mode == "OFFBOARD" && param.Enable_log_to_file){
             data_log(logfile, cur_time);                     //log输出
-            debug_log(debugfile, cur_time);
+//            debug_log(debugfile, cur_time);
         }
 
         //发布姿态/油门指令
@@ -370,7 +372,7 @@ int pix_controller(float cur_time)
     pos_error.x = pos_ref.pose.position.x - pos_drone.pose.position.x;
     pos_error.y = pos_ref.pose.position.y - pos_drone.pose.position.y;
     pos_error.z = pos_ref.pose.position.z - pos_drone.pose.position.z;
-    std::cout <<std::fixed << std::setprecision(3) << "error: \tx：" << pos_error.x << "\ty：" << pos_error.y << "\tz：" << pos_error.z << std::endl;
+//    std::cout <<std::fixed << std::setprecision(4) << "error: \tx：" << pos_error.x << "\ty：" << pos_error.y << "\tz：" << pos_error.z << std::endl;
 
     //传递误差
     PIDX.add_error(pos_error.x, cur_time);
@@ -443,22 +445,25 @@ int pix_controller(float cur_time)
             -cos(Yaw_Locked), sin(Yaw_Locked);
     Vector2f acc_d(PIDVX.Output, PIDVY.Output);       //赋值到期望推力和姿态
     Vector2f euler_temp = 1/9.8 * A_yaw.inverse() * acc_d;
+//    ROS_INFO_STREAM(acc_d);
     angle_des.x = euler_temp[0];
     angle_des.y = euler_temp[1];
+//    ROS_INFO_STREAM(angle_des);
 
 
     // yaw 角度修正
-    angel_vicon = pos_drone.pose.orientation.y;
-    std::cout << "Euler_vicon: yaw：" << angel_vicon * 60 << std::endl;
+    angle_vicon = pos_drone.pose.orientation.y;     //此处用的yaw角和vicon实际建坐标系相关,需确认
+//    std::cout << "Euler_vicon: yaw：" << angle_vicon * 60 << std::endl;
     // std::cout << "Euler_vicon: roll：" << pos_drone.pose.orientation.x << "\tpitch：" << pos_drone.pose.orientation.y << "\tyaw：" << pos_drone.pose.orientation.z << std::endl;
-    angle_deviation = angel_vicon - angel_init;
+    angle_deviation = angle_vicon - angle_init;
     if (fabs(angle_deviation) < 0.05)
     {
         angle_deviation = 0;
     }
     angle_des.z = Yaw_Init + Yaw_Locked + angle_deviation;
 
-
+//    std::cout << "(Vicon)Init:\t" << angle_init << "\t\tReal:\t" << angle_vicon << std::endl <<"(Imu)Init:\t"<<Yaw_Init<< "\t\tSet: \t" << angle_des.z << std::endl;
+//    ROS_INFO_STREAM(Yaw_Init);
 //DOB 干扰观测器（利用积分平均的方法）
 
     //-----------姿态求解部分-----------
@@ -475,12 +480,12 @@ int pix_controller(float cur_time)
     Vector2f angle_dis = 1/9.8 * A_yaw.inverse() * acc_xy_dis;  //根据DOB干扰观测得到的角度叠加值
 
     //-----------油门求解部分-----------
-    auto thrust_des = (float)(0.05 * (9.8 + PIDVZ.Output ));
-    auto acc_z_des = (float)(9.8 - 1/0.05 * thrust_target);
+    auto thrust_des = (float)((param.THR_HOVER / 9.8) * (9.8 + PIDVZ.Output ));
+    auto acc_z_des = (float)((9.8 / param.THR_HOVER) * thrust_target - 9.8);
 //    auto acc_z_des = (float)(1/0.05 * thrust_target - 9.8);
     DOBZ.add_data(cur_time, vel_drone.twist.linear.z, acc_z_des);
     auto acc_z_dis = DOBZ.dob_output();
-    auto thrust_dis = (float)(0.05 * (9.8 + acc_z_dis));
+    auto thrust_dis = (float)((param.THR_HOVER / 9.8) * acc_z_dis);
 
 //  计算最终的输出值
     angle_target.x = satfunc((angle_des.x + param.DOB_rate * angle_dis[0]), 0.314f, 0.0f);
@@ -489,7 +494,8 @@ int pix_controller(float cur_time)
     orientation_target = euler2quaternion(angle_target.x, angle_target.y, angle_target.z);
 
 //    thrust_target = thrust_des + param.alpha * thrust_dis + (param.thr_hover - 0.5f);  //目标推力值
-    thrust_target = satfunc((thrust_des + 0.0 * param.DOB_rate * thrust_dis + (param.THR_HOVER - 0.5f)), 0.80f, 0.0f);  //目标推力值
+    thrust_target = satfunc((thrust_des + param.DOB_rate * thrust_dis), 0.80f, 0.0f);  //目标推力值
+    ROS_ERROR_STREAM(thrust_target);
 
 
 
@@ -634,11 +640,13 @@ int set_file()
  */
 void data_log(std::ofstream &logfile, float cur_time)
 {
-    logfile<<pos_drone.pose.position.x <<","<<pos_drone.pose.position.y <<","<<pos_drone.pose.position.z <<","    //uav_pos
+    logfile << cur_time << "," << param.DOB_rate << ","
+        <<pos_ref.pose.position.x <<","<<pos_ref.pose.position.y <<","<<pos_ref.pose.position.z <<","    //set_pos
+        <<pos_drone.pose.position.x <<","<<pos_drone.pose.position.y <<","<<pos_drone.pose.position.z <<","    //uav_pos
         <<vel_target.x <<","<<vel_target.y <<","<<vel_target.z <<","                                           //set_vel
         <<vel_drone.twist.linear.x <<","<<vel_drone.twist.linear.y <<","<<vel_drone.twist.linear.z <<","       //uav_vel
-        <<angle_target.x  <<","<<angle_target.y  <<","<<angle_target.z  <<","                                  //set_att
-        <<angle_receive.x <<","<<angle_receive.y <<","<<angle_receive.z <<","                                  //uav_att
+//        <<angle_target.x  <<","<<angle_target.y  <<","<<angle_target.z  <<","                                  //set_att
+//        <<angle_receive.x <<","<<angle_receive.y <<","<<angle_receive.z <<","                                  //uav_att
 //        <<acc_receive.x   <<","<<acc_receive.y   <<","<<acc_receive.z   <<","                                  //uav_acc
         <<thrust_target<<std::endl;
 

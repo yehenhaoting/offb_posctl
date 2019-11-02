@@ -124,7 +124,7 @@ void PID::pid_output()
     Output = P_Out + I_Out + D_Out;
     Output = satfunc(Output, Output_max, errThres);
 
-//    std::cout<<"P_out: "<<P_Out<<"\tI_out: "<<I_Out<<"\tD_out: "<<D_Out<<std::endl;
+    std::cout<<"P_out: "<<P_Out<<"\tI_out: "<<I_Out<<"\tD_out: "<<D_Out<<std::endl;
 }
 
 //bool PID::filter_input(float data2fliter, float curtime)

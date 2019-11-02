@@ -3,14 +3,21 @@
     <include file="$(find mavros)/launch/px4.launch" >
         <arg name="fcu_url" value="/dev/ttyUSB0:57600"/> </include>
 
+    <!--启动offboard控制，该节点为通过service消息程序启动offboard控制-->
     <node pkg="offb_posctl" type="offb_enable_vicon" name="offb_enable_vicon" > </node>
 
+    <!--发送期望位置点-->
     <node pkg="offb_posctl" type="pos_ref_vicon.py" name="pos_ref_vicon" > </node>
+
+    <!--启动PID位置控制程序-->
     <node pkg="offb_posctl" type="offb_posctl_vicon" name="offb_posctl_vicon" output="screen">
             <rosparam
-            file="$(find offb_posctl)/param/param_vicon.yaml" command="load"
+            file="$(find offb_posctl)/param/param_vicon1029.yaml" command="load"
             />
     </node>
+
+    <!--启动rqt曲线观测及参数调整器-->
     <node pkg="rqt_plot" type="rqt_plot" name="rqt_plot"> </node>
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure"> </node>
 
 </launch>

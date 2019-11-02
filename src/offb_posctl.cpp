@@ -82,7 +82,7 @@ geometry_msgs::Vector3 filter_out;
 
 
 float thrust_target;        //期望推力
-float Yaw_Init, angel_init, angel_vicon, angle_deviation;
+float Yaw_Init, angle_init, angle_vicon, angle_deviation;
 float Yaw_Locked = 0;           //锁定的偏航角(一般锁定为0)
 //float alpha = 1.0;
 
@@ -385,10 +385,10 @@ int pix_controller(float cur_time)
 
 
     // yaw 角度修正
-    angel_vicon = pos_drone.pose.orientation.y;
-    std::cout << "Euler_vicon: yaw：" << angel_vicon * 60 << std::endl;
+    angle_vicon = pos_drone.pose.orientation.y;
+    std::cout << "Euler_vicon: yaw：" << angle_vicon * 60 << std::endl;
     // std::cout << "Euler_vicon: roll：" << pos_drone.pose.orientation.x << "\tpitch：" << pos_drone.pose.orientation.y << "\tyaw：" << pos_drone.pose.orientation.z << std::endl;
-    angle_deviation = angel_vicon - angel_init;
+    angle_deviation = angle_vicon - angle_init;
     if (fabs(angle_deviation) < 0.05) //超过一定阈值后进行修正
     {
         angle_deviation = 0;
