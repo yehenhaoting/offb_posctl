@@ -1,1 +1,0 @@
-set(ORDERED_PATHS "/home/ubuntu/Rotors/devel/.private/mavros/lib;/home/ubuntu/Rotors/devel/.private/libmavconn/lib;/opt/ros/indigo/lib")

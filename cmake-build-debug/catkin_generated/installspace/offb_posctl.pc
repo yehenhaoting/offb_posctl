@@ -1,8 +1,0 @@
-prefix=/usr/local
-
-Name: offb_posctl
-Description: Description of offb_posctl
-Version: 0.0.0
-Cflags: -I/usr/local/include
-Libs: -L/usr/local/lib 
-Requires: 

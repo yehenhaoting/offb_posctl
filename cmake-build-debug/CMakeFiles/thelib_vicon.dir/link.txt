@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -g  -shared -Wl,-soname,libthelib_vicon.so -o devel/lib/libthelib_vicon.so CMakeFiles/thelib_vicon.dir/src/PID.cpp.o CMakeFiles/thelib_vicon.dir/src/FILTER.cpp.o CMakeFiles/thelib_vicon.dir/src/DOB.cpp.o 

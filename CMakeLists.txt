@@ -47,6 +47,15 @@ add_library(thelib_vicon
         src/DOB.cpp)
 
 
+add_library(thelib_uam
+        src/PID.h
+        src/PID.cpp
+        src/FILTER.h
+        src/FILTER.cpp
+        src/DOB.h
+        src/DOB.cpp)
+
+
 add_executable(offb_posctl
         src/offb_posctl.cpp)
 target_link_libraries(offb_posctl ${catkin_LIBRARIES} thelib)
@@ -63,5 +72,9 @@ target_link_libraries(offb_enable ${catkin_LIBRARIES})
 # for real fly, enable OFFBOARD by RC switch
 add_executable(offb_enable_vicon src/offb_enable_vicon.cpp)
 target_link_libraries(offb_enable_vicon ${catkin_LIBRARIES})
+
+# for uam fly, via Xbee to control
+add_executable(offb_posctl_uam src/offb_posctl_uam.cpp)
+target_link_libraries(offb_posctl_uam ${catkin_LIBRARIES} thelib_uam)
 
 
