@@ -10,31 +10,50 @@ POS_REF = PoseStamped()
 def pos_talker():
     pub = rospy.Publisher('/cmd/pos_ref', PoseStamped, queue_size=10)
     rospy.init_node('pos_ref', anonymous=True)
-    rate = rospy.Rate(0.5) # 20hz
+    # rate = rospy.Rate(0.5) # 20hz
+    rate = rospy.Rate(50) # 20hz
 
+    # while not rospy.is_shutdown():
+    #     POS_REF.pose.position.x = 0
+    #     POS_REF.pose.position.y = 0
+    #     POS_REF.pose.position.z = 2.1
+
+    ii = 0
     while not rospy.is_shutdown():
-        POS_REF.pose.position.x = 0
-        POS_REF.pose.position.y = 0
-        POS_REF.pose.position.z = 1.5
+        if(ii<800):
+            POS_REF.pose.position.x = 0.0
+            POS_REF.pose.position.y = 0.0
+            POS_REF.pose.position.z = 1.3
+        elif(ii<900):
+            POS_REF.pose.position.x = 0.0
+            POS_REF.pose.position.y = 0.0
+            POS_REF.pose.position.z = 1.3 + 0.008 * (ii-800)
+        else:
+            POS_REF.pose.position.x = 0.0
+            POS_REF.pose.position.y = 0.0
+            POS_REF.pose.position.z = 2.1
+
+        ii = ii + 1
+
 
     # ii = 0
     # while not rospy.is_shutdown():
     #     if(ii<10):
     #         POS_REF.pose.position.x = 0.5
     #         POS_REF.pose.position.y = 0.0
-    #         POS_REF.pose.position.z = 0.8
+    #         POS_REF.pose.position.z = 1.5
     #     elif(ii<20):
     #         POS_REF.pose.position.x = -0.5
     #         POS_REF.pose.position.y = 0.0
-    #         POS_REF.pose.position.z = 0.8
+    #         POS_REF.pose.position.z = 1.5
     #     elif(ii<30):
     #         POS_REF.pose.position.x = 0.5
     #         POS_REF.pose.position.y = 0.0
-    #         POS_REF.pose.position.z = 0.8
+    #         POS_REF.pose.position.z = 1.5
     #     elif(ii<40):
     #         POS_REF.pose.position.x = -0.5
     #         POS_REF.pose.position.y = 0.0
-    #         POS_REF.pose.position.z = 0.8
+    #         POS_REF.pose.position.z = 1.5
     #     else:
     #         ii = 0
     #

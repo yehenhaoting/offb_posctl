@@ -12,9 +12,9 @@
     <node pkg="offb_posctl" type="pos_ref_uam.py" name="pos_ref_vicon" > </node>
 
     <!--启动PID位置控制程序-->
-    <node pkg="offb_posctl" type="offb_posctl_vicon" name="offb_posctl_vicon" output="screen">
+    <node pkg="offb_posctl" type="offb_posctl_uam" name="offb_posctl_uam" output="screen">
             <rosparam
-            file="$(find offb_posctl)/param/param_vicon1029.yaml" command="load"
+            file="$(find offb_posctl)/param/param_uam1205.yaml" command="load"
             />
     </node>
 
